@@ -16,7 +16,7 @@ Inspirado em [dottie.pro/dashboard/copa](https://dottie.pro/dashboard/copa) e no
 
 Fonte: repositório [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup) (`data-csv/`).
 
-O pacote R local em [`worldcup/`](worldcup/) é o upstream desse dataset (submodule/cópia do projeto original).
+O pacote R local em [`worldcup/`](worldcup-r) é o upstream desse dataset (submodule/cópia do projeto original).
 
 ## Dados ao vivo (2026)
 

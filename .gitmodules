@@ -1,3 +1,3 @@
 [submodule "worldcup"]
-	path = worldcup
-	url = https://github.com/luizotavioautomacao/worldcup
+	path = worldcup-r
+	url = https://github.com/luizotavioautomacao/worldcup-r
