@@ -8,9 +8,9 @@ Inspirado em [dottie.pro/dashboard/copa](https://dottie.pro/dashboard/copa) e no
 
 | Arquivo | Conteúdo | Fonte de dados |
 |---------|----------|----------------|
-| [`front-end/index.html`](worldcup/front-end/index.html) | Newsletter | Call to Action  |
-| [`front-end/worldcup-dashboard.html`](worldcup/front-end/worldcup-dashboard.html) | CSVs remotos de [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup)|
-| [`front-end/worldcup2026-live.html`](worldcup/front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot JSON → APIs legado → fallback estático |
+| [`front-end/index.html`](front-end/index.html) | Landing page (newsletter + links para os dashboards) | Estático |
+| [`front-end/worldcup-dashboard.html`](front-end/worldcup-dashboard.html) | Dashboard histórico (1930–2022) | CSVs remotos de [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup) |
+| [`front-end/worldcup2026-live.html`](front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot JSON → APIs legado → fallback estático |
 
 ## Dados históricos (1930–2022)
 
