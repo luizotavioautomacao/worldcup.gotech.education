@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
+import unicodedata
 import urllib.error
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
@@ -50,20 +52,49 @@ def espn_date_range(start: date, end: date):
         current += timedelta(days=1)
 
 
-def slugify(name: str) -> str:
-    return name.lower().replace(" ", "-")
+TEAM_ALIASES = {
+    "turkiye": "turkey",
+    "tuerkiye": "turkey",
+    "czechia": "czech-republic",
+    "bosnia-and-herzegovina": "bosnia-herzegovina",
+    "united-states": "usa",
+    "korea-republic": "south-korea",
+    "republic-of-korea": "south-korea",
+    "cote-divoire": "ivory-coast",
+    "cote-d-ivoire": "ivory-coast",
+    "dr-congo": "dr-congo",
+    "democratic-republic-of-congo": "dr-congo",
+    "saudi-arabia": "saudi-arabia",
+    "cape-verde": "cape-verde",
+    "cabo-verde": "cape-verde",
+    "curaao": "curacao",
+}
 
 
-def team_name_matches(kickoff_id: str, espn_slug: str) -> bool:
-    if not kickoff_id or not espn_slug:
+def normalize_team_key(name: str) -> str:
+    if not name:
+        return ""
+    s = unicodedata.normalize("NFKD", name)
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = s.lower().replace("&", "and").replace("'", "")
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    return TEAM_ALIASES.get(s, s)
+
+
+def team_name_matches(kickoff_id: str, espn_name: str) -> bool:
+    k = normalize_team_key(kickoff_id)
+    e = normalize_team_key(espn_name)
+    if not k or not e:
         return False
-    return kickoff_id[:5] in espn_slug or espn_slug[:5] in kickoff_id
+    if k == e or k in e or e in k:
+        return True
+    return len(k) >= 4 and len(e) >= 4 and k[:4] == e[:4]
 
 
-def find_match(matches: list[dict], home_slug: str, away_slug: str) -> dict | None:
+def find_match(matches: list[dict], home_name: str, away_name: str) -> dict | None:
     for match in matches:
-        if team_name_matches(match["team1"], home_slug) and team_name_matches(
-            match["team2"], away_slug
+        if team_name_matches(match["team1"], home_name) and team_name_matches(
+            match["team2"], away_name
         ):
             return match
     return None
@@ -100,10 +131,10 @@ def enrich_with_espn(matches: list[dict], events: list[dict]) -> int:
 
         home_team = home.get("team") or {}
         away_team = away.get("team") or {}
-        home_slug = slugify(home_team.get("displayName") or "")
-        away_slug = slugify(away_team.get("displayName") or "")
+        home_name = home_team.get("displayName") or home_team.get("shortDisplayName") or ""
+        away_name = away_team.get("displayName") or away_team.get("shortDisplayName") or ""
 
-        match = find_match(matches, home_slug, away_slug)
+        match = find_match(matches, home_name, away_name)
         if not match:
             continue
 
