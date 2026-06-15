@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Copa do Mundo · Dashboard Histórico</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="dashboard-viz.js"></script>
 <style>
 :root{
   --green:#1a6b35;--green-light:#2d9c52;--green-dark:#0d4020;
@@ -37,6 +38,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .kpi{background:var(--surface);padding:1rem 1.2rem;text-align:center}
 .kpi .v{font-size:1.7rem;font-weight:700;color:var(--gold)}
 .kpi .l{font-size:0.72rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.kpi-strip.team-kpis{background:linear-gradient(180deg,#142218,#122018);border-bottom:2px solid var(--gold-dim)}
+.kpi-strip.team-kpis .kpi .v{color:#fff}
+.kpi-strip.team-kpis .kpi .l{color:var(--gold)}
+
+/* ADVANCED VIZ */
+.card-wide{grid-column:1/-1}
+.card-tall canvas,.card-tall .viz-canvas-wrap{min-height:300px}
+.viz-scroll{overflow:auto;max-height:70vh;padding-bottom:0.5rem}
+.viz-canvas-wrap canvas{display:block;background:var(--surface2);border-radius:6px;min-height:420px}
+.viz-legend{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;display:flex;gap:1rem;flex-wrap:wrap}
+.viz-note{font-size:0.72rem;color:var(--dim);margin-top:0.4rem}
 
 /* SECTION LAYOUT */
 .section{padding:1.5rem 2rem}
@@ -45,6 +57,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 
 /* CHART GRID */
 .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem}
+.chart-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media(max-width:900px){.chart-grid-2{grid-template-columns:1fr}}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem}
 .card-title{font-size:0.8rem;color:var(--muted);margin-bottom:1rem;font-weight:500}
 .card canvas{max-height:220px}
@@ -165,6 +179,9 @@ tr:hover td{background:var(--surface2)}
       <option value="womens">Feminino</option>
     </select>
   </label>
+  <label id="lbl-compare" hidden>⚔️ Comparar com
+    <select id="sel-compare"><option value="">— selecione —</option></select>
+  </label>
   <button class="btn-clear" onclick="resetFilters()">↺ Limpar filtros</button>
 </div>
 
@@ -175,7 +192,15 @@ tr:hover td{background:var(--surface2)}
   <div class="kpi"><div class="v" id="k-avg">—</div><div class="l">Média gols/jogo</div></div>
   <div class="kpi"><div class="v" id="k-hw">—</div><div class="l">% Vitória Mandante</div></div>
   <div class="kpi"><div class="v" id="k-champ">—</div><div class="l">Maior campeão</div></div>
-  <div class="kpi"><div class="v" id="k-top">—</div><div class="l">Maior artilheiro em 1 copa</div></div>
+  <div class="kpi"><div class="v" id="k-top">—</div><div class="l" id="k-top-label">Maior artilheiro (carreira)</div></div>
+</div>
+
+<div class="kpi-strip team-kpis" id="team-kpis" hidden>
+  <div class="kpi"><div class="v" id="tk-copas">—</div><div class="l">Copas disputadas</div></div>
+  <div class="kpi"><div class="v" id="tk-champ">—</div><div class="l">Títulos</div></div>
+  <div class="kpi"><div class="v" id="tk-vice">—</div><div class="l">Vice-campeonatos</div></div>
+  <div class="kpi"><div class="v" id="tk-third">—</div><div class="l">3º lugar</div></div>
+  <div class="kpi"><div class="v" id="tk-ko">—</div><div class="l">Eliminações no mata-mata</div></div>
 </div>
 
 <!-- TIMELINE -->
@@ -202,11 +227,9 @@ tr:hover td{background:var(--surface2)}
 <!-- CHARTS ROW 2 — ANALYSIS -->
 <div class="section" style="padding-top:0">
   <div class="section-title">Análise exploratória</div>
-  <div class="chart-grid">
-
-    <!-- Home advantage -->
+  <div class="chart-grid chart-grid-2">
     <div class="card">
-      <div class="card-title">Vantagem de jogar em casa (1.248 partidas)</div>
+      <div class="card-title">Vantagem de jogar em casa <span id="home-adv-scope" style="font-weight:400;color:var(--dim)"></span></div>
       <div class="result-bars" id="result-bars"></div>
       <div class="legend-row">
         <div class="leg"><div class="leg-dot" style="background:#1a6b35"></div><span id="leg-home">—</span> vitórias mandante</div>
@@ -238,6 +261,53 @@ tr:hover td{background:var(--surface2)}
       <canvas id="c-avg-trend"></canvas>
     </div>
 
+  </div>
+</div>
+
+<!-- VISUALIZAÇÕES DINÂMICAS (tipos do pacote worldcup-r) -->
+<div class="section" style="padding-top:0">
+  <div class="section-title">Visualizações avançadas — Fjelstul World Cup Database</div>
+  <div class="chart-grid chart-grid-2">
+    <div class="card card-wide">
+      <div class="card-title">Resultados por país e edição <span style="font-weight:400;color:var(--dim)">(heatmap W/D/L)</span></div>
+      <div class="viz-scroll"><div class="viz-canvas-wrap"><canvas id="c-match-results"></canvas></div></div>
+      <div class="viz-legend"><span>■ Vitória</span><span>■ Empate</span><span>■ Derrota</span><span>■ Eliminado (não jogou)</span></div>
+    </div>
+    <div class="card card-tall">
+      <div class="card-title">Pênaltis em disputas — convertidos vs perdidos</div>
+      <canvas id="c-penalties" style="height:320px"></canvas>
+    </div>
+    <div class="card card-tall">
+      <div class="card-title">Gols por seleções europeias (UEFA)</div>
+      <canvas id="c-goals-uefa" style="height:320px"></canvas>
+    </div>
+    <div class="card card-tall">
+      <div class="card-title">Gols por seleções sul-americanas (CONMEBOL)</div>
+      <canvas id="c-goals-conmebol" style="height:320px"></canvas>
+    </div>
+  </div>
+  <div id="h2h-section" hidden style="margin-top:1rem">
+    <div class="section-title" id="h2h-title">Confronto direto</div>
+    <div class="chart-grid chart-grid-2">
+      <div class="card card-tall">
+        <div class="card-title">Gols por minuto do jogo</div>
+        <div class="viz-canvas-wrap"><canvas id="c-h2h-goals" style="width:100%;height:280px"></canvas></div>
+        <div class="viz-note">Círculo = gol · Quadrado = gol contra · Triângulo = pênalti · Azul = fase de grupos · Vermelho = mata-mata</div>
+      </div>
+      <div class="card card-tall">
+        <div class="card-title">Saldo de gols por partida (lollipop)</div>
+        <div class="viz-canvas-wrap"><canvas id="c-h2h-matches" style="width:100%;height:260px"></canvas></div>
+      </div>
+      <div class="card card-tall">
+        <div class="card-title">Cartões por minuto</div>
+        <div class="viz-canvas-wrap"><canvas id="c-h2h-cards" style="width:100%;height:280px"></canvas></div>
+      </div>
+      <div class="card card-tall">
+        <div class="card-title">Probabilidade de placar (modelo Poisson)</div>
+        <div class="viz-canvas-wrap"><canvas id="c-h2h-probs"></canvas></div>
+        <div class="viz-note">Estimativa a partir da média histórica de gols marcados/sofridos de cada seleção.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -292,16 +362,62 @@ tr:hover td{background:var(--surface2)}
   · Fonte: <a href="https://github.com/jfjelstul/worldcup" style="color:var(--muted)" target="_blank" rel="noopener">https://github.com/jfjelstul/worldcup</a>
 </div>
 
+<script id="stats-extra-data" type="application/json">
+{"top_scorers_mens": [["Miroslav Klose", 16], ["Ronaldo", 15], ["Gerd Müller", 14], ["Just Fontaine", 13], ["Lionel Messi", 13], ["Pelé", 12], ["Kylian Mbappé", 12], ["Sándor Kocsis", 11], ["Jürgen Klinsmann", 11], ["Helmut Rahn", 10], ["Teófilo Cubillas", 10], ["Grzegorz Lato", 10], ["Gary Lineker", 10], ["Gabriel Batistuta", 10], ["Thomas Müller", 10]], "top_scorers_womens": [["Marta", 17], ["Birgit Prinz", 14], ["Abby Wambach", 14], ["Michelle Akers", 12], ["Wen Sun", 11], ["Bettina Wiegmann", 11], ["Cristiane", 11], ["Heidi Mohr", 10], ["Ann Kristin Aarønes", 10], ["Christine Sinclair", 10], ["Carli Lloyd", 10], ["Linda Medalen", 9], ["Hege Riise", 9], ["Megan Rapinoe", 9], ["Alex Morgan", 9]], "best_single_cup_mens": ["Just Fontaine", 13, 1958], "best_single_cup_womens": ["Michelle Akers", 10, 1991], "best_single_cup_all": ["Just Fontaine", 13, 1958], "team_stats": {"Algeria": {"all": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Angola": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Argentina": {"all": {"copas": 21, "campeao": 3, "vice": 3, "terceiro": 0, "elim_mata_mata": 10}, "mens": {"copas": 18, "campeao": 3, "vice": 3, "terceiro": 0, "elim_mata_mata": 10}, "womens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Australia": {"all": {"copas": 13, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 6}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}}, "Austria": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 2}, "mens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 2}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Belgium": {"all": {"copas": 14, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 8}, "mens": {"copas": 14, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 8}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Bolivia": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Bosnia and Herzegovina": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Brazil": {"all": {"copas": 30, "campeao": 5, "vice": 3, "terceiro": 3, "elim_mata_mata": 19}, "mens": {"copas": 22, "campeao": 5, "vice": 2, "terceiro": 2, "elim_mata_mata": 13}, "womens": {"copas": 8, "campeao": 0, "vice": 1, "terceiro": 1, "elim_mata_mata": 6}}, "Bulgaria": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "mens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Cameroon": {"all": {"copas": 10, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "mens": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}}, "Canada": {"all": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}}, "Chile": {"all": {"copas": 10, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 4}, "mens": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 4}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "China": {"all": {"copas": 8, "campeao": 0, "vice": 1, "terceiro": 0, "elim_mata_mata": 7}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 7, "campeao": 0, "vice": 1, "terceiro": 0, "elim_mata_mata": 7}}, "Chinese Taipei": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}}, "Colombia": {"all": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "womens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}}, "Costa Rica": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Croatia": {"all": {"copas": 6, "campeao": 0, "vice": 1, "terceiro": 2, "elim_mata_mata": 3}, "mens": {"copas": 6, "campeao": 0, "vice": 1, "terceiro": 2, "elim_mata_mata": 3}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Cuba": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Czech Republic": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Czechoslovakia": {"all": {"copas": 8, "campeao": 0, "vice": 2, "terceiro": 0, "elim_mata_mata": 4}, "mens": {"copas": 8, "campeao": 0, "vice": 2, "terceiro": 0, "elim_mata_mata": 4}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Denmark": {"all": {"copas": 10, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 6}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}, "womens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}}, "Dutch East Indies": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "East Germany": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Ecuador": {"all": {"copas": 5, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Egypt": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "El Salvador": {"all": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "England": {"all": {"copas": 21, "campeao": 1, "vice": 0, "terceiro": 1, "elim_mata_mata": 16}, "mens": {"copas": 16, "campeao": 1, "vice": 0, "terceiro": 0, "elim_mata_mata": 11}, "womens": {"copas": 5, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 5}}, "Equatorial Guinea": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "France": {"all": {"copas": 20, "campeao": 2, "vice": 2, "terceiro": 2, "elim_mata_mata": 11}, "mens": {"copas": 16, "campeao": 2, "vice": 2, "terceiro": 2, "elim_mata_mata": 8}, "womens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}}, "Germany": {"all": {"copas": 18, "campeao": 3, "vice": 2, "terceiro": 3, "elim_mata_mata": 13}, "mens": {"copas": 10, "campeao": 1, "vice": 1, "terceiro": 3, "elim_mata_mata": 7}, "womens": {"copas": 8, "campeao": 2, "vice": 1, "terceiro": 0, "elim_mata_mata": 6}}, "Ghana": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "mens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Greece": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Haiti": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Honduras": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Hungary": {"all": {"copas": 9, "campeao": 0, "vice": 2, "terceiro": 0, "elim_mata_mata": 5}, "mens": {"copas": 9, "campeao": 0, "vice": 2, "terceiro": 0, "elim_mata_mata": 5}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Iceland": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Iran": {"all": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Iraq": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Israel": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Italy": {"all": {"copas": 21, "campeao": 4, "vice": 2, "terceiro": 1, "elim_mata_mata": 9}, "mens": {"copas": 18, "campeao": 4, "vice": 2, "terceiro": 1, "elim_mata_mata": 7}, "womens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}}, "Ivory Coast": {"all": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Jamaica": {"all": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Japan": {"all": {"copas": 15, "campeao": 1, "vice": 1, "terceiro": 0, "elim_mata_mata": 7}, "mens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}, "womens": {"copas": 8, "campeao": 1, "vice": 1, "terceiro": 0, "elim_mata_mata": 3}}, "Kuwait": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Mexico": {"all": {"copas": 20, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 9}, "mens": {"copas": 17, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 9}, "womens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Morocco": {"all": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Netherlands": {"all": {"copas": 13, "campeao": 0, "vice": 4, "terceiro": 1, "elim_mata_mata": 13}, "mens": {"copas": 11, "campeao": 0, "vice": 3, "terceiro": 1, "elim_mata_mata": 11}, "womens": {"copas": 2, "campeao": 0, "vice": 1, "terceiro": 0, "elim_mata_mata": 2}}, "New Zealand": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 5, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Nigeria": {"all": {"copas": 14, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 5}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "womens": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}}, "North Korea": {"all": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}}, "Northern Ireland": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Norway": {"all": {"copas": 11, "campeao": 1, "vice": 1, "terceiro": 0, "elim_mata_mata": 8}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 8, "campeao": 1, "vice": 1, "terceiro": 0, "elim_mata_mata": 6}}, "Panama": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Paraguay": {"all": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}, "mens": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Peru": {"all": {"copas": 5, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 5, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Poland": {"all": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 2, "elim_mata_mata": 5}, "mens": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 2, "elim_mata_mata": 5}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Portugal": {"all": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 5}, "mens": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 5}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Qatar": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Republic of Ireland": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Romania": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 5}, "mens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 5}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Russia": {"all": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "mens": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}}, "Saudi Arabia": {"all": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Scotland": {"all": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 8, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Senegal": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 2}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Serbia": {"all": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Serbia and Montenegro": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Slovakia": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Slovenia": {"all": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "South Africa": {"all": {"copas": 4, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "South Korea": {"all": {"copas": 14, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 4}, "mens": {"copas": 11, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 3}, "womens": {"copas": 3, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}}, "Soviet Union": {"all": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 5}, "mens": {"copas": 7, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 5}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Spain": {"all": {"copas": 18, "campeao": 1, "vice": 0, "terceiro": 0, "elim_mata_mata": 9}, "mens": {"copas": 16, "campeao": 1, "vice": 0, "terceiro": 0, "elim_mata_mata": 8}, "womens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}}, "Sweden": {"all": {"copas": 20, "campeao": 0, "vice": 2, "terceiro": 5, "elim_mata_mata": 14}, "mens": {"copas": 12, "campeao": 0, "vice": 1, "terceiro": 2, "elim_mata_mata": 7}, "womens": {"copas": 8, "campeao": 0, "vice": 1, "terceiro": 3, "elim_mata_mata": 7}}, "Switzerland": {"all": {"copas": 13, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 9}, "mens": {"copas": 12, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 8}, "womens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}}, "Thailand": {"all": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Togo": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Trinidad and Tobago": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Tunisia": {"all": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 6, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Turkey": {"all": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 1}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Ukraine": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "United Arab Emirates": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "United States": {"all": {"copas": 19, "campeao": 4, "vice": 1, "terceiro": 4, "elim_mata_mata": 11}, "mens": {"copas": 11, "campeao": 0, "vice": 0, "terceiro": 1, "elim_mata_mata": 7}, "womens": {"copas": 8, "campeao": 4, "vice": 1, "terceiro": 3, "elim_mata_mata": 4}}, "Uruguay": {"all": {"copas": 14, "campeao": 2, "vice": 0, "terceiro": 0, "elim_mata_mata": 8}, "mens": {"copas": 14, "campeao": 2, "vice": 0, "terceiro": 0, "elim_mata_mata": 8}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Wales": {"all": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "mens": {"copas": 2, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 1}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "West Germany": {"all": {"copas": 10, "campeao": 3, "vice": 3, "terceiro": 1, "elim_mata_mata": 6}, "mens": {"copas": 10, "campeao": 3, "vice": 3, "terceiro": 1, "elim_mata_mata": 6}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Yugoslavia": {"all": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 6}, "mens": {"copas": 9, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 6}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}, "Zaire": {"all": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "mens": {"copas": 1, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}, "womens": {"copas": 0, "campeao": 0, "vice": 0, "terceiro": 0, "elim_mata_mata": 0}}}}
+</script>
 <script>
 const DB = {"tournaments":[{"tid":"WC-1930","year":"1930","host":"Uruguay","winner":"Uruguay","name":"1930 FIFA Men's World Cup","mens":true},{"tid":"WC-1934","year":"1934","host":"Italy","winner":"Italy","name":"1934 FIFA Men's World Cup","mens":true},{"tid":"WC-1938","year":"1938","host":"France","winner":"Italy","name":"1938 FIFA Men's World Cup","mens":true},{"tid":"WC-1950","year":"1950","host":"Brazil","winner":"Uruguay","name":"1950 FIFA Men's World Cup","mens":true},{"tid":"WC-1954","year":"1954","host":"Switzerland","winner":"West Germany","name":"1954 FIFA Men's World Cup","mens":true},{"tid":"WC-1958","year":"1958","host":"Sweden","winner":"Brazil","name":"1958 FIFA Men's World Cup","mens":true},{"tid":"WC-1962","year":"1962","host":"Chile","winner":"Brazil","name":"1962 FIFA Men's World Cup","mens":true},{"tid":"WC-1966","year":"1966","host":"England","winner":"England","name":"1966 FIFA Men's World Cup","mens":true},{"tid":"WC-1970","year":"1970","host":"Mexico","winner":"Brazil","name":"1970 FIFA Men's World Cup","mens":true},{"tid":"WC-1974","year":"1974","host":"West Germany","winner":"West Germany","name":"1974 FIFA Men's World Cup","mens":true},{"tid":"WC-1978","year":"1978","host":"Argentina","winner":"Argentina","name":"1978 FIFA Men's World Cup","mens":true},{"tid":"WC-1982","year":"1982","host":"Spain","winner":"Italy","name":"1982 FIFA Men's World Cup","mens":true},{"tid":"WC-1986","year":"1986","host":"Mexico","winner":"Argentina","name":"1986 FIFA Men's World Cup","mens":true},{"tid":"WC-1990","year":"1990","host":"Italy","winner":"West Germany","name":"1990 FIFA Men's World Cup","mens":true},{"tid":"WC-1991","year":"1991","host":"China","winner":"United States","name":"1991 FIFA Women's World Cup","mens":false},{"tid":"WC-1994","year":"1994","host":"United States","winner":"Brazil","name":"1994 FIFA Men's World Cup","mens":true},{"tid":"WC-1995","year":"1995","host":"Sweden","winner":"Norway","name":"1995 FIFA Women's World Cup","mens":false},{"tid":"WC-1998","year":"1998","host":"France","winner":"France","name":"1998 FIFA Men's World Cup","mens":true},{"tid":"WC-1999","year":"1999","host":"United States","winner":"United States","name":"1999 FIFA Women's World Cup","mens":false},{"tid":"WC-2002","year":"2002","host":"Korea, Japan","winner":"Brazil","name":"2002 FIFA Men's World Cup","mens":true},{"tid":"WC-2003","year":"2003","host":"United States","winner":"Germany","name":"2003 FIFA Women's World Cup","mens":false},{"tid":"WC-2006","year":"2006","host":"Germany","winner":"Italy","name":"2006 FIFA Men's World Cup","mens":true},{"tid":"WC-2007","year":"2007","host":"China","winner":"Germany","name":"2007 FIFA Women's World Cup","mens":false},{"tid":"WC-2010","year":"2010","host":"South Africa","winner":"Spain","name":"2010 FIFA Men's World Cup","mens":true},{"tid":"WC-2011","year":"2011","host":"Germany","winner":"Japan","name":"2011 FIFA Women's World Cup","mens":false},{"tid":"WC-2014","year":"2014","host":"Brazil","winner":"Germany","name":"2014 FIFA Men's World Cup","mens":true},{"tid":"WC-2015","year":"2015","host":"Canada","winner":"United States","name":"2015 FIFA Women's World Cup","mens":false},{"tid":"WC-2018","year":"2018","host":"Russia","winner":"France","name":"2018 FIFA Men's World Cup","mens":true},{"tid":"WC-2019","year":"2019","host":"France","winner":"United States","name":"2019 FIFA Women's World Cup","mens":false},{"tid":"WC-2022","year":"2022","host":"Qatar","winner":"Argentina","name":"2022 FIFA Men's World Cup","mens":true}],"matches":[{"mid":"M-2019-12","tid":"WC-2019","year":"2019","date":"2019-06-11","stage":"group stage","home":"United States","hcode":"USA","away":"Thailand","acode":"THA","score":"13\u20130","hs":13,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1954-19","tid":"WC-1954","year":"1954","date":"1954-06-26","stage":"quarter-finals","home":"Austria","hcode":"AUT","away":"Switzerland","acode":"CHE","score":"7\u20135","hs":7,"as_":5,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1938-06","tid":"WC-1938","year":"1938","date":"1938-06-05","stage":"round of 16","home":"Brazil","hcode":"BRA","away":"Poland","acode":"POL","score":"6\u20135","hs":6,"as_":5,"et":true,"ps":false,"result":"home team win"},{"mid":"M-1954-13","tid":"WC-1954","year":"1954","date":"1954-06-20","stage":"group stage","home":"Hungary","hcode":"HUN","away":"West Germany","acode":"DEU","score":"8\u20133","hs":8,"as_":3,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1982-05","tid":"WC-1982","year":"1982","date":"1982-06-15","stage":"group stage","home":"Hungary","hcode":"HUN","away":"El Salvador","acode":"SLV","score":"10\u20131","hs":10,"as_":1,"et":false,"ps":false,"result":"home team win"},{"mid":"M-2007-01","tid":"WC-2007","year":"2007","date":"2007-09-10","stage":"group stage","home":"Germany","hcode":"DEU","away":"Argentina","acode":"ARG","score":"11\u20130","hs":11,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-2015-17","tid":"WC-2015","year":"2015","date":"2015-06-12","stage":"group stage","home":"Switzerland","hcode":"CHE","away":"Ecuador","acode":"ECU","score":"10\u20131","hs":10,"as_":1,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1958-04","tid":"WC-1958","year":"1958","date":"1958-06-08","stage":"group stage","home":"France","hcode":"FRA","away":"Paraguay","acode":"PRY","score":"7\u20133","hs":7,"as_":3,"et":false,"ps":false,"result":"home team win"},{"mid":"M-2015-04","tid":"WC-2015","year":"2015","date":"2015-06-07","stage":"group stage","home":"Germany","hcode":"DEU","away":"Ivory Coast","acode":"CIV","score":"10\u20130","hs":10,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1930-11","tid":"WC-1930","year":"1930","date":"1930-07-19","stage":"group stage","home":"Argentina","hcode":"ARG","away":"Mexico","acode":"MEX","score":"6\u20133","hs":6,"as_":3,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1954-06","tid":"WC-1954","year":"1954","date":"1954-06-17","stage":"group stage","home":"Hungary","hcode":"HUN","away":"South Korea","acode":"KOR","score":"9\u20130","hs":9,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1954-17","tid":"WC-1954","year":"1954","date":"1954-06-23","stage":"group stage","home":"West Germany","hcode":"DEU","away":"Turkey","acode":"TUR","score":"7\u20132","hs":7,"as_":2,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1958-34","tid":"WC-1958","year":"1958","date":"1958-06-28","stage":"third-place match","home":"France","hcode":"FRA","away":"West Germany","acode":"DEU","score":"6\u20133","hs":6,"as_":3,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1974-12","tid":"WC-1974","year":"1974","date":"1974-06-18","stage":"group stage","home":"Yugoslavia","hcode":"YUG","away":"Zaire","acode":"COD","score":"9\u20130","hs":9,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-2007-22","tid":"WC-2007","year":"2007","date":"2007-09-20","stage":"group stage","home":"Norway","hcode":"NOR","away":"Ghana","acode":"GHA","score":"7\u20132","hs":7,"as_":2,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1934-05","tid":"WC-1934","year":"1934","date":"1934-05-27","stage":"round of 16","home":"Italy","hcode":"ITA","away":"United States","acode":"USA","score":"7\u20131","hs":7,"as_":1,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1938-13","tid":"WC-1938","year":"1938","date":"1938-06-12","stage":"quarter-finals","home":"Sweden","hcode":"SWE","away":"Cuba","acode":"CUB","score":"8\u20130","hs":8,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1950-15","tid":"WC-1950","year":"1950","date":"1950-07-02","stage":"group stage","home":"Uruguay","hcode":"URY","away":"Bolivia","acode":"BOL","score":"8\u20130","hs":8,"as_":0,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1950-17","tid":"WC-1950","year":"1950","date":"1950-07-09","stage":"final round","home":"Brazil","hcode":"BRA","away":"Sweden","acode":"SWE","score":"7\u20131","hs":7,"as_":1,"et":false,"ps":false,"result":"home team win"},{"mid":"M-1954-08","tid":"WC-1954","year":"1954","date":"1954-06-17","stage":"group stage","home":"England","hcode":"ENG","away":"Belgium","acode":"BEL","score":"4\u20134","hs":4,"as_":4,"et":true,"ps":false,"result":"draw"}],"goals":[{"mid":"M-1930-11","player":"Guillermo St\u00e1bile","team":"Argentina","min":"8'","og":false,"pen":false},{"mid":"M-1930-11","player":"Adolfo Zumelz\u00fa","team":"Argentina","min":"12'","og":false,"pen":false},{"mid":"M-1930-11","player":"Guillermo St\u00e1bile","team":"Argentina","min":"17'","og":false,"pen":false},{"mid":"M-1930-11","player":"Manuel Rosas","team":"Mexico","min":"42'","og":false,"pen":true},{"mid":"M-1930-11","player":"Francisco Varallo","team":"Argentina","min":"53'","og":false,"pen":false},{"mid":"M-1930-11","player":"Adolfo Zumelz\u00fa","team":"Argentina","min":"55'","og":false,"pen":false},{"mid":"M-1930-11","player":"Manuel Rosas","team":"Mexico","min":"65'","og":false,"pen":false},{"mid":"M-1930-11","player":"Roberto Gay\u00f3n","team":"Mexico","min":"75'","og":false,"pen":false},{"mid":"M-1930-11","player":"Guillermo St\u00e1bile","team":"Argentina","min":"80'","og":false,"pen":false},{"mid":"M-1934-05","player":"Angelo Schiavio","team":"Italy","min":"18'","og":false,"pen":false},{"mid":"M-1934-05","player":"Raimundo Orsi","team":"Italy","min":"20'","og":false,"pen":false},{"mid":"M-1934-05","player":"Angelo Schiavio","team":"Italy","min":"29'","og":false,"pen":false},{"mid":"M-1934-05","player":"Aldo Donelli","team":"United States","min":"57'","og":false,"pen":false},{"mid":"M-1934-05","player":"Giovanni Ferrari","team":"Italy","min":"63'","og":false,"pen":false},{"mid":"M-1934-05","player":"Angelo Schiavio","team":"Italy","min":"64'","og":false,"pen":false},{"mid":"M-1934-05","player":"Raimundo Orsi","team":"Italy","min":"69'","og":false,"pen":false},{"mid":"M-1934-05","player":"Giuseppe Meazza","team":"Italy","min":"90'","og":false,"pen":false},{"mid":"M-1938-06","player":"Le\u00f4nidas","team":"Brazil","min":"18'","og":false,"pen":false},{"mid":"M-1938-06","player":"Fryderyk Scherfke","team":"Poland","min":"23'","og":false,"pen":true},{"mid":"M-1938-06","player":"Romeu","team":"Brazil","min":"25'","og":false,"pen":false},{"mid":"M-1938-06","player":"Per\u00e1cio","team":"Brazil","min":"44'","og":false,"pen":false},{"mid":"M-1938-06","player":"Ernst Wilimowski","team":"Poland","min":"53'","og":false,"pen":false},{"mid":"M-1938-06","player":"Ernst Wilimowski","team":"Poland","min":"59'","og":false,"pen":false},{"mid":"M-1938-06","player":"Per\u00e1cio","team":"Brazil","min":"71'","og":false,"pen":false},{"mid":"M-1938-06","player":"Ernst Wilimowski","team":"Poland","min":"89'","og":false,"pen":false},{"mid":"M-1938-06","player":"Le\u00f4nidas","team":"Brazil","min":"93'","og":false,"pen":false},{"mid":"M-1938-06","player":"Le\u00f4nidas","team":"Brazil","min":"104'","og":false,"pen":false},{"mid":"M-1938-06","player":"Ernst Wilimowski","team":"Poland","min":"118'","og":false,"pen":false},{"mid":"M-1938-13","player":"Harry Andersson","team":"Sweden","min":"9'","og":false,"pen":false},{"mid":"M-1938-13","player":"Gustav Wetterstr\u00f6m","team":"Sweden","min":"22'","og":false,"pen":false},{"mid":"M-1938-13","player":"Gustav Wetterstr\u00f6m","team":"Sweden","min":"37'","og":false,"pen":false},{"mid":"M-1938-13","player":"Gustav Wetterstr\u00f6m","team":"Sweden","min":"44'","og":false,"pen":false},{"mid":"M-1938-13","player":"Tore Keller","team":"Sweden","min":"80'","og":false,"pen":false},{"mid":"M-1938-13","player":"Harry Andersson","team":"Sweden","min":"81'","og":false,"pen":false},{"mid":"M-1938-13","player":"Arne Nyberg","team":"Sweden","min":"84'","og":false,"pen":false},{"mid":"M-1938-13","player":"Harry Andersson","team":"Sweden","min":"89'","og":false,"pen":false},{"mid":"M-1950-15","player":"Oscar M\u00edguez","team":"Uruguay","min":"14'","og":false,"pen":false},{"mid":"M-1950-15","player":"Ernesto Vidal","team":"Uruguay","min":"18'","og":false,"pen":false},{"mid":"M-1950-15","player":"Juan Alberto Schiaffino","team":"Uruguay","min":"23'","og":false,"pen":false},{"mid":"M-1950-15","player":"Oscar M\u00edguez","team":"Uruguay","min":"40'","og":false,"pen":false},{"mid":"M-1950-15","player":"Oscar M\u00edguez","team":"Uruguay","min":"51'","og":false,"pen":false},{"mid":"M-1950-15","player":"Juan Alberto Schiaffino","team":"Uruguay","min":"54'","og":false,"pen":false},{"mid":"M-1950-15","player":"Julio P\u00e9rez","team":"Uruguay","min":"83'","og":false,"pen":false},{"mid":"M-1950-15","player":"Alcides Ghiggia","team":"Uruguay","min":"87'","og":false,"pen":false},{"mid":"M-1950-17","player":"Ademir","team":"Brazil","min":"17'","og":false,"pen":false},{"mid":"M-1950-17","player":"Ademir","team":"Brazil","min":"36'","og":false,"pen":false},{"mid":"M-1950-17","player":"Chico","team":"Brazil","min":"39'","og":false,"pen":false},{"mid":"M-1950-17","player":"Ademir","team":"Brazil","min":"52'","og":false,"pen":false},{"mid":"M-1950-17","player":"Ademir","team":"Brazil","min":"58'","og":false,"pen":false},{"mid":"M-1950-17","player":"Sune Andersson","team":"Sweden","min":"67'","og":false,"pen":true},{"mid":"M-1950-17","player":"Maneca","team":"Brazil","min":"85'","og":false,"pen":false},{"mid":"M-1950-17","player":"Chico","team":"Brazil","min":"88'","og":false,"pen":false},{"mid":"M-1954-06","player":"Ferenc Pusk\u00e1s","team":"Hungary","min":"12'","og":false,"pen":false},{"mid":"M-1954-06","player":"Mih\u00e1ly Lantos","team":"Hungary","min":"18'","og":false,"pen":false},{"mid":"M-1954-06","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"24'","og":false,"pen":false},{"mid":"M-1954-06","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"36'","og":false,"pen":false},{"mid":"M-1954-06","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"50'","og":false,"pen":false},{"mid":"M-1954-06","player":"Zolt\u00e1n Czibor","team":"Hungary","min":"59'","og":false,"pen":false},{"mid":"M-1954-06","player":"P\u00e9ter Palot\u00e1s","team":"Hungary","min":"75'","og":false,"pen":false},{"mid":"M-1954-06","player":"P\u00e9ter Palot\u00e1s","team":"Hungary","min":"83'","og":false,"pen":false},{"mid":"M-1954-06","player":"Ferenc Pusk\u00e1s","team":"Hungary","min":"89'","og":false,"pen":false},{"mid":"M-1954-08","player":"L\u00e9opold Anoul","team":"Belgium","min":"5'","og":false,"pen":false},{"mid":"M-1954-08","player":"Ivor Broadis","team":"England","min":"26'","og":false,"pen":false},{"mid":"M-1954-08","player":"Nat Lofthouse","team":"England","min":"36'","og":false,"pen":false},{"mid":"M-1954-08","player":"Ivor Broadis","team":"England","min":"63'","og":false,"pen":false},{"mid":"M-1954-08","player":"Henri Coppens","team":"Belgium","min":"67'","og":false,"pen":false},{"mid":"M-1954-08","player":"L\u00e9opold Anoul","team":"Belgium","min":"71'","og":false,"pen":false},{"mid":"M-1954-08","player":"Nat Lofthouse","team":"England","min":"91'","og":false,"pen":false},{"mid":"M-1954-08","player":"Jimmy Dickinson","team":"Belgium","min":"94'","og":true,"pen":false},{"mid":"M-1954-13","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"3'","og":false,"pen":false},{"mid":"M-1954-13","player":"Ferenc Pusk\u00e1s","team":"Hungary","min":"17'","og":false,"pen":false},{"mid":"M-1954-13","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"21'","og":false,"pen":false},{"mid":"M-1954-13","player":"Alfred Pfaff","team":"West Germany","min":"25'","og":false,"pen":false},{"mid":"M-1954-13","player":"N\u00e1ndor Hidegkuti","team":"Hungary","min":"52'","og":false,"pen":false},{"mid":"M-1954-13","player":"N\u00e1ndor Hidegkuti","team":"Hungary","min":"54'","og":false,"pen":false},{"mid":"M-1954-13","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"69'","og":false,"pen":false},{"mid":"M-1954-13","player":"J\u00f3zsef T\u00f3th","team":"Hungary","min":"75'","og":false,"pen":false},{"mid":"M-1954-13","player":"Helmut Rahn","team":"West Germany","min":"77'","og":false,"pen":false},{"mid":"M-1954-13","player":"S\u00e1ndor Kocsis","team":"Hungary","min":"78'","og":false,"pen":false},{"mid":"M-1954-13","player":"Richard Herrmann","team":"West Germany","min":"84'","og":false,"pen":false},{"mid":"M-1954-17","player":"Ottmar Walter","team":"West Germany","min":"7'","og":false,"pen":false},{"mid":"M-1954-17","player":"Hans Sch\u00e4fer","team":"West Germany","min":"12'","og":false,"pen":false},{"mid":"M-1954-17","player":"Mustafa Ertan","team":"Turkey","min":"21'","og":false,"pen":false},{"mid":"M-1954-17","player":"Max Morlock","team":"West Germany","min":"30'","og":false,"pen":false},{"mid":"M-1954-17","player":"Max Morlock","team":"West Germany","min":"60'","og":false,"pen":false},{"mid":"M-1954-17","player":"Fritz Walter","team":"West Germany","min":"62'","og":false,"pen":false},{"mid":"M-1954-17","player":"Max Morlock","team":"West Germany","min":"77'","og":false,"pen":false},{"mid":"M-1954-17","player":"Hans Sch\u00e4fer","team":"West Germany","min":"79'","og":false,"pen":false},{"mid":"M-1954-17","player":"Lefter K\u00fc\u00e7\u00fckandonyadis","team":"Turkey","min":"82'","og":false,"pen":false},{"mid":"M-1954-19","player":"Robert Ballaman","team":"Switzerland","min":"16'","og":false,"pen":false},{"mid":"M-1954-19","player":"Josef H\u00fcgi","team":"Switzerland","min":"17'","og":false,"pen":false},{"mid":"M-1954-19","player":"Josef H\u00fcgi","team":"Switzerland","min":"19'","og":false,"pen":false},{"mid":"M-1954-19","player":"Theodor Wagner","team":"Austria","min":"25'","og":false,"pen":false},{"mid":"M-1954-19","player":"Alfred K\u00f6rner","team":"Austria","min":"26'","og":false,"pen":false},{"mid":"M-1954-19","player":"Theodor Wagner","team":"Austria","min":"27'","og":false,"pen":false},{"mid":"M-1954-19","player":"Ernst Ocwirk","team":"Austria","min":"32'","og":false,"pen":false},{"mid":"M-1954-19","player":"Alfred K\u00f6rner","team":"Austria","min":"34'","og":false,"pen":false},{"mid":"M-1954-19","player":"Robert Ballaman","team":"Switzerland","min":"39'","og":false,"pen":false},{"mid":"M-1954-19","player":"Theodor Wagner","team":"Austria","min":"53'","og":false,"pen":false},{"mid":"M-1954-19","player":"Josef H\u00fcgi","team":"Switzerland","min":"60'","og":false,"pen":false},{"mid":"M-1954-19","player":"Erich Probst","team":"Austria","min":"76'","og":false,"pen":false},{"mid":"M-1958-04","player":"Florencio Amarilla","team":"Paraguay","min":"20'","og":false,"pen":false},{"mid":"M-1958-04","player":"Just Fontaine","team":"France","min":"24'","og":false,"pen":false},{"mid":"M-1958-04","player":"Just Fontaine","team":"France","min":"30'","og":false,"pen":false},{"mid":"M-1958-04","player":"Florencio Amarilla","team":"Paraguay","min":"44'","og":false,"pen":true},{"mid":"M-1958-04","player":"Jorge Lino Romero","team":"Paraguay","min":"50'","og":false,"pen":false},{"mid":"M-1958-04","player":"Roger Piantoni","team":"France","min":"52'","og":false,"pen":false},{"mid":"M-1958-04","player":"Maryan Wisnieski","team":"France","min":"61'","og":false,"pen":false},{"mid":"M-1958-04","player":"Just Fontaine","team":"France","min":"67'","og":false,"pen":false},{"mid":"M-1958-04","player":"Raymond Kopa","team":"France","min":"70'","og":false,"pen":false},{"mid":"M-1958-04","player":"Jean Vincent","team":"France","min":"83'","og":false,"pen":false},{"mid":"M-1958-34","player":"Just Fontaine","team":"France","min":"16'","og":false,"pen":false},{"mid":"M-1958-34","player":"Hans Cieslarczyk","team":"West Germany","min":"18'","og":false,"pen":false},{"mid":"M-1958-34","player":"Raymond Kopa","team":"France","min":"27'","og":false,"pen":true},{"mid":"M-1958-34","player":"Just Fontaine","team":"France","min":"36'","og":false,"pen":false},{"mid":"M-1958-34","player":"Yvon Douis","team":"France","min":"50'","og":false,"pen":false},{"mid":"M-1958-34","player":"Helmut Rahn","team":"West Germany","min":"52'","og":false,"pen":false},{"mid":"M-1958-34","player":"Just Fontaine","team":"France","min":"78'","og":false,"pen":false},{"mid":"M-1958-34","player":"Hans Sch\u00e4fer","team":"West Germany","min":"84'","og":false,"pen":false},{"mid":"M-1958-34","player":"Just Fontaine","team":"France","min":"89'","og":false,"pen":false},{"mid":"M-1974-12","player":"Du\u0161an Bajevi\u0107","team":"Yugoslavia","min":"8'","og":false,"pen":false},{"mid":"M-1974-12","player":"Dragan D\u017eaji\u0107","team":"Yugoslavia","min":"14'","og":false,"pen":false},{"mid":"M-1974-12","player":"Ivica \u0160urjak","team":"Yugoslavia","min":"18'","og":false,"pen":false},{"mid":"M-1974-12","player":"Josip Katalinski","team":"Yugoslavia","min":"22'","og":false,"pen":false},{"mid":"M-1974-12","player":"Du\u0161an Bajevi\u0107","team":"Yugoslavia","min":"30'","og":false,"pen":false},{"mid":"M-1974-12","player":"Vladislav Bogi\u0107evi\u0107","team":"Yugoslavia","min":"35'","og":false,"pen":false},{"mid":"M-1974-12","player":"Branko Oblak","team":"Yugoslavia","min":"61'","og":false,"pen":false},{"mid":"M-1974-12","player":"Ilija Petkovi\u0107","team":"Yugoslavia","min":"65'","og":false,"pen":false},{"mid":"M-1974-12","player":"Du\u0161an Bajevi\u0107","team":"Yugoslavia","min":"81'","og":false,"pen":false},{"mid":"M-1982-05","player":"Tibor Nyilasi","team":"Hungary","min":"4'","og":false,"pen":false},{"mid":"M-1982-05","player":"G\u00e1bor P\u00f6l\u00f6skei","team":"Hungary","min":"11'","og":false,"pen":false},{"mid":"M-1982-05","player":"L\u00e1szl\u00f3 Fazekas","team":"Hungary","min":"23'","og":false,"pen":false},{"mid":"M-1982-05","player":"J\u00f3zsef T\u00f3th","team":"Hungary","min":"50'","og":false,"pen":false},{"mid":"M-1982-05","player":"L\u00e1szl\u00f3 Fazekas","team":"Hungary","min":"54'","og":false,"pen":false},{"mid":"M-1982-05","player":"Luis Ram\u00edrez Zapata","team":"El Salvador","min":"64'","og":false,"pen":false},{"mid":"M-1982-05","player":"L\u00e1szl\u00f3 Kiss","team":"Hungary","min":"69'","og":false,"pen":false},{"mid":"M-1982-05","player":"L\u00e1z\u00e1r Szentes","team":"Hungary","min":"70'","og":false,"pen":false},{"mid":"M-1982-05","player":"L\u00e1szl\u00f3 Kiss","team":"Hungary","min":"72'","og":false,"pen":false},{"mid":"M-1982-05","player":"L\u00e1szl\u00f3 Kiss","team":"Hungary","min":"76'","og":false,"pen":false},{"mid":"M-1982-05","player":"Tibor Nyilasi","team":"Hungary","min":"83'","og":false,"pen":false},{"mid":"M-2007-01","player":"Melanie Behringer","team":"Germany","min":"12'","og":false,"pen":false},{"mid":"M-2007-01","player":"Kerstin Garefrekes","team":"Germany","min":"17'","og":false,"pen":false},{"mid":"M-2007-01","player":"Melanie Behringer","team":"Germany","min":"24'","og":false,"pen":false},{"mid":"M-2007-01","player":"Birgit Prinz","team":"Germany","min":"29'","og":false,"pen":false},{"mid":"M-2007-01","player":"Birgit Prinz","team":"Germany","min":"45'+1'","og":false,"pen":false},{"mid":"M-2007-01","player":"Renate Lingor","team":"Germany","min":"51'","og":false,"pen":false},{"mid":"M-2007-01","player":"Sandra Smisek","team":"Germany","min":"57'","og":false,"pen":false},{"mid":"M-2007-01","player":"Birgit Prinz","team":"Germany","min":"59'","og":false,"pen":false},{"mid":"M-2007-01","player":"Sandra Smisek","team":"Germany","min":"70'","og":false,"pen":false},{"mid":"M-2007-01","player":"Sandra Smisek","team":"Germany","min":"79'","og":false,"pen":false},{"mid":"M-2007-01","player":"Renate Lingor","team":"Germany","min":"90'+1'","og":false,"pen":false},{"mid":"M-2007-22","player":"Lene Storl\u00f8kken","team":"Norway","min":"4'","og":false,"pen":false},{"mid":"M-2007-22","player":"Ragnhild Gulbrandsen","team":"Norway","min":"39'","og":false,"pen":false},{"mid":"M-2007-22","player":"Ane Stangeland Horpestad","team":"Norway","min":"45'","og":false,"pen":true},{"mid":"M-2007-22","player":"Isabell Herlovsen","team":"Norway","min":"56'","og":false,"pen":false},{"mid":"M-2007-22","player":"Ragnhild Gulbrandsen","team":"Norway","min":"59'","og":false,"pen":false},{"mid":"M-2007-22","player":"Ragnhild Gulbrandsen","team":"Norway","min":"62'","og":false,"pen":false},{"mid":"M-2007-22","player":"Lise Klaveness","team":"Norway","min":"69'","og":false,"pen":false},{"mid":"M-2007-22","player":"Adjoa Bayor","team":"Ghana","min":"73'","og":false,"pen":false},{"mid":"M-2007-22","player":"Florence Okoe","team":"Ghana","min":"80'","og":false,"pen":true},{"mid":"M-2015-04","player":"C\u00e9lia \u0160a\u0161i\u0107","team":"Germany","min":"3'","og":false,"pen":false},{"mid":"M-2015-04","player":"C\u00e9lia \u0160a\u0161i\u0107","team":"Germany","min":"14'","og":false,"pen":false},{"mid":"M-2015-04","player":"Anja Mittag","team":"Germany","min":"29'","og":false,"pen":false},{"mid":"M-2015-04","player":"C\u00e9lia \u0160a\u0161i\u0107","team":"Germany","min":"31'","og":false,"pen":false},{"mid":"M-2015-04","player":"Anja Mittag","team":"Germany","min":"35'","og":false,"pen":false},{"mid":"M-2015-04","player":"Anja Mittag","team":"Germany","min":"64'","og":false,"pen":false},{"mid":"M-2015-04","player":"Simone Laudehr","team":"Germany","min":"71'","og":false,"pen":false},{"mid":"M-2015-04","player":"Sara D\u00e4britz","team":"Germany","min":"75'","og":false,"pen":false},{"mid":"M-2015-04","player":"Melanie Behringer","team":"Germany","min":"79'","og":false,"pen":false},{"mid":"M-2015-04","player":"Alexandra Popp","team":"Germany","min":"85'","og":false,"pen":false},{"mid":"M-2015-17","player":"Angie Ponce","team":"Switzerland","min":"24'","og":true,"pen":false},{"mid":"M-2015-17","player":"Eseosa Aigbogun","team":"Switzerland","min":"45'+2'","og":false,"pen":false},{"mid":"M-2015-17","player":"Fabienne Humm","team":"Switzerland","min":"47'","og":false,"pen":false},{"mid":"M-2015-17","player":"Fabienne Humm","team":"Switzerland","min":"49'","og":false,"pen":false},{"mid":"M-2015-17","player":"Fabienne Humm","team":"Switzerland","min":"52'","og":false,"pen":false},{"mid":"M-2015-17","player":"Ramona Bachmann","team":"Switzerland","min":"60'","og":false,"pen":true},{"mid":"M-2015-17","player":"Ramona Bachmann","team":"Switzerland","min":"61'","og":false,"pen":false},{"mid":"M-2015-17","player":"Angie Ponce","team":"Ecuador","min":"64'","og":false,"pen":true},{"mid":"M-2015-17","player":"Angie Ponce","team":"Switzerland","min":"71'","og":true,"pen":false},{"mid":"M-2015-17","player":"Martina Moser","team":"Switzerland","min":"76'","og":false,"pen":false},{"mid":"M-2015-17","player":"Ramona Bachmann","team":"Switzerland","min":"81'","og":false,"pen":false},{"mid":"M-2019-12","player":"Alex Morgan","team":"United States","min":"12'","og":false,"pen":false},{"mid":"M-2019-12","player":"Rose Lavelle","team":"United States","min":"20'","og":false,"pen":false},{"mid":"M-2019-12","player":"Lindsey Horan","team":"United States","min":"32'","og":false,"pen":false},{"mid":"M-2019-12","player":"Sam Mewis","team":"United States","min":"50'","og":false,"pen":false},{"mid":"M-2019-12","player":"Alex Morgan","team":"United States","min":"53'","og":false,"pen":false},{"mid":"M-2019-12","player":"Sam Mewis","team":"United States","min":"54'","og":false,"pen":false},{"mid":"M-2019-12","player":"Rose Lavelle","team":"United States","min":"56'","og":false,"pen":false},{"mid":"M-2019-12","player":"Alex Morgan","team":"United States","min":"74'","og":false,"pen":false},{"mid":"M-2019-12","player":"Megan Rapinoe","team":"United States","min":"79'","og":false,"pen":false},{"mid":"M-2019-12","player":"Alex Morgan","team":"United States","min":"81'","og":false,"pen":false},{"mid":"M-2019-12","player":"Mallory Pugh","team":"United States","min":"85'","og":false,"pen":false},{"mid":"M-2019-12","player":"Alex Morgan","team":"United States","min":"87'","og":false,"pen":false},{"mid":"M-2019-12","player":"Carli Lloyd","team":"United States","min":"90'+2'","og":false,"pen":false}],"stats":{"total_matches":1248,"total_goals":3558,"total_tournaments":30,"results":{"home team win":703,"draw":210,"away team win":335},"score_dist":{"0":86,"1":232,"2":257,"3":279,"4":167,"5":111,"6+":116},"top_scorers":[["Marta",17],["Miroslav Klose",16],["Ronaldo",15],["Gerd M\u00fcller",14],["Birgit Prinz",14],["Abby Wambach",14],["Just Fontaine",13],["Lionel Messi",13],["Pel\u00e9",12],["Michelle Akers",12],["Kylian Mbapp\u00e9",12],["S\u00e1ndor Kocsis",11],["J\u00fcrgen Klinsmann",11],["Wen Sun",11],["Bettina Wiegmann",11]],"champs":{"Brazil":5,"Italy":4,"United States":4,"West Germany":3,"Argentina":3,"Germany":3,"Uruguay":2,"France":2,"England":1,"Norway":1,"Spain":1,"Japan":1},"goals_by_tid":{"WC-1930":70,"WC-1934":70,"WC-1938":84,"WC-1950":88,"WC-1954":140,"WC-1958":126,"WC-1962":89,"WC-1966":89,"WC-1970":95,"WC-1974":97,"WC-1978":102,"WC-1982":146,"WC-1986":132,"WC-1990":115,"WC-1991":99,"WC-1994":141,"WC-1995":99,"WC-1998":171,"WC-1999":123,"WC-2002":161,"WC-2003":107,"WC-2006":147,"WC-2007":111,"WC-2010":145,"WC-2011":86,"WC-2014":171,"WC-2015":146,"WC-2018":169,"WC-2019":146,"WC-2022":172},"matches_by_tid":{"WC-1930":18,"WC-1934":17,"WC-1938":18,"WC-1950":22,"WC-1954":26,"WC-1958":35,"WC-1962":32,"WC-1966":32,"WC-1970":32,"WC-1974":38,"WC-1978":38,"WC-1982":52,"WC-1986":52,"WC-1990":52,"WC-1991":26,"WC-1994":52,"WC-1995":26,"WC-1998":64,"WC-1999":32,"WC-2002":64,"WC-2003":32,"WC-2006":64,"WC-2007":32,"WC-2010":64,"WC-2011":32,"WC-2014":64,"WC-2015":52,"WC-2018":64,"WC-2019":52,"WC-2022":64},"timing":{"1-15":466,"16-30":503,"31-45":496,"46-60":634,"61-75":613,"76-90":647,"90+":199},"avg_goals":2.85}};
 
 const S = DB.stats;
 let charts = {};
 let sortCol = 'total', sortDir = -1;
+let STATS_EXTRA = null;
+let VIZ_DATA = null;
+
+const vizCharts = {
+  penalties: { canvas: null, current: null },
+  uefa: { canvas: null, current: null },
+  conmebol: { canvas: null, current: null },
+};
+
+function genderKey(f) {
+  return f.gender || 'all';
+}
+
+function getTopScorersList(f) {
+  if (!STATS_EXTRA) return S.top_scorers;
+  if (f.gender === 'mens') return STATS_EXTRA.top_scorers_mens;
+  if (f.gender === 'womens') return STATS_EXTRA.top_scorers_womens;
+  return S.top_scorers;
+}
+
+function getTopScorerKPI(f) {
+  const label = document.getElementById('k-top-label');
+  if (f.year) {
+    label.textContent = 'Artilheiro na edição (amostra)';
+    const tids = new Set(filterTournaments(f).map(t => t.tid));
+    const scorerCount = {};
+    filterGoals(f, tids).filter(g => !g.og).forEach(g => {
+      scorerCount[g.player] = (scorerCount[g.player] || 0) + 1;
+    });
+    const top = Object.entries(scorerCount).sort((a, b) => b[1] - a[1])[0];
+    if (top) return top[0] + ' (' + top[1] + ')';
+    label.textContent = 'Recorde em 1 copa';
+    const single = f.gender === 'womens' ? STATS_EXTRA?.best_single_cup_womens
+      : f.gender === 'mens' ? STATS_EXTRA?.best_single_cup_mens
+      : STATS_EXTRA?.best_single_cup_all;
+    if (single) return single[0] + ' (' + single[1] + ' · ' + single[2] + ')';
+    return '—';
+  }
+  label.textContent = 'Maior artilheiro (carreira)';
+  const list = getTopScorersList(f);
+  return list[0] ? list[0][0] + ' (' + list[0][1] + ')' : '—';
+}
 
 function getFilters() {
   return {
     team: document.getElementById('sel-team').value,
+    compare: document.getElementById('sel-compare').value,
     year: document.getElementById('sel-year').value,
     gender: document.getElementById('sel-gender').value
   };
@@ -343,22 +459,86 @@ function renderKPIs(f, tours, tids) {
   const champCount = {};
   tours.filter(t => t.winner).forEach(t => { champCount[t.winner] = (champCount[t.winner] || 0) + 1; });
   const topChamp = Object.entries(champCount).sort((a, b) => b[1] - a[1])[0];
-  const goals = filterGoals(f, tids);
-  const scorerCount = {};
-  goals.filter(g => !g.og).forEach(g => { scorerCount[g.player] = (scorerCount[g.player] || 0) + 1; });
-  const topScorer = Object.entries(scorerCount).sort((a, b) => b[1] - a[1])[0];
-  const tot = S.results['home team win'] + S.results['draw'] + S.results['away team win'];
+  const ex = computeExploratoryStats(f);
+  const hwPct = ex && ex.matchTotal
+    ? Math.round(ex.hw / ex.matchTotal * 100)
+    : Math.round(S.results['home team win'] / (S.results['home team win'] + S.results['draw'] + S.results['away team win']) * 100);
 
   document.getElementById('k-tours').textContent = tours.length;
   document.getElementById('k-matches').textContent = nMatches.toLocaleString('pt-BR');
   document.getElementById('k-goals').textContent = nGoals.toLocaleString('pt-BR');
   document.getElementById('k-avg').textContent = avg;
-  document.getElementById('k-hw').textContent = Math.round(S.results['home team win'] / tot * 100) + '%';
+  document.getElementById('k-hw').textContent = hwPct + '%';
   document.getElementById('k-champ').textContent = topChamp ? topChamp[0] + ' (' + topChamp[1] + '×)' : '—';
-  document.getElementById('k-top').textContent = topScorer ? topScorer[0] + ' (' + topScorer[1] + ')' : S.top_scorers[0][0] + ' (' + S.top_scorers[0][1] + ')';
+  document.getElementById('k-top').textContent = getTopScorerKPI(f);
   document.getElementById('pill-tours').textContent = tours.length;
   document.getElementById('pill-matches').textContent = nMatches.toLocaleString('pt-BR');
   document.getElementById('pill-goals').textContent = nGoals.toLocaleString('pt-BR');
+}
+
+function renderTeamKPIs(f) {
+  const strip = document.getElementById('team-kpis');
+  if (!f.team || !STATS_EXTRA?.team_stats?.[f.team]) {
+    strip.hidden = true;
+    return;
+  }
+  const ts = STATS_EXTRA.team_stats[f.team][genderKey(f)];
+  strip.hidden = false;
+  document.getElementById('tk-copas').textContent = ts.copas;
+  document.getElementById('tk-champ').textContent = ts.campeao;
+  document.getElementById('tk-vice').textContent = ts.vice;
+  document.getElementById('tk-third').textContent = ts.terceiro;
+  document.getElementById('tk-ko').textContent = ts.elim_mata_mata;
+}
+
+function renderScorersList(f) {
+  const scEl = document.getElementById('scorers-list');
+  const list = getTopScorersList(f);
+  const maxGoals = list[0]?.[1] || 1;
+  scEl.innerHTML = list.map(([name, n], i) => {
+    const w = Math.round(n / maxGoals * 100);
+    return `<div class="scorer-row">
+      <div class="s-rank${i < 3 ? ' gold' : ''}">${i + 1}</div>
+      <div class="s-name">${name}</div>
+      <div class="s-bar-wrap"><div class="s-bar" style="width:${w}%"></div></div>
+      <div class="s-count">${n}</div>
+    </div>`;
+  }).join('');
+  const title = document.querySelector('#scorers-list')?.closest('.card')?.querySelector('.card-title');
+  if (title) {
+    const scope = f.gender === 'mens' ? 'masculino' : f.gender === 'womens' ? 'feminino' : 'histórico';
+    title.textContent = `Top 15 artilheiros (${scope})`;
+  }
+}
+
+function updateCompareFilter(f) {
+  const lbl = document.getElementById('lbl-compare');
+  const sel = document.getElementById('sel-compare');
+  if (!f.team) {
+    lbl.hidden = true;
+    sel.value = '';
+    return;
+  }
+  lbl.hidden = false;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— selecione —</option>';
+  const teams = STATS_EXTRA
+    ? Object.keys(STATS_EXTRA.team_stats).filter(t => t !== f.team).sort()
+    : [];
+  teams.forEach(n => {
+    const o = document.createElement('option');
+    o.value = n; o.textContent = n;
+    sel.appendChild(o);
+  });
+  if (current && current !== f.team) sel.value = current;
+}
+
+function renderAdvancedViz(f) {
+  if (!VIZ_DATA || !window.DashboardViz) return;
+  vizCharts.penalties.canvas = document.getElementById('c-penalties');
+  vizCharts.uefa.canvas = document.getElementById('c-goals-uefa');
+  vizCharts.conmebol.canvas = document.getElementById('c-goals-conmebol');
+  DashboardViz.renderAdvancedViz(VIZ_DATA, STATS_EXTRA, f, vizCharts);
 }
 
 function renderTimeline(tours) {
@@ -372,58 +552,124 @@ function renderTimeline(tours) {
   });
 }
 
-// HOME ADVANTAGE BARS
-const tot = S.results['home team win'] + S.results['draw'] + S.results['away team win'];
-const hw = S.results['home team win'], dr = S.results['draw'], aw = S.results['away team win'];
-const pHW = Math.round(hw/tot*100), pDR = Math.round(dr/tot*100), pAW = 100-pHW-pDR;
-document.getElementById('result-bars').innerHTML =
-  `<div class="rb-home" style="width:${pHW}%">${pHW}%</div>
-   <div class="rb-draw" style="width:${pDR}%">${pDR}%</div>
-   <div class="rb-away" style="width:${pAW}%">${pAW}%</div>`;
-document.getElementById('leg-home').textContent = hw.toLocaleString('pt-BR');
-document.getElementById('leg-draw').textContent = dr.toLocaleString('pt-BR');
-document.getElementById('leg-away').textContent = aw.toLocaleString('pt-BR');
+function getExploratoryData(f) {
+  if (!VIZ_DATA?.exploratory) return null;
+  const bucket = f.gender === 'mens' ? 'mens' : f.gender === 'womens' ? 'womens' : 'all';
+  const raw = VIZ_DATA.exploratory[bucket];
+  if (!raw) return null;
+  let matches = raw.matches || [];
+  let goal_minutes = raw.goal_minutes || [];
+  if (f.year) {
+    const y = +f.year;
+    matches = matches.filter(m => m[0] === y);
+    goal_minutes = goal_minutes.filter(g => g[0] === y);
+  }
+  if (f.team) {
+    matches = matches.filter(m => m[1] === f.team || m[2] === f.team);
+    goal_minutes = goal_minutes.filter(g => g[1] === f.team);
+  }
+  return { matches, goal_minutes };
+}
 
-// SCORE DIST
-const sdEl = document.getElementById('score-dist');
-const sdTot = Object.values(S.score_dist).reduce((a,b)=>a+b,0);
-const sdLabels = {'0':'0 gols','1':'1 gol','2':'2 gols','3':'3 gols','4':'4 gols','5':'5 gols','6+':'6+ gols'};
-Object.entries(S.score_dist).forEach(([k,v])=>{
-  const pct = Math.round(v/sdTot*100);
-  sdEl.innerHTML += `<div class="sdist-row">
-    <div class="sd-lbl">${sdLabels[k]}</div>
-    <div class="sd-bar-wrap"><div class="sd-bar" style="width:${pct}%"></div></div>
-    <div class="sd-pct">${pct}%</div>
-  </div>`;
-});
+function timingBucket(minute) {
+  if (minute <= 15) return '1-15';
+  if (minute <= 30) return '16-30';
+  if (minute <= 45) return '31-45';
+  if (minute <= 60) return '46-60';
+  if (minute <= 75) return '61-75';
+  if (minute <= 90) return '76-90';
+  return '90+';
+}
 
-// TIMING
-const tmEl = document.getElementById('timing-bars');
-const tm = S.timing;
-const tmTot = Object.values(tm).reduce((a,b)=>a+b,0);
-const tmMax = Math.max(...Object.values(tm));
-document.getElementById('timing-total').textContent = tmTot.toLocaleString('pt-BR');
-Object.entries(tm).forEach(([k,v])=>{
-  const w = Math.round(v/tmMax*100);
-  tmEl.innerHTML += `<div class="timing-row">
-    <div class="t-lbl">${k}'</div>
-    <div class="t-bar-wrap"><div class="t-bar" style="width:${w}%"></div></div>
-    <div class="t-val">${v}</div>
-  </div>`;
-});
+function computeExploratoryStats(f) {
+  const data = getExploratoryData(f);
+  if (!data) return null;
+  let hw = 0, dr = 0, aw = 0;
+  const scoreDist = { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6+': 0 };
+  data.matches.forEach(m => {
+    const res = m[4];
+    if (res === 0) hw++;
+    else if (res === 1) dr++;
+    else aw++;
+    const key = m[3] >= 6 ? '6+' : String(m[3]);
+    scoreDist[key] = (scoreDist[key] || 0) + 1;
+  });
+  const timing = { '1-15': 0, '16-30': 0, '31-45': 0, '46-60': 0, '61-75': 0, '76-90': 0, '90+': 0 };
+  data.goal_minutes.forEach(g => {
+    const b = timingBucket(g[2]);
+    timing[b] = (timing[b] || 0) + 1;
+  });
+  return { hw, dr, aw, scoreDist, timing, goalTotal: data.goal_minutes.length, matchTotal: data.matches.length };
+}
 
-// TOP SCORERS
-const scEl = document.getElementById('scorers-list');
-const maxGoals = S.top_scorers[0][1];
-S.top_scorers.forEach(([name,n],i)=>{
-  const w = Math.round(n/maxGoals*100);
-  scEl.innerHTML += `<div class="scorer-row">
-    <div class="s-rank${i<3?' gold':''}">${i+1}</div>
-    <div class="s-name">${name}</div>
-    <div class="s-bar-wrap"><div class="s-bar" style="width:${w}%"></div></div>
-    <div class="s-count">${n}</div>
-  </div>`;
-});
+function exploratoryScopeLabel(f) {
+  const parts = [];
+  if (f.gender === 'mens') parts.push('masculino');
+  else if (f.gender === 'womens') parts.push('feminino');
+  if (f.year) parts.push(f.year);
+  if (f.team) parts.push(f.team);
+  return parts.length ? '(' + parts.join(' · ') + ')' : '(histórico completo)';
+}
+
+function renderExploratory(f) {
+  const scope = exploratoryScopeLabel(f);
+  document.getElementById('home-adv-scope').textContent = scope;
+
+  let hw, dr, aw, scoreDist, timing, goalTotal;
+  const ex = computeExploratoryStats(f);
+  if (ex) {
+    ({ hw, dr, aw, scoreDist, timing, goalTotal } = ex);
+  } else {
+    hw = S.results['home team win'];
+    dr = S.results['draw'];
+    aw = S.results['away team win'];
+    scoreDist = S.score_dist;
+    timing = S.timing;
+    goalTotal = Object.values(S.timing).reduce((a, b) => a + b, 0);
+  }
+
+  const tot = hw + dr + aw;
+  const pHW = tot ? Math.round(hw / tot * 100) : 0;
+  const pDR = tot ? Math.round(dr / tot * 100) : 0;
+  const pAW = tot ? 100 - pHW - pDR : 0;
+  document.getElementById('result-bars').innerHTML = tot
+    ? `<div class="rb-home" style="width:${pHW}%">${pHW}%</div>
+       <div class="rb-draw" style="width:${pDR}%">${pDR}%</div>
+       <div class="rb-away" style="width:${pAW}%">${pAW}%</div>`
+    : '<div class="rb-draw" style="width:100%;text-align:center;color:var(--dim)">Sem partidas no filtro</div>';
+  document.getElementById('leg-home').textContent = hw.toLocaleString('pt-BR');
+  document.getElementById('leg-draw').textContent = dr.toLocaleString('pt-BR');
+  document.getElementById('leg-away').textContent = aw.toLocaleString('pt-BR');
+
+  const sdEl = document.getElementById('score-dist');
+  const sdTot = Object.values(scoreDist).reduce((a, b) => a + b, 0);
+  const sdLabels = { '0': '0 gols', '1': '1 gol', '2': '2 gols', '3': '3 gols', '4': '4 gols', '5': '5 gols', '6+': '6+ gols' };
+  sdEl.innerHTML = sdTot
+    ? Object.entries(scoreDist).map(([k, v]) => {
+        const pct = Math.round(v / sdTot * 100);
+        return `<div class="sdist-row">
+          <div class="sd-lbl">${sdLabels[k]}</div>
+          <div class="sd-bar-wrap"><div class="sd-bar" style="width:${pct}%"></div></div>
+          <div class="sd-pct">${pct}%</div>
+        </div>`;
+      }).join('')
+    : '<div style="color:var(--dim);font-size:0.78rem">Sem partidas no filtro</div>';
+
+  const tmEl = document.getElementById('timing-bars');
+  const tmTot = goalTotal;
+  const tmMax = Math.max(...Object.values(timing), 1);
+  document.getElementById('timing-total').textContent = tmTot.toLocaleString('pt-BR');
+  tmEl.innerHTML = tmTot
+    ? Object.entries(timing).map(([k, v]) => {
+        const w = Math.round(v / tmMax * 100);
+        return `<div class="timing-row">
+          <div class="t-lbl">${k}'</div>
+          <div class="t-bar-wrap"><div class="t-bar" style="width:${w}%"></div></div>
+          <div class="t-val">${v}</div>
+        </div>`;
+      }).join('')
+    : '<div style="color:var(--dim);font-size:0.78rem">Sem gols no filtro</div>';
+}
 
 function renderGoalsChart(tours) {
   destroyChart('goals');
@@ -491,12 +737,14 @@ function populateFilters() {
     selYear.appendChild(o);
   });
 
-  const teams = [...new Set([
-    ...DB.matches.flatMap(m => [m.home, m.away]),
-    ...DB.tournaments.flatMap(t => [t.winner, t.host]),
-    ...DB.goals.map(g => g.team),
-    ...Object.keys(S.champs)
-  ])].filter(Boolean).sort();
+  const teams = STATS_EXTRA
+    ? Object.keys(STATS_EXTRA.team_stats).sort()
+    : [...new Set([
+      ...DB.matches.flatMap(m => [m.home, m.away]),
+      ...DB.tournaments.flatMap(t => [t.winner, t.host]),
+      ...DB.goals.map(g => g.team),
+      ...Object.keys(S.champs)
+    ])].filter(Boolean).sort();
   const selTeam = document.getElementById('sel-team');
   teams.forEach(n => {
     const o = document.createElement('option');
@@ -511,7 +759,7 @@ function populateFilters() {
     document.getElementById('f-stage').appendChild(o);
   });
 
-  ['sel-team', 'sel-year', 'sel-gender'].forEach(id =>
+  ['sel-team', 'sel-year', 'sel-gender', 'sel-compare'].forEach(id =>
     document.getElementById(id).addEventListener('change', renderAll));
 }
 function sortBy(col){
@@ -575,7 +823,7 @@ function clearFilters() {
 }
 
 function resetFilters() {
-  ['sel-team', 'sel-year', 'sel-gender'].forEach(id => document.getElementById(id).value = '');
+  ['sel-team', 'sel-year', 'sel-gender', 'sel-compare'].forEach(id => document.getElementById(id).value = '');
   clearFilters();
 }
 
@@ -583,17 +831,42 @@ function renderAll() {
   const f = getFilters();
   const tours = filterTournaments(f);
   const tids = new Set(tours.map(t => t.tid));
+  updateCompareFilter(f);
   renderKPIs(f, tours, tids);
+  renderTeamKPIs(f);
+  renderExploratory(f);
+  renderScorersList(f);
   renderTimeline(tours);
   renderGoalsChart(tours);
   renderChampsChart(tours);
   renderAvgChart(tours);
+  renderAdvancedViz(f);
   applyFilters();
 }
 
-populateFilters();
-document.getElementById('si-total').textContent = '▼';
-renderAll();
+async function initDashboard() {
+  try {
+    const res = await fetch('dashboard-stats-extra.json');
+    if (res.ok) STATS_EXTRA = await res.json();
+  } catch (_) {}
+  if (!STATS_EXTRA) {
+    const node = document.getElementById('stats-extra-data');
+    if (node) { try { STATS_EXTRA = JSON.parse(node.textContent); } catch (_) {} }
+  }
+  try {
+    const res = await fetch('dashboard-viz-data.json');
+    if (res.ok) VIZ_DATA = await res.json();
+  } catch (_) {}
+  if (!VIZ_DATA) {
+    const node = document.getElementById('viz-data');
+    if (node) { try { VIZ_DATA = JSON.parse(node.textContent); } catch (_) {} }
+  }
+  populateFilters();
+  document.getElementById('si-total').textContent = '▼';
+  renderAll();
+}
+
+initDashboard();
 </script>
 </body>
 </html>

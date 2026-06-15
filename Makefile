@@ -1,4 +1,4 @@
-.PHONY: submodules fetch-live
+.PHONY: submodules fetch-live front-dev front-build front-preview
 
 fetch-live:
 	python3 scripts/fetch_worldcup2026_live.py
@@ -29,3 +29,13 @@ submodules:
 			echo "SKIP: sem acesso ou erro ao baixar $$path"; \
 		fi; \
 	done
+
+## Internals Commands
+#front-dev:
+#	cd worldcup && npm install && npm run dev
+#
+#front-build:
+#	cd worldcup && npm install && npm run build
+#
+#front-preview:
+#	cd worldcup && npm run preview

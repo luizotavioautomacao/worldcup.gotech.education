@@ -9,14 +9,48 @@ Inspirado em [dottie.pro/dashboard/copa](https://dottie.pro/dashboard/copa) e no
 | Arquivo | Conteúdo | Fonte de dados |
 |---------|----------|----------------|
 | [`front-end/index.html`](front-end/index.html) | Landing page (newsletter + links para os dashboards) | Estático |
-| [`front-end/worldcup-dashboard.html`](front-end/worldcup-dashboard.html) | Dashboard histórico (1930–2022) | CSVs remotos de [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup) |
+| [`front-end/worldcup-dashboard.html`](front-end/worldcup-dashboard.html) | Dashboard histórico (1930–2022) | JSON embutido + [`dashboard-stats-extra.json`](front-end/dashboard-stats-extra.json) + [`dashboard-viz-data.json`](front-end/dashboard-viz-data.json) |
 | [`front-end/worldcup2026-live.html`](front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot JSON → APIs legado → fallback estático |
+
+Arquivos de apoio do dashboard histórico:
+
+| Arquivo | Uso |
+|---------|-----|
+| [`front-end/dashboard-viz.js`](front-end/dashboard-viz.js) | Renderização das visualizações avançadas (heatmap, H2H, pênaltis, Poisson) |
+| [`front-end/dashboard-stats-extra.json`](front-end/dashboard-stats-extra.json) | Artilheiros por torneio, recordes e KPIs por seleção |
+| [`front-end/dashboard-viz-data.json`](front-end/dashboard-viz-data.json) | Dados pré-processados para filtros dinâmicos e gráficos avançados |
 
 ## Dados históricos (1930–2022)
 
-Fonte: repositório [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup) (`data-csv/`).
+Fonte upstream: repositório [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup).
 
-O pacote R local em [`worldcup/`](worldcup-r) é o upstream desse dataset (submodule/cópia do projeto original).
+O submodule [`worldcup-r/`](worldcup-r) contém o pacote R e o dataset completo em `data-json/worldcup.json` (e `data-csv/`).
+
+Inicializar submodules:
+
+```bash
+make submodules
+```
+
+### Gerar stats e visualizações do dashboard
+
+O script [`scripts/build_dashboard_stats.py`](scripts/build_dashboard_stats.py) lê `worldcup-r/data-json/worldcup.json` e gera:
+
+| Saída | Conteúdo |
+|-------|----------|
+| `front-end/dashboard-stats-extra.json` | Top artilheiros (M/F), recordes em 1 copa, stats por seleção (títulos, vice, 3º, eliminações no mata-mata) |
+| `front-end/dashboard-viz-data.json` | Heatmap W/D/L, pênaltis, gols por confederação, confronto direto (H2H), taxas de gols (Poisson), dados exploratórios filtráveis |
+
+Cada bloco é calculado para **all**, **mens** e **womens**.
+
+O script também atualiza o bloco inline `<script id="stats-extra-data">` em `worldcup-dashboard.html`.
+
+Gerar localmente (requer `worldcup-r` inicializado):
+
+```bash
+python3 scripts/build_dashboard_stats.py
+```
+
 
 ## Dados ao vivo (2026)
 
@@ -77,25 +111,37 @@ Auto-refresh no browser: **a cada 30 minutos**.
 
 ## Desenvolvimento local
 
+### HTML estático (front-end/)
+
 ```bash
-# Servir os HTMLs (snapshot relativo funciona assim)
 python3 -m http.server 8000
 
-# Abrir no navegador
-# http://localhost:8000/front-end/worldcup2026-live.html
 # http://localhost:8000/front-end/worldcup-dashboard.html
+# http://localhost:8000/front-end/worldcup2026-live.html
 # http://localhost:8000/front-end/index.html
 ```
 
 Abrir via `file://` não carrega o snapshot local; nesse caso o live usa raw GitHub ou fallback.
 
+### Fluxo completo (primeira vez)
+
+```bash
+make submodules
+python3 scripts/build_dashboard_stats.py   # dashboard histórico
+make fetch-live                            # snapshot Copa 2026 (opcional)
+python3 -m http.server 8000
+```
+
 ## Estrutura
 
 ```
-.github/workflows/      # cron + commit do snapshot
+.github/workflows/      # cron + commit do snapshot 2026
+front-end/              # dashboards HTML + JSON de stats/viz
+scripts/
+  build_dashboard_stats.py   # gera JSONs do dashboard histórico
+  fetch_worldcup2026_live.py # gera snapshot Copa 2026
+output/                 # snapshot JSON publicado (2026)
+worldcup-r/             # submodule — dataset R (jfjelstul/worldcup)
+worldcup/               # submodule — widgets CDN embeddáveis
 .plans/                 # planos e documentação interna
-front-end/              # dashboards HTML
-scripts/                # fetcher Python (Copa 2026)
-output/                 # snapshot JSON publicado
-worldcup/               # pacote R / dataset histórico (jfjelstul)
 ```
