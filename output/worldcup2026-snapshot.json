@@ -1,0 +1,2980 @@
+{
+  "updated_at": "2026-06-15T04:29:09Z",
+  "source": "kickoff26+espn",
+  "stats": {
+    "finished": 10,
+    "live": 0,
+    "scheduled": 94
+  },
+  "matches": [
+    {
+      "id": 1,
+      "stage": "group",
+      "round": "Matchday 1",
+      "group": "A",
+      "kickoff_utc": "2026-06-11T19:00:00Z",
+      "venue_id": "estadio-azteca",
+      "team1": "mexico",
+      "team2": "south-africa",
+      "score": {
+        "ft": [
+          2,
+          0
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 2,
+      "stage": "group",
+      "round": "Matchday 1",
+      "group": "A",
+      "kickoff_utc": "2026-06-12T02:00:00Z",
+      "venue_id": "estadio-akron",
+      "team1": "south-korea",
+      "team2": "czech-republic",
+      "score": {
+        "ft": [
+          2,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 3,
+      "stage": "group",
+      "round": "Matchday 8",
+      "group": "A",
+      "kickoff_utc": "2026-06-18T16:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "czech-republic",
+      "team2": "south-africa",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 4,
+      "stage": "group",
+      "round": "Matchday 8",
+      "group": "A",
+      "kickoff_utc": "2026-06-19T01:00:00Z",
+      "venue_id": "estadio-akron",
+      "team1": "mexico",
+      "team2": "south-korea",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 5,
+      "stage": "group",
+      "round": "Matchday 14",
+      "group": "A",
+      "kickoff_utc": "2026-06-25T01:00:00Z",
+      "venue_id": "estadio-azteca",
+      "team1": "czech-republic",
+      "team2": "mexico",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 6,
+      "stage": "group",
+      "round": "Matchday 14",
+      "group": "A",
+      "kickoff_utc": "2026-06-25T01:00:00Z",
+      "venue_id": "estadio-bbva",
+      "team1": "south-africa",
+      "team2": "south-korea",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 7,
+      "stage": "group",
+      "round": "Matchday 2",
+      "group": "B",
+      "kickoff_utc": "2026-06-12T19:00:00Z",
+      "venue_id": "bmo-field",
+      "team1": "canada",
+      "team2": "bosnia-herzegovina",
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 8,
+      "stage": "group",
+      "round": "Matchday 3",
+      "group": "B",
+      "kickoff_utc": "2026-06-13T19:00:00Z",
+      "venue_id": "levis-stadium",
+      "team1": "qatar",
+      "team2": "switzerland",
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 9,
+      "stage": "group",
+      "round": "Matchday 8",
+      "group": "B",
+      "kickoff_utc": "2026-06-18T19:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "switzerland",
+      "team2": "bosnia-herzegovina",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 10,
+      "stage": "group",
+      "round": "Matchday 8",
+      "group": "B",
+      "kickoff_utc": "2026-06-18T22:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "canada",
+      "team2": "qatar",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 11,
+      "stage": "group",
+      "round": "Matchday 14",
+      "group": "B",
+      "kickoff_utc": "2026-06-24T19:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "switzerland",
+      "team2": "canada",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 12,
+      "stage": "group",
+      "round": "Matchday 14",
+      "group": "B",
+      "kickoff_utc": "2026-06-24T19:00:00Z",
+      "venue_id": "lumen-field",
+      "team1": "bosnia-herzegovina",
+      "team2": "qatar",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 13,
+      "stage": "group",
+      "round": "Matchday 3",
+      "group": "C",
+      "kickoff_utc": "2026-06-13T22:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "brazil",
+      "team2": "morocco",
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 14,
+      "stage": "group",
+      "round": "Matchday 3",
+      "group": "C",
+      "kickoff_utc": "2026-06-14T01:00:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "haiti",
+      "team2": "scotland",
+      "score": {
+        "ft": [
+          0,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 15,
+      "stage": "group",
+      "round": "Matchday 9",
+      "group": "C",
+      "kickoff_utc": "2026-06-19T22:00:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "scotland",
+      "team2": "morocco",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 16,
+      "stage": "group",
+      "round": "Matchday 9",
+      "group": "C",
+      "kickoff_utc": "2026-06-20T00:30:00Z",
+      "venue_id": "lincoln-financial-field",
+      "team1": "brazil",
+      "team2": "haiti",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 17,
+      "stage": "group",
+      "round": "Matchday 14",
+      "group": "C",
+      "kickoff_utc": "2026-06-24T22:00:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "scotland",
+      "team2": "brazil",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 18,
+      "stage": "group",
+      "round": "Matchday 14",
+      "group": "C",
+      "kickoff_utc": "2026-06-24T22:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "morocco",
+      "team2": "haiti",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 19,
+      "stage": "group",
+      "round": "Matchday 2",
+      "group": "D",
+      "kickoff_utc": "2026-06-13T01:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "usa",
+      "team2": "paraguay",
+      "score": {
+        "ft": [
+          4,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished"
+    },
+    {
+      "id": 20,
+      "stage": "group",
+      "round": "Matchday 3",
+      "group": "D",
+      "kickoff_utc": "2026-06-14T04:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "australia",
+      "team2": "turkey",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 21,
+      "stage": "group",
+      "round": "Matchday 9",
+      "group": "D",
+      "kickoff_utc": "2026-06-19T19:00:00Z",
+      "venue_id": "lumen-field",
+      "team1": "usa",
+      "team2": "australia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 22,
+      "stage": "group",
+      "round": "Matchday 9",
+      "group": "D",
+      "kickoff_utc": "2026-06-20T03:00:00Z",
+      "venue_id": "levis-stadium",
+      "team1": "turkey",
+      "team2": "paraguay",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 23,
+      "stage": "group",
+      "round": "Matchday 15",
+      "group": "D",
+      "kickoff_utc": "2026-06-26T02:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "turkey",
+      "team2": "usa",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 24,
+      "stage": "group",
+      "round": "Matchday 15",
+      "group": "D",
+      "kickoff_utc": "2026-06-26T02:00:00Z",
+      "venue_id": "levis-stadium",
+      "team1": "paraguay",
+      "team2": "australia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 25,
+      "stage": "group",
+      "round": "Matchday 4",
+      "group": "E",
+      "kickoff_utc": "2026-06-14T17:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "germany",
+      "team2": "curacao",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 26,
+      "stage": "group",
+      "round": "Matchday 4",
+      "group": "E",
+      "kickoff_utc": "2026-06-14T23:00:00Z",
+      "venue_id": "lincoln-financial-field",
+      "team1": "ivory-coast",
+      "team2": "ecuador",
+      "score": {
+        "ft": [
+          1,
+          0
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 27,
+      "stage": "group",
+      "round": "Matchday 10",
+      "group": "E",
+      "kickoff_utc": "2026-06-20T20:00:00Z",
+      "venue_id": "bmo-field",
+      "team1": "germany",
+      "team2": "ivory-coast",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 28,
+      "stage": "group",
+      "round": "Matchday 10",
+      "group": "E",
+      "kickoff_utc": "2026-06-21T00:00:00Z",
+      "venue_id": "arrowhead-stadium",
+      "team1": "ecuador",
+      "team2": "curacao",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 29,
+      "stage": "group",
+      "round": "Matchday 15",
+      "group": "E",
+      "kickoff_utc": "2026-06-25T20:00:00Z",
+      "venue_id": "lincoln-financial-field",
+      "team1": "curacao",
+      "team2": "ivory-coast",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 30,
+      "stage": "group",
+      "round": "Matchday 15",
+      "group": "E",
+      "kickoff_utc": "2026-06-25T20:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "ecuador",
+      "team2": "germany",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 31,
+      "stage": "group",
+      "round": "Matchday 4",
+      "group": "F",
+      "kickoff_utc": "2026-06-14T20:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "netherlands",
+      "team2": "japan",
+      "score": {
+        "ft": [
+          2,
+          2
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 32,
+      "stage": "group",
+      "round": "Matchday 4",
+      "group": "F",
+      "kickoff_utc": "2026-06-15T02:00:00Z",
+      "venue_id": "estadio-bbva",
+      "team1": "sweden",
+      "team2": "tunisia",
+      "score": {
+        "ft": [
+          5,
+          1
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "finished",
+      "_espn_enriched": true
+    },
+    {
+      "id": 33,
+      "stage": "group",
+      "round": "Matchday 10",
+      "group": "F",
+      "kickoff_utc": "2026-06-20T17:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "netherlands",
+      "team2": "sweden",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 34,
+      "stage": "group",
+      "round": "Matchday 10",
+      "group": "F",
+      "kickoff_utc": "2026-06-21T04:00:00Z",
+      "venue_id": "estadio-bbva",
+      "team1": "tunisia",
+      "team2": "japan",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 35,
+      "stage": "group",
+      "round": "Matchday 15",
+      "group": "F",
+      "kickoff_utc": "2026-06-25T23:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "japan",
+      "team2": "sweden",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 36,
+      "stage": "group",
+      "round": "Matchday 15",
+      "group": "F",
+      "kickoff_utc": "2026-06-25T23:00:00Z",
+      "venue_id": "arrowhead-stadium",
+      "team1": "tunisia",
+      "team2": "netherlands",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 37,
+      "stage": "group",
+      "round": "Matchday 5",
+      "group": "G",
+      "kickoff_utc": "2026-06-15T19:00:00Z",
+      "venue_id": "lumen-field",
+      "team1": "belgium",
+      "team2": "egypt",
+      "score": {
+        "ft": [
+          0,
+          0
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled",
+      "_espn_enriched": true
+    },
+    {
+      "id": 38,
+      "stage": "group",
+      "round": "Matchday 5",
+      "group": "G",
+      "kickoff_utc": "2026-06-16T01:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "iran",
+      "team2": "new-zealand",
+      "score": {
+        "ft": [
+          0,
+          0
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled",
+      "_espn_enriched": true
+    },
+    {
+      "id": 39,
+      "stage": "group",
+      "round": "Matchday 11",
+      "group": "G",
+      "kickoff_utc": "2026-06-21T19:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "belgium",
+      "team2": "iran",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 40,
+      "stage": "group",
+      "round": "Matchday 11",
+      "group": "G",
+      "kickoff_utc": "2026-06-22T01:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "new-zealand",
+      "team2": "egypt",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 41,
+      "stage": "group",
+      "round": "Matchday 16",
+      "group": "G",
+      "kickoff_utc": "2026-06-27T03:00:00Z",
+      "venue_id": "lumen-field",
+      "team1": "egypt",
+      "team2": "iran",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 42,
+      "stage": "group",
+      "round": "Matchday 16",
+      "group": "G",
+      "kickoff_utc": "2026-06-27T03:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "new-zealand",
+      "team2": "belgium",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 43,
+      "stage": "group",
+      "round": "Matchday 5",
+      "group": "H",
+      "kickoff_utc": "2026-06-15T16:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "spain",
+      "team2": "cape-verde",
+      "score": {
+        "ft": [
+          0,
+          0
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled",
+      "_espn_enriched": true
+    },
+    {
+      "id": 44,
+      "stage": "group",
+      "round": "Matchday 5",
+      "group": "H",
+      "kickoff_utc": "2026-06-15T22:00:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "saudi-arabia",
+      "team2": "uruguay",
+      "score": {
+        "ft": [
+          0,
+          0
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled",
+      "_espn_enriched": true
+    },
+    {
+      "id": 45,
+      "stage": "group",
+      "round": "Matchday 11",
+      "group": "H",
+      "kickoff_utc": "2026-06-21T16:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "spain",
+      "team2": "saudi-arabia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 46,
+      "stage": "group",
+      "round": "Matchday 11",
+      "group": "H",
+      "kickoff_utc": "2026-06-21T22:00:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "uruguay",
+      "team2": "cape-verde",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 47,
+      "stage": "group",
+      "round": "Matchday 16",
+      "group": "H",
+      "kickoff_utc": "2026-06-27T00:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "cape-verde",
+      "team2": "saudi-arabia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 48,
+      "stage": "group",
+      "round": "Matchday 16",
+      "group": "H",
+      "kickoff_utc": "2026-06-27T00:00:00Z",
+      "venue_id": "estadio-akron",
+      "team1": "uruguay",
+      "team2": "spain",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 49,
+      "stage": "group",
+      "round": "Matchday 6",
+      "group": "I",
+      "kickoff_utc": "2026-06-16T19:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "france",
+      "team2": "senegal",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 50,
+      "stage": "group",
+      "round": "Matchday 6",
+      "group": "I",
+      "kickoff_utc": "2026-06-16T22:00:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "iraq",
+      "team2": "norway",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 51,
+      "stage": "group",
+      "round": "Matchday 12",
+      "group": "I",
+      "kickoff_utc": "2026-06-22T21:00:00Z",
+      "venue_id": "lincoln-financial-field",
+      "team1": "france",
+      "team2": "iraq",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 52,
+      "stage": "group",
+      "round": "Matchday 12",
+      "group": "I",
+      "kickoff_utc": "2026-06-23T00:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "norway",
+      "team2": "senegal",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 53,
+      "stage": "group",
+      "round": "Matchday 16",
+      "group": "I",
+      "kickoff_utc": "2026-06-26T19:00:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "norway",
+      "team2": "france",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 54,
+      "stage": "group",
+      "round": "Matchday 16",
+      "group": "I",
+      "kickoff_utc": "2026-06-26T19:00:00Z",
+      "venue_id": "bmo-field",
+      "team1": "senegal",
+      "team2": "iraq",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 55,
+      "stage": "group",
+      "round": "Matchday 6",
+      "group": "J",
+      "kickoff_utc": "2026-06-17T01:00:00Z",
+      "venue_id": "arrowhead-stadium",
+      "team1": "argentina",
+      "team2": "algeria",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 56,
+      "stage": "group",
+      "round": "Matchday 6",
+      "group": "J",
+      "kickoff_utc": "2026-06-17T04:00:00Z",
+      "venue_id": "levis-stadium",
+      "team1": "austria",
+      "team2": "jordan",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 57,
+      "stage": "group",
+      "round": "Matchday 12",
+      "group": "J",
+      "kickoff_utc": "2026-06-22T17:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "argentina",
+      "team2": "austria",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 58,
+      "stage": "group",
+      "round": "Matchday 12",
+      "group": "J",
+      "kickoff_utc": "2026-06-23T03:00:00Z",
+      "venue_id": "levis-stadium",
+      "team1": "jordan",
+      "team2": "algeria",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 59,
+      "stage": "group",
+      "round": "Matchday 17",
+      "group": "J",
+      "kickoff_utc": "2026-06-28T02:00:00Z",
+      "venue_id": "arrowhead-stadium",
+      "team1": "algeria",
+      "team2": "austria",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 60,
+      "stage": "group",
+      "round": "Matchday 17",
+      "group": "J",
+      "kickoff_utc": "2026-06-28T02:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "jordan",
+      "team2": "argentina",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 61,
+      "stage": "group",
+      "round": "Matchday 7",
+      "group": "K",
+      "kickoff_utc": "2026-06-17T17:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "portugal",
+      "team2": "dr-congo",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 62,
+      "stage": "group",
+      "round": "Matchday 7",
+      "group": "K",
+      "kickoff_utc": "2026-06-18T02:00:00Z",
+      "venue_id": "estadio-azteca",
+      "team1": "uzbekistan",
+      "team2": "colombia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 63,
+      "stage": "group",
+      "round": "Matchday 13",
+      "group": "K",
+      "kickoff_utc": "2026-06-23T17:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "portugal",
+      "team2": "uzbekistan",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 64,
+      "stage": "group",
+      "round": "Matchday 13",
+      "group": "K",
+      "kickoff_utc": "2026-06-24T02:00:00Z",
+      "venue_id": "estadio-akron",
+      "team1": "colombia",
+      "team2": "dr-congo",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 65,
+      "stage": "group",
+      "round": "Matchday 17",
+      "group": "K",
+      "kickoff_utc": "2026-06-27T23:30:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "colombia",
+      "team2": "portugal",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 66,
+      "stage": "group",
+      "round": "Matchday 17",
+      "group": "K",
+      "kickoff_utc": "2026-06-27T23:30:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "dr-congo",
+      "team2": "uzbekistan",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 67,
+      "stage": "group",
+      "round": "Matchday 7",
+      "group": "L",
+      "kickoff_utc": "2026-06-17T20:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "england",
+      "team2": "croatia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 68,
+      "stage": "group",
+      "round": "Matchday 7",
+      "group": "L",
+      "kickoff_utc": "2026-06-17T23:00:00Z",
+      "venue_id": "bmo-field",
+      "team1": "ghana",
+      "team2": "panama",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 69,
+      "stage": "group",
+      "round": "Matchday 13",
+      "group": "L",
+      "kickoff_utc": "2026-06-23T20:00:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "england",
+      "team2": "ghana",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 70,
+      "stage": "group",
+      "round": "Matchday 13",
+      "group": "L",
+      "kickoff_utc": "2026-06-23T23:00:00Z",
+      "venue_id": "bmo-field",
+      "team1": "panama",
+      "team2": "croatia",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 71,
+      "stage": "group",
+      "round": "Matchday 17",
+      "group": "L",
+      "kickoff_utc": "2026-06-27T21:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "panama",
+      "team2": "england",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 72,
+      "stage": "group",
+      "round": "Matchday 17",
+      "group": "L",
+      "kickoff_utc": "2026-06-27T21:00:00Z",
+      "venue_id": "lincoln-financial-field",
+      "team1": "croatia",
+      "team2": "ghana",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 73,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-06-28T19:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "2A",
+      "team2": "2B",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 74,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-06-29T20:30:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "1E",
+      "team2": "3A/B/C/D/F",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 75,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-06-30T01:00:00Z",
+      "venue_id": "estadio-bbva",
+      "team1": "1F",
+      "team2": "2C",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 76,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-06-29T17:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "1C",
+      "team2": "2F",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 77,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-06-30T21:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "1I",
+      "team2": "3C/D/F/G/H",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 78,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-06-30T17:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "2E",
+      "team2": "2I",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 79,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-01T01:00:00Z",
+      "venue_id": "estadio-azteca",
+      "team1": "1A",
+      "team2": "3C/E/F/H/I",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 80,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-01T16:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "1L",
+      "team2": "3E/H/I/J/K",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 81,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-02T00:00:00Z",
+      "venue_id": "levis-stadium",
+      "team1": "1D",
+      "team2": "3B/E/F/I/J",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 82,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-01T20:00:00Z",
+      "venue_id": "lumen-field",
+      "team1": "1G",
+      "team2": "3A/E/H/I/J",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 83,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-02T23:00:00Z",
+      "venue_id": "bmo-field",
+      "team1": "2K",
+      "team2": "2L",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 84,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-02T19:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "1H",
+      "team2": "2J",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 85,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-03T03:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "1B",
+      "team2": "3E/F/G/I/J",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 86,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-03T22:00:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "1J",
+      "team2": "2H",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 87,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-04T01:30:00Z",
+      "venue_id": "arrowhead-stadium",
+      "team1": "1K",
+      "team2": "3D/E/I/J/L",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 88,
+      "stage": "r32",
+      "round": "Round of 32",
+      "group": null,
+      "kickoff_utc": "2026-07-03T18:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "2D",
+      "team2": "2G",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 89,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-04T21:00:00Z",
+      "venue_id": "lincoln-financial-field",
+      "team1": "W74",
+      "team2": "W77",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 90,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-04T17:00:00Z",
+      "venue_id": "nrg-stadium",
+      "team1": "W73",
+      "team2": "W75",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 91,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-05T20:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "W76",
+      "team2": "W78",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 92,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-06T00:00:00Z",
+      "venue_id": "estadio-azteca",
+      "team1": "W79",
+      "team2": "W80",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 93,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-06T19:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "W83",
+      "team2": "W84",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 94,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-07T00:00:00Z",
+      "venue_id": "lumen-field",
+      "team1": "W81",
+      "team2": "W82",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 95,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-07T16:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "W86",
+      "team2": "W88",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 96,
+      "stage": "r16",
+      "round": "Round of 16",
+      "group": null,
+      "kickoff_utc": "2026-07-07T20:00:00Z",
+      "venue_id": "bc-place",
+      "team1": "W85",
+      "team2": "W87",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 97,
+      "stage": "qf",
+      "round": "Quarter-final",
+      "group": null,
+      "kickoff_utc": "2026-07-09T20:00:00Z",
+      "venue_id": "gillette-stadium",
+      "team1": "W89",
+      "team2": "W90",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 98,
+      "stage": "qf",
+      "round": "Quarter-final",
+      "group": null,
+      "kickoff_utc": "2026-07-10T19:00:00Z",
+      "venue_id": "sofi-stadium",
+      "team1": "W93",
+      "team2": "W94",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 99,
+      "stage": "qf",
+      "round": "Quarter-final",
+      "group": null,
+      "kickoff_utc": "2026-07-11T21:00:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "W91",
+      "team2": "W92",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 100,
+      "stage": "qf",
+      "round": "Quarter-final",
+      "group": null,
+      "kickoff_utc": "2026-07-12T01:00:00Z",
+      "venue_id": "arrowhead-stadium",
+      "team1": "W95",
+      "team2": "W96",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 101,
+      "stage": "sf",
+      "round": "Semi-final",
+      "group": null,
+      "kickoff_utc": "2026-07-14T19:00:00Z",
+      "venue_id": "att-stadium",
+      "team1": "W97",
+      "team2": "W98",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 102,
+      "stage": "sf",
+      "round": "Semi-final",
+      "group": null,
+      "kickoff_utc": "2026-07-15T19:00:00Z",
+      "venue_id": "mercedes-benz-stadium",
+      "team1": "W99",
+      "team2": "W100",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 103,
+      "stage": "third",
+      "round": "Match for third place",
+      "group": null,
+      "kickoff_utc": "2026-07-18T21:00:00Z",
+      "venue_id": "hard-rock-stadium",
+      "team1": "L101",
+      "team2": "L102",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    },
+    {
+      "id": 104,
+      "stage": "final",
+      "round": "Final",
+      "group": null,
+      "kickoff_utc": "2026-07-19T19:00:00Z",
+      "venue_id": "metlife-stadium",
+      "team1": "W101",
+      "team2": "W102",
+      "score": {
+        "ft": [
+          null,
+          null
+        ],
+        "ht": [
+          null,
+          null
+        ],
+        "et": null,
+        "pens": null
+      },
+      "status": "scheduled"
+    }
+  ],
+  "teams": {
+    "algeria": {
+      "id": "algeria",
+      "name": "Algeria",
+      "code": "ALG",
+      "flag": "🇩🇿",
+      "fifa_rank": 69,
+      "group": "J",
+      "confederation": "CAF"
+    },
+    "argentina": {
+      "id": "argentina",
+      "name": "Argentina",
+      "code": "ARG",
+      "flag": "🇦🇷",
+      "fifa_rank": 3,
+      "group": "J",
+      "confederation": "CONMEBOL"
+    },
+    "australia": {
+      "id": "australia",
+      "name": "Australia",
+      "code": "AUS",
+      "flag": "🇦🇺",
+      "fifa_rank": 24,
+      "group": "D",
+      "confederation": "AFC"
+    },
+    "austria": {
+      "id": "austria",
+      "name": "Austria",
+      "code": "AUT",
+      "flag": "🇦🇹",
+      "fifa_rank": 25,
+      "group": "J",
+      "confederation": "UEFA"
+    },
+    "belgium": {
+      "id": "belgium",
+      "name": "Belgium",
+      "code": "BEL",
+      "flag": "🇧🇪",
+      "fifa_rank": 9,
+      "group": "G",
+      "confederation": "UEFA"
+    },
+    "bosnia-herzegovina": {
+      "id": "bosnia-herzegovina",
+      "name": "Bosnia & Herzegovina",
+      "code": "BIH",
+      "flag": "🇧🇦",
+      "fifa_rank": 52,
+      "group": "B",
+      "confederation": "UEFA"
+    },
+    "brazil": {
+      "id": "brazil",
+      "name": "Brazil",
+      "code": "BRA",
+      "flag": "🇧🇷",
+      "fifa_rank": 6,
+      "group": "C",
+      "confederation": "CONMEBOL"
+    },
+    "canada": {
+      "id": "canada",
+      "name": "Canada",
+      "code": "CAN",
+      "flag": "🇨🇦",
+      "fifa_rank": 40,
+      "group": "B",
+      "confederation": "CONCACAF"
+    },
+    "cape-verde": {
+      "id": "cape-verde",
+      "name": "Cape Verde",
+      "code": "CPV",
+      "flag": "🇨🇻",
+      "fifa_rank": 73,
+      "group": "H",
+      "confederation": "CAF"
+    },
+    "colombia": {
+      "id": "colombia",
+      "name": "Colombia",
+      "code": "COL",
+      "flag": "🇨🇴",
+      "fifa_rank": 13,
+      "group": "K",
+      "confederation": "CONMEBOL"
+    },
+    "croatia": {
+      "id": "croatia",
+      "name": "Croatia",
+      "code": "CRO",
+      "flag": "🇭🇷",
+      "fifa_rank": 12,
+      "group": "L",
+      "confederation": "UEFA"
+    },
+    "curacao": {
+      "id": "curacao",
+      "name": "Curaçao",
+      "code": "CUW",
+      "flag": "🇨🇼",
+      "fifa_rank": 103,
+      "group": "E",
+      "confederation": "CONCACAF"
+    },
+    "czech-republic": {
+      "id": "czech-republic",
+      "name": "Czechia",
+      "code": "CZE",
+      "flag": "🇨🇿",
+      "fifa_rank": 34,
+      "group": "A",
+      "confederation": "UEFA"
+    },
+    "dr-congo": {
+      "id": "dr-congo",
+      "name": "DR Congo",
+      "code": "COD",
+      "flag": "🇨🇩",
+      "fifa_rank": 72,
+      "group": "K",
+      "confederation": "CAF"
+    },
+    "ecuador": {
+      "id": "ecuador",
+      "name": "Ecuador",
+      "code": "ECU",
+      "flag": "🇪🇨",
+      "fifa_rank": 32,
+      "group": "E",
+      "confederation": "CONMEBOL"
+    },
+    "egypt": {
+      "id": "egypt",
+      "name": "Egypt",
+      "code": "EGY",
+      "flag": "🇪🇬",
+      "fifa_rank": 49,
+      "group": "G",
+      "confederation": "CAF"
+    },
+    "england": {
+      "id": "england",
+      "name": "England",
+      "code": "ENG",
+      "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "fifa_rank": 4,
+      "group": "L",
+      "confederation": "UEFA"
+    },
+    "france": {
+      "id": "france",
+      "name": "France",
+      "code": "FRA",
+      "flag": "🇫🇷",
+      "fifa_rank": 1,
+      "group": "I",
+      "confederation": "UEFA"
+    },
+    "germany": {
+      "id": "germany",
+      "name": "Germany",
+      "code": "GER",
+      "flag": "🇩🇪",
+      "fifa_rank": 10,
+      "group": "E",
+      "confederation": "UEFA"
+    },
+    "ghana": {
+      "id": "ghana",
+      "name": "Ghana",
+      "code": "GHA",
+      "flag": "🇬🇭",
+      "fifa_rank": 65,
+      "group": "L",
+      "confederation": "CAF"
+    },
+    "haiti": {
+      "id": "haiti",
+      "name": "Haiti",
+      "code": "HAI",
+      "flag": "🇭🇹",
+      "fifa_rank": 115,
+      "group": "C",
+      "confederation": "CONCACAF"
+    },
+    "iran": {
+      "id": "iran",
+      "name": "Iran",
+      "code": "IRN",
+      "flag": "🇮🇷",
+      "fifa_rank": 23,
+      "group": "G",
+      "confederation": "AFC"
+    },
+    "iraq": {
+      "id": "iraq",
+      "name": "Iraq",
+      "code": "IRQ",
+      "flag": "🇮🇶",
+      "fifa_rank": 66,
+      "group": "I",
+      "confederation": "AFC"
+    },
+    "ivory-coast": {
+      "id": "ivory-coast",
+      "name": "Ivory Coast",
+      "code": "CIV",
+      "flag": "🇨🇮",
+      "fifa_rank": 53,
+      "group": "E",
+      "confederation": "CAF"
+    },
+    "japan": {
+      "id": "japan",
+      "name": "Japan",
+      "code": "JPN",
+      "flag": "🇯🇵",
+      "fifa_rank": 18,
+      "group": "F",
+      "confederation": "AFC"
+    },
+    "jordan": {
+      "id": "jordan",
+      "name": "Jordan",
+      "code": "JOR",
+      "flag": "🇯🇴",
+      "fifa_rank": 89,
+      "group": "J",
+      "confederation": "AFC"
+    },
+    "mexico": {
+      "id": "mexico",
+      "name": "Mexico",
+      "code": "MEX",
+      "flag": "🇲🇽",
+      "fifa_rank": 15,
+      "group": "A",
+      "confederation": "CONCACAF"
+    },
+    "morocco": {
+      "id": "morocco",
+      "name": "Morocco",
+      "code": "MAR",
+      "flag": "🇲🇦",
+      "fifa_rank": 8,
+      "group": "C",
+      "confederation": "CAF"
+    },
+    "netherlands": {
+      "id": "netherlands",
+      "name": "Netherlands",
+      "code": "NED",
+      "flag": "🇳🇱",
+      "fifa_rank": 7,
+      "group": "F",
+      "confederation": "UEFA"
+    },
+    "new-zealand": {
+      "id": "new-zealand",
+      "name": "New Zealand",
+      "code": "NZL",
+      "flag": "🇳🇿",
+      "fifa_rank": 105,
+      "group": "G",
+      "confederation": "OFC"
+    },
+    "norway": {
+      "id": "norway",
+      "name": "Norway",
+      "code": "NOR",
+      "flag": "🇳🇴",
+      "fifa_rank": 28,
+      "group": "I",
+      "confederation": "UEFA"
+    },
+    "panama": {
+      "id": "panama",
+      "name": "Panama",
+      "code": "PAN",
+      "flag": "🇵🇦",
+      "fifa_rank": 78,
+      "group": "L",
+      "confederation": "CONCACAF"
+    },
+    "paraguay": {
+      "id": "paraguay",
+      "name": "Paraguay",
+      "code": "PAR",
+      "flag": "🇵🇾",
+      "fifa_rank": 61,
+      "group": "D",
+      "confederation": "CONMEBOL"
+    },
+    "portugal": {
+      "id": "portugal",
+      "name": "Portugal",
+      "code": "POR",
+      "flag": "🇵🇹",
+      "fifa_rank": 5,
+      "group": "K",
+      "confederation": "UEFA"
+    },
+    "qatar": {
+      "id": "qatar",
+      "name": "Qatar",
+      "code": "QAT",
+      "flag": "🇶🇦",
+      "fifa_rank": 48,
+      "group": "B",
+      "confederation": "AFC"
+    },
+    "saudi-arabia": {
+      "id": "saudi-arabia",
+      "name": "Saudi Arabia",
+      "code": "KSA",
+      "flag": "🇸🇦",
+      "fifa_rank": 57,
+      "group": "H",
+      "confederation": "AFC"
+    },
+    "scotland": {
+      "id": "scotland",
+      "name": "Scotland",
+      "code": "SCO",
+      "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "fifa_rank": 36,
+      "group": "C",
+      "confederation": "UEFA"
+    },
+    "senegal": {
+      "id": "senegal",
+      "name": "Senegal",
+      "code": "SEN",
+      "flag": "🇸🇳",
+      "fifa_rank": 14,
+      "group": "I",
+      "confederation": "CAF"
+    },
+    "south-africa": {
+      "id": "south-africa",
+      "name": "South Africa",
+      "code": "RSA",
+      "flag": "🇿🇦",
+      "fifa_rank": 63,
+      "group": "A",
+      "confederation": "CAF"
+    },
+    "south-korea": {
+      "id": "south-korea",
+      "name": "South Korea",
+      "code": "KOR",
+      "flag": "🇰🇷",
+      "fifa_rank": 27,
+      "group": "A",
+      "confederation": "AFC"
+    },
+    "spain": {
+      "id": "spain",
+      "name": "Spain",
+      "code": "ESP",
+      "flag": "🇪🇸",
+      "fifa_rank": 2,
+      "group": "H",
+      "confederation": "UEFA"
+    },
+    "sweden": {
+      "id": "sweden",
+      "name": "Sweden",
+      "code": "SWE",
+      "flag": "🇸🇪",
+      "fifa_rank": 38,
+      "group": "F",
+      "confederation": "UEFA"
+    },
+    "switzerland": {
+      "id": "switzerland",
+      "name": "Switzerland",
+      "code": "SUI",
+      "flag": "🇨🇭",
+      "fifa_rank": 19,
+      "group": "B",
+      "confederation": "UEFA"
+    },
+    "tunisia": {
+      "id": "tunisia",
+      "name": "Tunisia",
+      "code": "TUN",
+      "flag": "🇹🇳",
+      "fifa_rank": 44,
+      "group": "F",
+      "confederation": "CAF"
+    },
+    "turkey": {
+      "id": "turkey",
+      "name": "Türkiye",
+      "code": "TUR",
+      "flag": "🇹🇷",
+      "fifa_rank": 37,
+      "group": "D",
+      "confederation": "UEFA"
+    },
+    "uruguay": {
+      "id": "uruguay",
+      "name": "Uruguay",
+      "code": "URU",
+      "flag": "🇺🇾",
+      "fifa_rank": 17,
+      "group": "H",
+      "confederation": "CONMEBOL"
+    },
+    "usa": {
+      "id": "usa",
+      "name": "United States",
+      "code": "USA",
+      "flag": "🇺🇸",
+      "fifa_rank": 16,
+      "group": "D",
+      "confederation": "CONCACAF"
+    },
+    "uzbekistan": {
+      "id": "uzbekistan",
+      "name": "Uzbekistan",
+      "code": "UZB",
+      "flag": "🇺🇿",
+      "fifa_rank": 100,
+      "group": "K",
+      "confederation": "AFC"
+    }
+  },
+  "venues": {
+    "arrowhead-stadium": {
+      "id": "arrowhead-stadium",
+      "name": "Arrowhead Stadium",
+      "city": "Kansas City",
+      "country": "USA",
+      "tz": "America/Chicago",
+      "capacity": 76416
+    },
+    "att-stadium": {
+      "id": "att-stadium",
+      "name": "AT&T Stadium",
+      "city": "Arlington",
+      "country": "USA",
+      "tz": "America/Chicago",
+      "capacity": 80000
+    },
+    "bc-place": {
+      "id": "bc-place",
+      "name": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada",
+      "tz": "America/Vancouver",
+      "capacity": 54500
+    },
+    "bmo-field": {
+      "id": "bmo-field",
+      "name": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada",
+      "tz": "America/Toronto",
+      "capacity": 45000
+    },
+    "estadio-akron": {
+      "id": "estadio-akron",
+      "name": "Estadio Akron",
+      "city": "Guadalajara",
+      "country": "Mexico",
+      "tz": "America/Mexico_City",
+      "capacity": 49850
+    },
+    "estadio-azteca": {
+      "id": "estadio-azteca",
+      "name": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "Mexico",
+      "tz": "America/Mexico_City",
+      "capacity": 87523
+    },
+    "estadio-bbva": {
+      "id": "estadio-bbva",
+      "name": "Estadio BBVA",
+      "city": "Monterrey",
+      "country": "Mexico",
+      "tz": "America/Monterrey",
+      "capacity": 53500
+    },
+    "gillette-stadium": {
+      "id": "gillette-stadium",
+      "name": "Gillette Stadium",
+      "city": "Foxborough",
+      "country": "USA",
+      "tz": "America/New_York",
+      "capacity": 65878
+    },
+    "hard-rock-stadium": {
+      "id": "hard-rock-stadium",
+      "name": "Hard Rock Stadium",
+      "city": "Miami Gardens",
+      "country": "USA",
+      "tz": "America/New_York",
+      "capacity": 65326
+    },
+    "levis-stadium": {
+      "id": "levis-stadium",
+      "name": "Levi's Stadium",
+      "city": "Santa Clara",
+      "country": "USA",
+      "tz": "America/Los_Angeles",
+      "capacity": 68500
+    },
+    "lincoln-financial-field": {
+      "id": "lincoln-financial-field",
+      "name": "Lincoln Financial Field",
+      "city": "Philadelphia",
+      "country": "USA",
+      "tz": "America/New_York",
+      "capacity": 69176
+    },
+    "lumen-field": {
+      "id": "lumen-field",
+      "name": "Lumen Field",
+      "city": "Seattle",
+      "country": "USA",
+      "tz": "America/Los_Angeles",
+      "capacity": 68740
+    },
+    "mercedes-benz-stadium": {
+      "id": "mercedes-benz-stadium",
+      "name": "Mercedes-Benz Stadium",
+      "city": "Atlanta",
+      "country": "USA",
+      "tz": "America/New_York",
+      "capacity": 71000
+    },
+    "metlife-stadium": {
+      "id": "metlife-stadium",
+      "name": "MetLife Stadium",
+      "city": "East Rutherford",
+      "country": "USA",
+      "tz": "America/New_York",
+      "capacity": 82500
+    },
+    "nrg-stadium": {
+      "id": "nrg-stadium",
+      "name": "NRG Stadium",
+      "city": "Houston",
+      "country": "USA",
+      "tz": "America/Chicago",
+      "capacity": 72220
+    },
+    "sofi-stadium": {
+      "id": "sofi-stadium",
+      "name": "SoFi Stadium",
+      "city": "Inglewood",
+      "country": "USA",
+      "tz": "America/Los_Angeles",
+      "capacity": 70240
+    }
+  }
+}

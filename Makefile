@@ -1,4 +1,7 @@
-.PHONY: submodules
+.PHONY: submodules fetch-live
+
+fetch-live:
+	python3 scripts/fetch_worldcup2026_live.py
 
 submodules:
 	@if [ ! -f .gitmodules ]; then \
