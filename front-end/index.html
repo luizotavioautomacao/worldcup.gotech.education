@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Copa do Mundo · GoTech Education</title>
+<style>
+:root{
+  --green:#1a6b35;--green-light:#2d9c52;--green-dark:#0d4020;
+  --gold:#f0b429;--gold-dim:#a07010;
+  --bg:#0c1a0f;--surface:#122018;--surface2:#1a2e20;
+  --border:#1f3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:15px;
+  line-height:1.5;
+}
+
+/* subtle pitch pattern */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(45,156,82,.12), transparent),
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(26,107,53,.04) 80px, rgba(26,107,53,.04) 81px);
+}
+
+.hdr{
+  background:var(--green-dark);
+  border-bottom:2px solid var(--green);
+  padding:2rem 1.5rem;
+  text-align:center;
+}
+.hdr-logo{font-size:3rem;line-height:1;margin-bottom:.5rem}
+.hdr h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;letter-spacing:-.5px}
+.hdr-sub{font-size:.9rem;color:var(--muted);margin-top:.4rem;max-width:520px;margin-inline:auto}
+
+.wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem 3rem}
+
+/* video */
+.video-section{margin-bottom:2.5rem}
+.video-section[hidden]{display:none!important}
+.section-label{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--muted);margin-bottom:.75rem;
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.video-wrap{
+  position:relative;width:100%;padding-bottom:56.25%;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+}
+.video-wrap iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;
+}
+
+/* subscription */
+.subscribe{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.75rem;
+  margin-bottom:2.5rem;
+  text-align:center;
+}
+.subscribe h2{font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:.35rem}
+.subscribe p{font-size:.88rem;color:var(--muted);margin-bottom:1.25rem;max-width:480px;margin-inline:auto}
+.subscribe-form{
+  display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;max-width:440px;margin:0 auto;
+}
+.subscribe-form input[type=email]{
+  flex:1;min-width:200px;
+  background:var(--bg);border:1px solid var(--border);color:var(--text);
+  padding:11px 14px;border-radius:8px;font-size:.9rem;
+}
+.subscribe-form input[type=email]:focus{outline:none;border-color:var(--green-light)}
+.subscribe-form button{
+  background:var(--green);border:none;color:#fff;
+  padding:11px 22px;border-radius:8px;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:background .2s;
+}
+.subscribe-form button:hover{background:var(--green-light)}
+.subscribe-form button:disabled{opacity:.6;cursor:not-allowed}
+.form-msg{font-size:.82rem;margin-top:.75rem;min-height:1.2em}
+.form-msg.ok{color:var(--green-light)}
+.form-msg.err{color:#e07070}
+
+/* dashboard cards */
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.nav-card{
+  display:flex;flex-direction:column;gap:.5rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.5rem;text-decoration:none;color:inherit;
+  transition:border-color .2s,transform .15s,box-shadow .2s;
+}
+.nav-card:hover{
+  border-color:var(--green-light);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+}
+.nav-card .icon{font-size:2rem;line-height:1}
+.nav-card h3{font-size:1.05rem;font-weight:600;color:#fff}
+.nav-card p{font-size:.82rem;color:var(--muted);flex:1}
+.nav-card .cta{
+  font-size:.78rem;font-weight:600;color:var(--gold);
+  display:flex;align-items:center;gap:4px;margin-top:.25rem;
+}
+.nav-card.live{border-color:rgba(224,80,80,.35)}
+.nav-card.live:hover{border-color:#e05050}
+.live-tag{
+  display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;background:#200a0a;border:1px solid #6b1a1a;color:#ff6060;
+  padding:2px 8px;border-radius:10px;width:fit-content;
+}
+
+.ftr{
+  text-align:center;padding:1.5rem;font-size:.75rem;color:var(--dim);
+  border-top:1px solid var(--border);margin-top:1rem;
+}
+.ftr a{color:var(--muted);text-decoration:none}
+.ftr a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo" aria-hidden="true">⚽</div>
+  <h1>Copa do Mundo</h1>
+  <p class="hdr-sub">Dashboards interativos de histórico e ao vivo · GoTech Education</p>
+</header>
+
+<main class="wrap">
+
+  <!-- Vídeo: aparece só se VIDEO_EMBED_URL estiver preenchido -->
+  <section class="video-section" id="video-section" hidden>
+    <div class="section-label">Apresentação</div>
+    <div class="video-wrap">
+      <iframe id="video-iframe" title="Vídeo de apresentação" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- Inscrição IA -->
+  <section class="subscribe" aria-labelledby="subscribe-title">
+    <h2 id="subscribe-title">Inscreva-se para conteúdos e trilhas de Inteligência Artificial</h2>
+    <p>Receba novidades sobre cursos, trilhas e materiais de IA da GoTech.Education</p>
+    <form class="subscribe-form" id="subscribe-form" novalidate>
+      <input type="email" name="email" id="email" placeholder="seu@email.com" autocomplete="email" required aria-label="E-mail">
+      <button type="submit" id="submit-btn">Inscrever</button>
+    </form>
+    <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Links para dashboards -->
+  <div class="section-label">Explorar dados</div>
+  <nav class="nav-grid" aria-label="Dashboards da Copa do Mundo">
+    <a class="nav-card" href="worldcup-dashboard.html">
+      <span class="icon">📊</span>
+      <h3>Copas de 1930 – 2022</h3>
+      <p>KPIs, gráficos e tabela filtrável com todo o histórico das Copas do Mundo masculinas.</p>
+      <span class="cta">Abrir dashboard →</span>
+    </a>
+    <a class="nav-card live" href="worldcup2026-live.html">
+      <span class="live-tag">Ao vivo</span>
+      <span class="icon">🏆</span>
+      <h3>Copa 2026</h3>
+      <p>Placares, calendário e classificação da Copa do Mundo FIFA 2026 — USA, México e Canadá.</p>
+      <span class="cta">Acompanhar ao vivo →</span>
+    </a>
+  </nav>
+
+</main>
+
+<footer class="ftr">
+  <a href="https://gotech.education" target="_blank" rel="noopener">gotech.education</a>
+  · Projeto atual: <a href="https://github.com/luizotavioautomacao/worldcup.gotech.education" target="_blank" rel="noopener">github.com/luizotavioautomacao/worldcup.gotech.education</a>
+</footer>
+
+<script>
+/* ── Configuração ──────────────────────────────────────────────
+ *
+ * VÍDEO (YouTube, Vimeo, etc.)
+ * Cole a URL de embed. Exemplos:
+ *   YouTube: https://www.youtube.com/embed/VIDEO_ID
+ *   YouTube (de watch): https://youtu.be/VIDEO_ID  → convertido automaticamente
+ * Deixe vazio ('') para ocultar a seção de vídeo.
+ */
+const VIDEO_EMBED_URL = '';
+
+/*
+ * GOOGLE FORMS — inscrição por e-mail
+ *
+ * 1. Crie um formulário em https://forms.google.com com um campo "E-mail"
+ * 2. Envie uma resposta de teste
+ * 3. Menu ⋮ → "Obter link pré-preenchido" → preencha o e-mail → Copiar link
+ * 4. No link, copie:
+ *    - action:  .../forms/d/e/FORM_ID/formResponse
+ *    - entry:   entry.123456789 (número do campo e-mail)
+ *
+ * Exemplo:
+ *   GOOGLE_FORM_ACTION: 'https://docs.google.com/forms/d/e/1FAIpQLSc.../formResponse'
+ *   GOOGLE_FORM_EMAIL_ENTRY: 'entry.1234567890'
+ */
+const GOOGLE_FORM_ACTION = '';
+const GOOGLE_FORM_EMAIL_ENTRY = '';
+
+/* ── Vídeo ─────────────────────────────────────────────────── */
+(function initVideo() {
+  const url = normalizeEmbedUrl(VIDEO_EMBED_URL);
+  if (!url) return;
+  document.getElementById('video-iframe').src = url;
+  document.getElementById('video-section').hidden = false;
+})();
+
+function normalizeEmbedUrl(raw) {
+  const s = (raw || '').trim();
+  if (!s) return '';
+  try {
+    const u = new URL(s);
+    if (u.hostname.includes('youtu.be')) {
+      const id = u.pathname.slice(1).split('/')[0];
+      return id ? `https://www.youtube.com/embed/${id}` : '';
+    }
+    if (u.hostname.includes('youtube.com') && u.pathname === '/watch') {
+      const id = u.searchParams.get('v');
+      return id ? `https://www.youtube.com/embed/${id}` : '';
+    }
+  } catch (_) { /* use as-is */ }
+  return s;
+}
+
+/* ── Inscrição ───────────────────────────────────────────────── */
+document.getElementById('subscribe-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('email');
+  const msg = document.getElementById('form-msg');
+  const btn = document.getElementById('submit-btn');
+  const email = input.value.trim();
+
+  msg.className = 'form-msg';
+  msg.textContent = '';
+
+  if (!email || !input.checkValidity()) {
+    msg.className = 'form-msg err';
+    msg.textContent = 'Informe um e-mail válido.';
+    input.focus();
+    return;
+  }
+
+  if (!GOOGLE_FORM_ACTION || !GOOGLE_FORM_EMAIL_ENTRY) {
+    msg.className = 'form-msg err';
+    msg.textContent = 'Formulário em configuração. Em breve você poderá se inscrever aqui.';
+    return;
+  }
+
+  btn.disabled = true;
+  try {
+    const body = new URLSearchParams();
+    body.set(GOOGLE_FORM_EMAIL_ENTRY, email);
+    body.set('fvv', '1');
+    body.set('partialResponse', `[null,null,"${Date.now()}"]`);
+    body.set('pageHistory', '0');
+    body.set('fbzx', String(Date.now()));
+
+    await fetch(GOOGLE_FORM_ACTION, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString()
+    });
+
+    msg.className = 'form-msg ok';
+    msg.textContent = 'Inscrição enviada! Verifique seu e-mail em breve.';
+    input.value = '';
+  } catch (_) {
+    msg.className = 'form-msg err';
+    msg.textContent = 'Não foi possível enviar. Tente novamente.';
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

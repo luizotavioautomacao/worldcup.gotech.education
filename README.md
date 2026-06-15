@@ -8,9 +8,9 @@ Inspirado em [dottie.pro/dashboard/copa](https://dottie.pro/dashboard/copa) e no
 
 | Arquivo | Conteúdo | Fonte de dados |
 |---------|----------|----------------|
-| [`front-end/index.html`](front-end/index.html) | Histórico com filtros globais | CSVs remotos de [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup) |
-| [`front-end/worldcup-dashboard.html`](front-end/worldcup-dashboard.html) | Histórico 1930–2022 (KPIs, gráficos, tabela) | `const DB` embutido no HTML |
-| [`front-end/worldcup2026-live.html`](front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot JSON → APIs legado → fallback estático |
+| [`front-end/index.html`](worldcup/front-end/index.html) | Newsletter | Call to Action  |
+| [`front-end/worldcup-dashboard.html`](worldcup/front-end/worldcup-dashboard.html) | CSVs remotos de [jfjelstul/worldcup](https://github.com/jfjelstul/worldcup)|
+| [`front-end/worldcup2026-live.html`](worldcup/front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot JSON → APIs legado → fallback estático |
 
 ## Dados históricos (1930–2022)
 
@@ -92,14 +92,10 @@ Abrir via `file://` não carrega o snapshot local; nesse caso o live usa raw Git
 ## Estrutura
 
 ```
+.github/workflows/      # cron + commit do snapshot
+.plans/                 # planos e documentação interna
 front-end/              # dashboards HTML
 scripts/                # fetcher Python (Copa 2026)
 output/                 # snapshot JSON publicado
-.github/workflows/      # cron + commit do snapshot
 worldcup/               # pacote R / dataset histórico (jfjelstul)
-.plans/worldcup/        # planos e documentação interna
 ```
-
-## Documentação interna
-
-- [`.plans/worldcup/plans/2026-06-15--1152.md`](.plans/worldcup/plans/2026-06-15--1152.md) — arquitetura atual (snapshot, workflow, frontend)
