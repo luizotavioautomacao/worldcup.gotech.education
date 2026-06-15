@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-15T15:21:58Z",
+  "updated_at": "2026-06-15T15:38:59Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 10,
+    "finished": 12,
     "live": 0,
-    "scheduled": 94
+    "scheduled": 92
   },
   "matches": [
     {
@@ -448,7 +448,8 @@
         "et": null,
         "pens": null
       },
-      "status": "finished"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 20,
@@ -461,8 +462,8 @@
       "team2": "turkey",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          0
         ],
         "ht": [
           null,
@@ -471,7 +472,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 21,
@@ -576,8 +578,8 @@
       "team2": "curacao",
       "score": {
         "ft": [
-          null,
-          null
+          7,
+          1
         ],
         "ht": [
           null,
@@ -586,7 +588,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 26,
