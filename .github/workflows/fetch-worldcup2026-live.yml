@@ -2,8 +2,14 @@ name: Fetch World Cup 2026 live data
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # A cada hora UTC (24× ao dia)
+    - cron: '0 * * * *'
   workflow_dispatch:
+
+env:
+  # Janela de execução agendada (inclusive). Fora dela, só dispara manualmente.
+  SNAPSHOT_START_DATE: '2026-06-11'
+  SNAPSHOT_DEADLINE: '2026-07-31'
 
 permissions:
   contents: write
@@ -16,16 +22,42 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
+      - name: Check snapshot window
+        id: window
+        run: |
+          START="${{ env.SNAPSHOT_START_DATE }}"
+          DEADLINE="${{ env.SNAPSHOT_DEADLINE }}"
+          TODAY=$(date -u +%Y-%m-%d)
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            if [ "$TODAY" \< "$START" ]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Scheduled run skipped: today ($TODAY) is before start ($START)."
+            elif [ "$TODAY" \> "$DEADLINE" ]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Scheduled run skipped: today ($TODAY) is past deadline ($DEADLINE)."
+            else
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              echo "Within window ($START .. $DEADLINE), today=$TODAY."
+            fi
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual run (workflow_dispatch), ignoring window."
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.window.outputs.run == 'true'
 
       - uses: actions/setup-python@v5
+        if: steps.window.outputs.run == 'true'
         with:
           python-version: '3.12'
 
       - name: Fetch kickoff26 + ESPN snapshot
+        if: steps.window.outputs.run == 'true'
         run: python scripts/fetch_worldcup2026_live.py
 
       - name: Commit snapshot if changed
+        if: steps.window.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
