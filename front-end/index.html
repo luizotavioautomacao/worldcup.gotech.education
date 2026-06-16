@@ -158,13 +158,13 @@ body::before{
   <!-- Links para dashboards -->
   <div class="section-label">Explorar dados</div>
   <nav class="nav-grid" aria-label="Dashboards da Copa do Mundo">
-    <a class="nav-card" href="worldcup-dashboard.html">
+    <a class="nav-card" href="dashboard">
       <span class="icon">📊</span>
       <h3>Copas de 1930 – 2022</h3>
       <p>KPIs, gráficos e tabela filtrável com todo o histórico das Copas do Mundo masculinas.</p>
       <span class="cta">Abrir dashboard →</span>
     </a>
-    <a class="nav-card live" href="worldcup2026-live.html">
+    <a class="nav-card live" href="2026">
       <span class="live-tag">Ao vivo</span>
       <span class="icon">🏆</span>
       <h3>Copa 2026</h3>
@@ -191,22 +191,8 @@ body::before{
  */
 const VIDEO_EMBED_URL = '';
 
-/*
- * GOOGLE FORMS — inscrição por e-mail
- *
- * 1. Crie um formulário em https://forms.google.com com um campo "E-mail"
- * 2. Envie uma resposta de teste
- * 3. Menu ⋮ → "Obter link pré-preenchido" → preencha o e-mail → Copiar link
- * 4. No link, copie:
- *    - action:  .../forms/d/e/FORM_ID/formResponse
- *    - entry:   entry.123456789 (número do campo e-mail)
- *
- * Exemplo:
- *   GOOGLE_FORM_ACTION: 'https://docs.google.com/forms/d/e/1FAIpQLSc.../formResponse'
- *   GOOGLE_FORM_EMAIL_ENTRY: 'entry.1234567890'
- */
-const GOOGLE_FORM_ACTION = '';
-const GOOGLE_FORM_EMAIL_ENTRY = '';
+const NEWSLETTER_ENDPOINT = '/newsletter_subscribers';
+const NEWSLETTER_SOURCE = 'worldcup_landing';
 
 /* ── Vídeo ─────────────────────────────────────────────────── */
 (function initVideo() {
@@ -251,31 +237,34 @@ document.getElementById('subscribe-form').addEventListener('submit', async (e) =
     return;
   }
 
-  if (!GOOGLE_FORM_ACTION || !GOOGLE_FORM_EMAIL_ENTRY) {
-    msg.className = 'form-msg err';
-    msg.textContent = 'Formulário em configuração. Em breve você poderá se inscrever aqui.';
-    return;
-  }
-
   btn.disabled = true;
   try {
-    const body = new URLSearchParams();
-    body.set(GOOGLE_FORM_EMAIL_ENTRY, email);
-    body.set('fvv', '1');
-    body.set('partialResponse', `[null,null,"${Date.now()}"]`);
-    body.set('pageHistory', '0');
-    body.set('fbzx', String(Date.now()));
-
-    await fetch(GOOGLE_FORM_ACTION, {
+    const res = await fetch(NEWSLETTER_ENDPOINT, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: body.toString()
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        source: NEWSLETTER_SOURCE,
+        metadata: {
+          page_url: window.location.href,
+          referrer: document.referrer || null
+        }
+      })
     });
 
-    msg.className = 'form-msg ok';
-    msg.textContent = 'Inscrição enviada! Verifique seu e-mail em breve.';
-    input.value = '';
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.ok) {
+      msg.className = 'form-msg ok';
+      msg.textContent = data.message || 'Inscrição enviada! Verifique seu e-mail em breve.';
+      input.value = '';
+    } else {
+      msg.className = 'form-msg err';
+      msg.textContent = (data.errors && data.errors[0]) || 'Não foi possível enviar. Tente novamente.';
+    }
   } catch (_) {
     msg.className = 'form-msg err';
     msg.textContent = 'Não foi possível enviar. Tente novamente.';
