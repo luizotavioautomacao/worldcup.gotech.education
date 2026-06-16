@@ -163,6 +163,9 @@ tr:hover td{background:var(--surface2)}
 .refresh-bar{background:var(--surface2);border-top:1px solid var(--border);padding:.5rem 1.5rem;font-size:0.72rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
 .btn-refresh{background:transparent;border:1px solid var(--dim);color:var(--muted);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.72rem}
 .btn-refresh:hover{border-color:var(--green);color:var(--green-l)}
+.live-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:0.72rem;color:var(--muted);user-select:none}
+.live-toggle input{accent-color:var(--green-l);cursor:pointer}
+.refresh-actions{display:flex;align-items:center;gap:12px}
 </style>
 </head>
 <body>
@@ -178,7 +181,7 @@ tr:hover td{background:var(--surface2)}
   </div>
   <div class="source-pills">
     <div class="src-pill src-loading" id="src-snapshot"><div class="dot"></div>Snapshot GitHub</div>
-    <div class="src-pill src-idle" id="src-legacy"><div class="dot"></div>APIs legado</div>
+    <div class="src-pill src-idle" id="src-espn"><div class="dot"></div>ESPN ao vivo</div>
     <div class="src-pill src-idle" id="src-static"><div class="dot"></div>Fallback estático</div>
   </div>
 </div>
@@ -272,34 +275,36 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <div class="refresh-bar">
-  <span id="last-update">Carregando snapshot do repositório...</span>
-  <button class="btn-refresh" onclick="loadAll()">⟳ Atualizar</button>
+  <span id="last-update">Carregando snapshot do GitHub...</span>
+  <div class="refresh-actions">
+    <label class="live-toggle">
+      <input type="checkbox" id="live-mode" onchange="toggleLiveMode(this.checked)">
+      Ao vivo (ESPN · 15s)
+    </label>
+    <button class="btn-refresh" onclick="loadAll()">⟳ Atualizar</button>
+  </div>
 </div>
 
 <script>
 // ── URLS & CONFIG ─────────────────────────────────────────────────────────
 const URLS = {
-  GITHUB_RAW_BASE: 'https://raw.githubusercontent.com/luizotavioautomacao/worldcup.gotech.education/main',
+  SNAPSHOT_GITHUB:
+    'https://raw.githubusercontent.com/luizotavioautomacao/worldcup.gotech.education/refs/heads/main/output/worldcup2026-snapshot.json',
   SNAPSHOT_PATH: '/output/worldcup2026-snapshot.json',
-  KICKOFF26_VERSION: '0.2.0',
   KICKOFF26_MATCHES: [
     'https://unpkg.com/@kickoff26/data@0.2.0/data/matches.json',
     'https://cdn.jsdelivr.net/npm/@kickoff26/data@0.2.0/data/matches.json'
   ],
-  ESPN_SCOREBOARD: [
-    'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard',
-    'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world.2026/scoreboard'
-  ],
+  ESPN_SCOREBOARD: 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard',
   FETCH_TIMEOUT_MS: 8000,
-  SNAPSHOT_STALE_MS: 24 * 60 * 60 * 1000,
-  REFRESH_INTERVAL_MS: 30 * 60 * 1000
+  LIVE_REFRESH_MS: 15 * 1000
 };
 
 function snapshotUrls() {
   return [
+    URLS.SNAPSHOT_GITHUB,
     '../output/worldcup2026-snapshot.json',
-    URLS.SNAPSHOT_PATH,
-    URLS.GITHUB_RAW_BASE + URLS.SNAPSHOT_PATH
+    URLS.SNAPSHOT_PATH
   ];
 }
 
@@ -353,7 +358,11 @@ const STATIC = {"matches":[{"id":1,"stage":"group","round":"Matchday 1","group":
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 let DATA = null;
+let baseSnapshot = null;
 let sortCol = 'date', sortDir = 1;
+let liveMode = false;
+let loading = false;
+let liveTimer = null;
 
 // ── SOURCE STATUS UI ──────────────────────────────────────────────────────
 function setSrc(id, status, label){
@@ -363,40 +372,94 @@ function setSrc(id, status, label){
   el.innerHTML = `<div class="dot"></div>${label}`;
 }
 
-function isSnapshotStale(data) {
-  if (!data?.updated_at) return true;
-  const age = Date.now() - new Date(data.updated_at).getTime();
-  return age > URLS.SNAPSHOT_STALE_MS;
+function cloneData(data) {
+  return JSON.parse(JSON.stringify(data));
 }
 
-function applyData(data) {
+function computeStats(matches) {
+  const stats = { finished: 0, live: 0, scheduled: 0 };
+  (matches || []).forEach(m => {
+    const s = m.status || 'scheduled';
+    if (s in stats) stats[s]++;
+  });
+  return stats;
+}
+
+function applyData(data, fetchedAt) {
   DATA = data;
   renderAll();
-  const updated = data.updated_at
+  const snapTime = data.updated_at
     ? new Date(data.updated_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
-    : new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  document.getElementById('k-updated').textContent = updated;
+    : '—';
+  const now = fetchedAt || new Date();
+  const liveTime = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('k-updated').textContent = liveMode ? liveTime : snapTime;
+  const liveNote = liveMode ? ` · ESPN ${liveTime} (15s)` : '';
   document.getElementById('last-update').textContent =
-    `Fonte: ${data.source || '—'} · snapshot ${data.updated_at || 'sem timestamp'}`;
+    `Fonte: ${data.source || '—'} · snapshot ${snapTime}${liveNote}`;
 }
 
-// ── LOAD: snapshot primeiro, APIs legado como fallback ─────────────────────
-async function loadAll(){
-  document.getElementById('last-update').textContent = 'Carregando snapshot...';
+function scheduleLiveRefresh() {
+  clearInterval(liveTimer);
+  if (!liveMode) return;
+  liveTimer = setInterval(refreshLive, URLS.LIVE_REFRESH_MS);
+}
+
+function toggleLiveMode(on) {
+  liveMode = on;
+  localStorage.setItem('worldcup2026-live-mode', on ? '1' : '0');
+  setSrc('espn', on ? 'idle' : 'idle', on ? 'ESPN ao vivo' : 'ESPN ao vivo');
+  if (on && baseSnapshot) {
+    refreshLive();
+    scheduleLiveRefresh();
+  } else {
+    clearInterval(liveTimer);
+    liveTimer = null;
+    setSrc('espn', 'idle', 'ESPN ao vivo');
+    if (baseSnapshot) applyData(baseSnapshot);
+  }
+}
+
+async function refreshLive() {
+  if (!baseSnapshot || loading) return;
+  setSrc('espn', 'loading', 'ESPN ao vivo');
+  const espn = await fetchESPN();
+  const merged = espn
+    ? enrichWithESPN(cloneData(baseSnapshot), espn)
+    : cloneData(baseSnapshot);
+  merged.stats = computeStats(merged.matches);
+  if (espn) {
+    merged.source = 'snapshot+espn-live';
+    setSrc('espn', 'ok', 'ESPN ao vivo ✓');
+  } else {
+    setSrc('espn', 'err', 'ESPN ✗');
+  }
+  applyData(merged, new Date());
+}
+
+// ── LOAD: snapshot GitHub (fetcher) + ESPN opcional ao vivo ───────────────
+async function loadAll() {
+  if (loading) return;
+  loading = true;
+
+  document.getElementById('last-update').textContent = 'Carregando snapshot do GitHub...';
   setSrc('snapshot', 'loading', 'Snapshot GitHub');
-  setSrc('legacy', 'idle', 'APIs legado');
+  setSrc('espn', liveMode ? 'idle' : 'idle', 'ESPN ao vivo');
   setSrc('static', 'idle', 'Fallback estático');
 
   const snapshot = await fetchSnapshot();
   if (snapshot) {
-    applyData(snapshot);
-    const stale = isSnapshotStale(snapshot);
-    setSrc('snapshot', 'ok', stale ? 'Snapshot ✓ (cache)' : 'Snapshot GitHub ✓');
+    baseSnapshot = snapshot;
+    setSrc('snapshot', 'ok', 'Snapshot GitHub ✓');
+    if (liveMode) await refreshLive();
+    else applyData(snapshot);
+    loading = false;
     return;
   }
 
   setSrc('snapshot', 'err', 'Snapshot ✗');
   await loadAllLegacy();
+  loading = false;
 }
 
 async function fetchSnapshot() {
@@ -412,8 +475,8 @@ async function fetchSnapshot() {
 }
 
 async function loadAllLegacy() {
-  document.getElementById('last-update').textContent = 'Snapshot indisponível — buscando APIs legado...';
-  setSrc('legacy', 'loading', 'APIs legado');
+  document.getElementById('last-update').textContent = 'Snapshot indisponível — buscando fallback...';
+  setSrc('espn', 'loading', 'ESPN ao vivo');
   setSrc('static', 'loading', 'Fallback estático');
 
   const results = await Promise.allSettled([
@@ -426,23 +489,23 @@ async function loadAllLegacy() {
 
   if (results[0].status === 'fulfilled' && results[0].value) {
     merged = results[0].value;
-    setSrc('legacy', 'ok', '@kickoff26/data ✓');
-  } else {
-    setSrc('legacy', 'err', '@kickoff26/data ✗');
   }
 
   if (results[1].status === 'fulfilled' && results[1].value) {
-    setSrc('legacy', 'ok', 'kickoff26 + ESPN ✓');
+    setSrc('espn', 'ok', 'ESPN ao vivo ✓');
     if (merged) merged = enrichWithESPN(merged, results[1].value);
     else merged = results[1].value;
+  } else {
+    setSrc('espn', 'err', 'ESPN ✗');
   }
 
   setSrc('static', 'ok', 'Fallback estático ✓');
   if (!merged) merged = results[2].value;
 
+  baseSnapshot = merged;
   applyData(merged);
   document.getElementById('last-update').textContent +=
-    ' · fallback legado (' + results.filter(r => r.status === 'fulfilled').length + '/3 fontes)';
+    ' · fallback (' + results.filter(r => r.status === 'fulfilled').length + '/3 fontes)';
 }
 
 // ── LEGACY SOURCE 1: @kickoff26/data via CDN ─────────────────────────────
@@ -471,19 +534,15 @@ async function fetchKickoff26(){
   return null;
 }
 
-// ── LEGACY SOURCE 2: ESPN unofficial API ────────────────────────────────
+// ── ESPN scoreboard (ao vivo) ─────────────────────────────────────────────
 async function fetchESPN(){
-  for (const url of URLS.ESPN_SCOREBOARD) {
-    try {
-      const r = await fetch(url, { signal: AbortSignal.timeout(URLS.FETCH_TIMEOUT_MS) });
-      if (r.ok) {
-        const d = await r.json();
-        if (d.events && d.events.length > 0) {
-          return { raw: d, source: 'espn' };
-        }
-      }
-    } catch (e) {}
-  }
+  try {
+    const r = await fetch(URLS.ESPN_SCOREBOARD, { cache: 'no-cache', signal: AbortSignal.timeout(URLS.FETCH_TIMEOUT_MS) });
+    if (r.ok) {
+      const d = await r.json();
+      if (d.events) return { raw: d, source: 'espn' };
+    }
+  } catch (e) {}
   return null;
 }
 
@@ -506,7 +565,7 @@ function enrichWithESPN(base, espn){
     if(match){
       const status = evt.status?.type?.name;
       if(status === 'STATUS_FINAL' || status === 'STATUS_FULL_TIME') match.status = 'finished';
-      else if(['STATUS_IN_PROGRESS','STATUS_FIRST_HALF','STATUS_SECOND_HALF','STATUS_HALFTIME'].includes(status)) match.status = 'live';
+      else if(['STATUS_IN_PROGRESS','STATUS_FIRST_HALF','STATUS_SECOND_HALF','STATUS_HALFTIME','STATUS_END_PERIOD'].includes(status)) match.status = 'live';
       const hs = parseInt(home.score), as_ = parseInt(away.score);
       if(!isNaN(hs) && !isNaN(as_)) match.score = {ft:[hs,as_],ht:[null,null],et:null,pens:null};
       match._espn_enriched = true;
@@ -887,8 +946,14 @@ function showTab(id){
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
-loadAll();
-setInterval(loadAll, URLS.REFRESH_INTERVAL_MS);
+(function init() {
+  const params = new URLSearchParams(location.search);
+  liveMode = params.get('live') === '1' || localStorage.getItem('worldcup2026-live-mode') === '1';
+  document.getElementById('live-mode').checked = liveMode;
+  loadAll().then(() => {
+    if (liveMode) scheduleLiveRefresh();
+  });
+})();
 </script>
 </body>
 </html>
