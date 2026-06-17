@@ -8,18 +8,18 @@
 <script src="dashboard-viz.js"></script>
 <style>
 :root{
-  --green:#1a6b35;--green-light:#2d9c52;--green-dark:#0d4020;
-  --gold:#f0b429;--gold-dim:#a07010;
-  --bg:#0c1a0f;--surface:#122018;--surface2:#1a2e20;
-  --border:#1f3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
+  --green:#006030;--green-light:#107040;--green-dark:#084022;
+  --gold:#e8c010;--gold-dim:#a08008;
+  --bg:#001810;--surface:#0a2018;--surface2:#122a1e;
+  --border:#1a3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
   --red:#d64040;--blue:#3a8fd8;--orange:#e8802a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 
 /* HEADER */
-.hdr{background:var(--green-dark);border-bottom:2px solid var(--green);padding:1.5rem 2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
-.hdr-logo{font-size:2.4rem}
+.hdr{background:#084022;border-bottom:3px solid var(--gold);padding:1.5rem 2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.hdr-logo{width:112px;height:auto;flex-shrink:0;display:block}
 .hdr-title{font-size:1.6rem;font-weight:700;color:#fff;letter-spacing:-0.5px}
 .hdr-sub{font-size:0.82rem;color:var(--muted);margin-top:2px}
 .hdr-pills{display:flex;gap:0.5rem;margin-left:auto;flex-wrap:wrap}
@@ -152,7 +152,7 @@ tr:hover td{background:var(--surface2)}
 <body>
 
 <div class="hdr">
-  <div class="hdr-logo">⚽</div>
+  <img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="112" height="112">
   <div>
     <div class="hdr-title">Copa do Mundo · Dashboard Histórico</div>
     <div class="hdr-sub">Análise exploratória · 1930–2022 · Masculino e Feminino</div>

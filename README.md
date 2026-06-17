@@ -10,7 +10,7 @@ Inspirado em [dottie.pro/dashboard/copa](https://dottie.pro/dashboard/copa) e no
 |---------|----------|----------------|
 | [`front-end/index.html`](front-end/index.html) | Landing page (newsletter + links para os dashboards) | Estático |
 | [`front-end/worldcup-dashboard.html`](front-end/worldcup-dashboard.html) | Dashboard histórico (1930–2022) | JSON embutido + [`dashboard-stats-extra.json`](front-end/dashboard-stats-extra.json) + [`dashboard-viz-data.json`](front-end/dashboard-viz-data.json) |
-| [`front-end/worldcup2026-live.html`](front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot JSON → APIs legado → fallback estático |
+| [`front-end/worldcup2026-live.html`](front-end/worldcup2026-live.html) | Copa 2026 ao vivo | Snapshot GitHub (fetcher) + ESPN opcional (15s) |
 
 Arquivos de apoio do dashboard histórico:
 
@@ -71,16 +71,23 @@ output/worldcup2026-snapshot.json
 
 Campos principais: `updated_at`, `source`, `stats`, `matches`, `teams`, `venues`.
 
-URL pública (raw):
+URL pública (raw, branch `main`):
 
 ```
-https://raw.githubusercontent.com/luizotavioautomacao/worldcup.gotech.education/main/output/worldcup2026-snapshot.json
+https://raw.githubusercontent.com/luizotavioautomacao/worldcup.gotech.education/refs/heads/main/output/worldcup2026-snapshot.json
 ```
 
 Gerar localmente:
 
 ```bash
-make fetch-live
+python3 scripts/fetch_worldcup2026_live.py
+```
+
+Testar ESPN e snapshot:
+
+```bash
+python3 scripts/test_espn_scoreboard.py
+python3 scripts/test_espn_scoreboard.py --team france
 ```
 
 ### GitHub Actions
@@ -99,15 +106,23 @@ Em repositório **público**, os minutos do Actions são gratuitos. O job leva ~
 
 ### Frontend ao vivo
 
-`worldcup2026-live.html` tenta carregar o snapshot nesta ordem:
+[`worldcup2026-live.html`](front-end/worldcup2026-live.html) carrega o snapshot nesta ordem:
 
-1. `../output/worldcup2026-snapshot.json` (dev local)
-2. `/output/worldcup2026-snapshot.json` (mesmo domínio)
-3. Raw do GitHub
+1. Raw do GitHub (fetcher — URL acima)
+2. `../output/worldcup2026-snapshot.json` (dev local)
+3. `/output/worldcup2026-snapshot.json` (mesmo domínio, via Rails)
 
-Se o snapshot falhar ou estiver com mais de 65 min, cai no fallback: kickoff26 + ESPN no browser, depois JSON estático embutido.
+Se o snapshot falhar, cai no fallback: kickoff26 + ESPN no browser, depois JSON estático embutido.
 
-Auto-refresh no browser: **a cada 30 minutos**.
+**Modo ao vivo (opcional):** checkbox *Ao vivo (ESPN · 15s)* ou `?live=1` na URL. Com o modo ativo, o snapshot serve de base e a ESPN sobrescreve placares/status a cada **15 segundos**. A preferência fica em `localStorage` (`worldcup2026-live-mode`).
+
+Endpoint ESPN usado no browser:
+
+```
+https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard
+```
+
+> `fifa.world.2026/scoreboard` retorna HTTP 400 — não usar.
 
 ## Desenvolvimento local
 
@@ -128,20 +143,21 @@ Abrir via `file://` não carrega o snapshot local; nesse caso o live usa raw Git
 ```bash
 make submodules
 python3 scripts/build_dashboard_stats.py   # dashboard histórico
-make fetch-live                            # snapshot Copa 2026 (opcional)
+python3 scripts/fetch_worldcup2026_live.py  # snapshot Copa 2026 (opcional)
 python3 -m http.server 8000
 ```
 
 ## Estrutura
 
 ```
-.github/workflows/      # cron + commit do snapshot 2026
-front-end/              # dashboards HTML + JSON de stats/viz
+.github/workflows/             # cron + commit do snapshot 2026
+front-end/                     # dashboards HTML + JSON de stats/viz
 scripts/
-  build_dashboard_stats.py   # gera JSONs do dashboard histórico
-  fetch_worldcup2026_live.py # gera snapshot Copa 2026
-output/                 # snapshot JSON publicado (2026)
-worldcup-r/             # submodule — dataset R (jfjelstul/worldcup)
-worldcup/               # submodule — widgets CDN embeddáveis
-.plans/                 # planos e documentação interna
+  build_dashboard_stats.py     # gera JSONs do dashboard histórico
+  fetch_worldcup2026_live.py   # gera snapshot Copa 2026 (kickoff26 + ESPN)
+  test_espn_scoreboard.py      # smoke test ESPN + snapshot GitHub
+output/                        # snapshot JSON publicado (2026)
+worldcup-r/                    # submodule — dataset R (jfjelstul/worldcup)
+worldcup/                      # submodule — widgets CDN embeddáveis
+.plans/                        # planos e documentação interna
 ```

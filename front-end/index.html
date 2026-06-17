@@ -6,10 +6,10 @@
 <title>Copa do Mundo · GoTech Education</title>
 <style>
 :root{
-  --green:#1a6b35;--green-light:#2d9c52;--green-dark:#0d4020;
-  --gold:#f0b429;--gold-dim:#a07010;
-  --bg:#0c1a0f;--surface:#122018;--surface2:#1a2e20;
-  --border:#1f3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
+  --green:#006030;--green-light:#107040;--green-dark:#084022;
+  --gold:#e8c010;--gold-dim:#a08008;
+  --bg:#001810;--surface:#0a2018;--surface2:#122a1e;
+  --border:#1a3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -31,12 +31,12 @@ body::before{
 }
 
 .hdr{
-  background:var(--green-dark);
-  border-bottom:2px solid var(--green);
+  background:#084022;
+  border-bottom:3px solid var(--gold);
   padding:2rem 1.5rem;
   text-align:center;
 }
-.hdr-logo{font-size:3rem;line-height:1;margin-bottom:.5rem}
+.hdr-logo{display:block;width:240px;height:auto;margin:0 auto .75rem}
 .hdr h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;letter-spacing:-.5px}
 .hdr-sub{font-size:.9rem;color:var(--muted);margin-top:.4rem;max-width:520px;margin-inline:auto}
 
@@ -129,7 +129,7 @@ body::before{
 <body>
 
 <header class="hdr">
-  <div class="hdr-logo" aria-hidden="true">⚽</div>
+  <img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="240" height="240">
   <h1>Copa do Mundo</h1>
   <p class="hdr-sub">Dashboards interativos de histórico e ao vivo · GoTech Education</p>
 </header>

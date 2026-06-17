@@ -6,16 +6,17 @@
 <title>Copa do Mundo 2026 · Ao Vivo</title>
 <style>
 :root{
-  --bg:#080e0a;--surface:#0f1a12;--surface2:#162018;--border:#1a2e1e;
-  --green:#2d8a4e;--green-l:#3db868;--gold:#f0b429;
+  --bg:#001810;--surface:#0a2018;--surface2:#122a1e;--border:#1a3828;
+  --green:#006030;--green-l:#107040;--gold:#e8c010;
   --text:#e0ece0;--muted:#5a8060;--dim:#2a3e2e;
   --red:#e05050;--blue:#50a0e0;--orange:#e08030;--purple:#a060e0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 
-.hdr{background:var(--surface);border-bottom:2px solid var(--green);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.hdr{background:#084022;border-bottom:3px solid var(--gold);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:96px;height:auto;display:block;flex-shrink:0}
 .hdr h1{font-size:1.3rem;font-weight:700;color:#fff}
 .hdr-sub{font-size:0.78rem;color:var(--muted);margin-top:1px}
 .live-badge{background:#200a0a;border:1px solid #6b1a1a;color:#ff6060;font-size:0.72rem;padding:3px 9px;border-radius:10px;animation:pulse 2s infinite}
@@ -94,6 +95,16 @@ tr:hover td{background:var(--surface2)}
 .sd-live{background:var(--red);animation:pulse 1s infinite}
 .sd-sch{background:var(--dim)}
 .score-cell{font-weight:700;font-size:0.95rem;text-align:center;color:#fff;letter-spacing:1px}
+.score-skeleton{
+  display:inline-block;border-radius:6px;vertical-align:middle;
+  background:linear-gradient(90deg,var(--surface2) 25%,#1e4030 50%,var(--surface2) 75%);
+  background-size:200% 100%;animation:score-shimmer 1.4s ease-in-out infinite;
+}
+.score-skeleton.card{min-width:56px;height:1.45rem}
+.score-skeleton.compact{min-width:40px;height:1rem}
+.score-skeleton.cell{min-width:44px;height:.95rem}
+.score-skeleton.brk{min-width:18px;height:.85rem;border-radius:4px}
+@keyframes score-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .tbl-footer{padding:.6rem 1rem;font-size:0.75rem;color:var(--dim);display:flex;justify-content:space-between}
 
 /* STANDINGS */
@@ -172,7 +183,7 @@ tr:hover td{background:var(--surface2)}
 
 <div class="hdr">
   <div class="hdr-left">
-    <span style="font-size:2rem">⚽</span>
+    <img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="96" height="96">
     <div>
       <h1>Copa do Mundo 2026</h1>
       <div class="hdr-sub">EUA · México · Canadá · 11 Jun – 19 Jul 2026</div>
@@ -180,9 +191,9 @@ tr:hover td{background:var(--surface2)}
     <span class="live-badge">● AO VIVO</span>
   </div>
   <div class="source-pills">
-    <div class="src-pill src-loading" id="src-snapshot"><div class="dot"></div>Snapshot GitHub</div>
+    <div class="src-pill src-idle" id="src-snapshot"><div class="dot"></div>Snapshot GitHub</div>
     <div class="src-pill src-idle" id="src-espn"><div class="dot"></div>ESPN ao vivo</div>
-    <div class="src-pill src-idle" id="src-static"><div class="dot"></div>Fallback estático</div>
+    <div class="src-pill src-ok" id="src-static"><div class="dot"></div>Dados estáticos ✓</div>
   </div>
 </div>
 
@@ -275,7 +286,7 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <div class="refresh-bar">
-  <span id="last-update">Carregando snapshot do GitHub...</span>
+  <span id="last-update">Carregando dados estáticos...</span>
   <div class="refresh-actions">
     <label class="live-toggle">
       <input type="checkbox" id="live-mode" onchange="toggleLiveMode(this.checked)">
@@ -301,11 +312,23 @@ const URLS = {
 };
 
 function snapshotUrls() {
-  return [
-    URLS.SNAPSHOT_GITHUB,
+  const local = [
     '../output/worldcup2026-snapshot.json',
     URLS.SNAPSHOT_PATH
   ];
+  const preferLocal =
+    location.hostname.includes('worldcup') || location.pathname.includes('/worldcup');
+  return preferLocal ? [...local, URLS.SNAPSHOT_GITHUB] : [URLS.SNAPSHOT_GITHUB, ...local];
+}
+
+function readLiveModeFromPrefs() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('live') === '0') return false;
+  if (params.get('live') === '1') return true;
+  const stored = localStorage.getItem('worldcup2026-live-mode');
+  if (stored === '0') return false;
+  if (stored === '1') return true;
+  return true;
 }
 
 // ── TEAM NAME MATCHING (ESPN ↔ kickoff26) ────────────────────────────────
@@ -361,7 +384,9 @@ let DATA = null;
 let baseSnapshot = null;
 let sortCol = 'date', sortDir = 1;
 let liveMode = false;
-let loading = false;
+let snapshotLoading = false;
+let espnLoading = false;
+let espnPending = false;
 let liveTimer = null;
 
 // ── SOURCE STATUS UI ──────────────────────────────────────────────────────
@@ -370,6 +395,50 @@ function setSrc(id, status, label){
   if (!el) return;
   el.className = 'src-pill src-'+status;
   el.innerHTML = `<div class="dot"></div>${label}`;
+}
+
+function setEspnPending(on) {
+  espnPending = on;
+}
+
+function isKickoffToday(iso) {
+  if (!iso) return false;
+  const d = new Date(iso);
+  const now = new Date();
+  return d.getUTCFullYear() === now.getUTCFullYear()
+    && d.getUTCMonth() === now.getUTCMonth()
+    && d.getUTCDate() === now.getUTCDate();
+}
+
+function scoreNeedsSkeleton(m) {
+  if (!espnPending || !liveMode || m._espn_enriched) return false;
+  if (m.status === 'finished') return false;
+  return m.status === 'live' || isKickoffToday(m.kickoff_utc);
+}
+
+function scoreSkeleton(kind) {
+  return `<span class="score-skeleton ${kind}" aria-hidden="true"></span>`;
+}
+
+function renderLiveSection() {
+  const hdr = document.getElementById('live-hdr');
+  const grid = document.getElementById('live-cards');
+  if (!hdr || !grid || !DATA) return;
+
+  const matches = DATA.matches || [];
+  const teams = DATA.teams || {};
+  const venues = DATA.venues || {};
+  let live = matches.filter(m => m.status === 'live');
+
+  if (espnPending && liveMode && !live.length) {
+    live = matches.filter(m =>
+      m.stage === 'group' && m.status !== 'finished' && isKickoffToday(m.kickoff_utc)
+    );
+  }
+
+  const groupLive = live.filter(m => m.stage === 'group');
+  renderCards(groupLive, 'live-cards', teams, venues, 'live');
+  hdr.style.display = groupLive.length > 0 ? 'flex' : 'none';
 }
 
 function cloneData(data) {
@@ -405,61 +474,84 @@ function scheduleLiveRefresh() {
   liveTimer = setInterval(refreshLive, URLS.LIVE_REFRESH_MS);
 }
 
-function toggleLiveMode(on) {
+async function toggleLiveMode(on) {
   liveMode = on;
   localStorage.setItem('worldcup2026-live-mode', on ? '1' : '0');
-  setSrc('espn', on ? 'idle' : 'idle', on ? 'ESPN ao vivo' : 'ESPN ao vivo');
   if (on && baseSnapshot) {
-    refreshLive();
+    await refreshLive(true);
     scheduleLiveRefresh();
   } else {
     clearInterval(liveTimer);
     liveTimer = null;
+    setEspnPending(false);
     setSrc('espn', 'idle', 'ESPN ao vivo');
     if (baseSnapshot) applyData(baseSnapshot);
   }
 }
 
-async function refreshLive() {
-  if (!baseSnapshot || loading) return;
-  setSrc('espn', 'loading', 'ESPN ao vivo');
-  const espn = await fetchESPN();
-  const merged = espn
-    ? enrichWithESPN(cloneData(baseSnapshot), espn)
-    : cloneData(baseSnapshot);
-  merged.stats = computeStats(merged.matches);
-  if (espn) {
-    merged.source = 'snapshot+espn-live';
-    setSrc('espn', 'ok', 'ESPN ao vivo ✓');
-  } else {
-    setSrc('espn', 'err', 'ESPN ✗');
+async function refreshLive(trackPending = false) {
+  if (!baseSnapshot || espnLoading) return;
+  espnLoading = true;
+  if (trackPending) {
+    setEspnPending(true);
+    renderAll();
   }
-  applyData(merged, new Date());
+  setSrc('espn', 'loading', 'ESPN ao vivo');
+  try {
+    const espn = await fetchESPN();
+    const merged = espn
+      ? enrichWithESPN(cloneData(baseSnapshot), espn)
+      : cloneData(baseSnapshot);
+    merged.stats = computeStats(merged.matches);
+    if (espn) {
+      merged.source = (baseSnapshot.source || 'snapshot') + '+espn-live';
+      setSrc('espn', 'ok', 'ESPN ao vivo ✓');
+    } else {
+      setSrc('espn', 'err', 'ESPN ✗');
+    }
+    applyData(merged, new Date());
+  } finally {
+    espnLoading = false;
+    if (trackPending) {
+      setEspnPending(false);
+      renderAll();
+    }
+  }
 }
 
-// ── LOAD: snapshot GitHub (fetcher) + ESPN opcional ao vivo ───────────────
-async function loadAll() {
-  if (loading) return;
-  loading = true;
-
-  document.getElementById('last-update').textContent = 'Carregando snapshot do GitHub...';
+async function fetchSnapshotInBackground() {
   setSrc('snapshot', 'loading', 'Snapshot GitHub');
-  setSrc('espn', liveMode ? 'idle' : 'idle', 'ESPN ao vivo');
-  setSrc('static', 'idle', 'Fallback estático');
-
   const snapshot = await fetchSnapshot();
   if (snapshot) {
     baseSnapshot = snapshot;
     setSrc('snapshot', 'ok', 'Snapshot GitHub ✓');
-    if (liveMode) await refreshLive();
+    if (liveMode) await refreshLive(false);
     else applyData(snapshot);
-    loading = false;
     return;
   }
-
   setSrc('snapshot', 'err', 'Snapshot ✗');
-  await loadAllLegacy();
-  loading = false;
+}
+
+// ── LOAD: snapshot GitHub (fetcher) + ESPN opcional ao vivo ───────────────
+async function loadAll() {
+  if (snapshotLoading) return;
+  snapshotLoading = true;
+  setSrc('snapshot', 'loading', 'Snapshot GitHub');
+  try {
+    const snapshot = await fetchSnapshot();
+    if (snapshot) {
+      baseSnapshot = snapshot;
+      setSrc('snapshot', 'ok', 'Snapshot GitHub ✓');
+      if (liveMode) await refreshLive(true);
+      else applyData(snapshot);
+      return;
+    }
+    setSrc('snapshot', 'err', 'Snapshot ✗');
+    if (liveMode) await refreshLive(true);
+    else await loadAllLegacy();
+  } finally {
+    snapshotLoading = false;
+  }
 }
 
 async function fetchSnapshot() {
@@ -596,12 +688,9 @@ function renderAll(){
   document.getElementById('k-avg').textContent = finished.length ? (goals/finished.length).toFixed(2) : '—';
 
   // Resultados tab
-  renderCards(live.filter(m => m.stage === 'group'), 'live-cards', teams, venues, 'live');
+  renderLiveSection();
   renderGroupsResults(matches, teams, venues);
   renderBracket(matches, teams, venues);
-
-  if(live.length > 0) document.getElementById('live-hdr').style.display='flex';
-  else document.getElementById('live-hdr').style.display='none';
 
   // Table filters
   populateFilters(matches, teams);
@@ -656,9 +745,11 @@ function renderCompactMatch(m, teams){
   const h = teamInfo(m.team1, teams);
   const a = teamInfo(m.team2, teams);
   const sc = matchScore(m);
-  const scoreTxt = sc ? `${sc[0]}–${sc[1]}` : formatDateShort(m.kickoff_utc);
+  const scoreTxt = scoreNeedsSkeleton(m)
+    ? scoreSkeleton('compact')
+    : sc ? `${sc[0]}–${sc[1]}` : formatDateShort(m.kickoff_utc);
   const liveDot = m.status === 'live' ? ' 🔴' : '';
-  return `<div class="compact-match ${m.status}">
+  return `<div class="compact-match ${m.status}${scoreNeedsSkeleton(m) ? ' score-pending' : ''}">
     <div class="cm-team"><span>${h.flag}</span><span class="cm-name">${h.name}</span></div>
     <div class="cm-score">${scoreTxt}${liveDot}</div>
     <div class="cm-team away"><span class="cm-name">${a.name}</span><span>${a.flag}</span></div>
@@ -711,9 +802,10 @@ function renderBracketMatch(m, teams){
   if(!m) return '';
   const sc = matchScore(m);
   const w = winnerSide(m);
-  const hScore = sc ? sc[0] : (m.status==='scheduled' ? '' : '–');
-  const aScore = sc ? sc[1] : (m.status==='scheduled' ? '' : '–');
-  return `<div class="brk-match ${m.status}">
+  const pending = scoreNeedsSkeleton(m);
+  const hScore = pending ? scoreSkeleton('brk') : sc ? sc[0] : (m.status==='scheduled' ? '' : '–');
+  const aScore = pending ? scoreSkeleton('brk') : sc ? sc[1] : (m.status==='scheduled' ? '' : '–');
+  return `<div class="brk-match ${m.status}${pending ? ' score-pending' : ''}">
     ${renderBracketTeam(m.team1, teams, hScore, w===1)}
     ${renderBracketTeam(m.team2, teams, aScore, w===2)}
     <div class="brk-date">${formatDateShort(m.kickoff_utc)} · ${stageLabel(m.stage)}</div>
@@ -777,10 +869,12 @@ function renderCards(matches, containerId, teams, venues, type){
     const a = teamInfo(m.team2, teams);
     const sc = m.score?.ft;
     const venue = venues[m.venue_id];
-    const scoreHTML = sc && m.status !== 'scheduled'
+    const scoreHTML = scoreNeedsSkeleton(m)
+      ? scoreSkeleton('card')
+      : sc && m.status !== 'scheduled'
       ? `<div class="score-ft">${sc[0]} – ${sc[1]}</div>${m.score?.ht?.[0]!=null?`<div class="score-ht">HT: ${m.score.ht[0]}-${m.score.ht[1]}</div>`:''}`
       : `<div class="score-vs">${formatDate(m.kickoff_utc)}</div>`;
-    return `<div class="match-card ${m.status}">
+    return `<div class="match-card ${m.status}${scoreNeedsSkeleton(m) ? ' score-pending' : ''}">
       <div class="mc-meta">
         <span>${stageBadge(m.stage)}${m.group?' Grupo '+m.group:''}</span>
         <span>${m.round||''}</span>
@@ -868,9 +962,11 @@ function renderTable(){
       :m.status==='live'
       ?`<span class="status-dot sd-live"></span>Ao vivo`
       :`<span class="status-dot sd-sch"></span>${formatDate(m.kickoff_utc)}`;
-    const scoreHTML=sc&&m.status!=='scheduled'
-      ?`<span class="score-cell">${sc[0]}–${sc[1]}</span>`
-      :`<span style="color:var(--dim)">vs</span>`;
+    const scoreHTML = scoreNeedsSkeleton(m)
+      ? scoreSkeleton('cell')
+      : sc && m.status !== 'scheduled'
+      ? `<span class="score-cell">${sc[0]}–${sc[1]}</span>`
+      : `<span style="color:var(--dim)">vs</span>`;
     return `<tr>
       <td style="color:var(--muted);font-size:.78rem">${formatDate(m.kickoff_utc)}</td>
       <td>${stageBadge(m.stage)}</td>
@@ -946,13 +1042,20 @@ function showTab(id){
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
-(function init() {
-  const params = new URLSearchParams(location.search);
-  liveMode = params.get('live') === '1' || localStorage.getItem('worldcup2026-live-mode') === '1';
+(async function init() {
+  liveMode = readLiveModeFromPrefs();
   document.getElementById('live-mode').checked = liveMode;
-  loadAll().then(() => {
-    if (liveMode) scheduleLiveRefresh();
-  });
+
+  baseSnapshot = cloneData({ ...STATIC, source: 'static-embedded' });
+  if (liveMode) setEspnPending(true);
+  applyData(baseSnapshot);
+
+  if (liveMode) {
+    await refreshLive(true);
+    scheduleLiveRefresh();
+  }
+
+  await fetchSnapshotInBackground();
 })();
 </script>
 </body>
