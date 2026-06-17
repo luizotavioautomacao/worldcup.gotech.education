@@ -6,16 +6,17 @@
 <title>Copa do Mundo 2026 · Ao Vivo</title>
 <style>
 :root{
-  --bg:#080e0a;--surface:#0f1a12;--surface2:#162018;--border:#1a2e1e;
-  --green:#2d8a4e;--green-l:#3db868;--gold:#f0b429;
+  --bg:#001810;--surface:#0a2018;--surface2:#122a1e;--border:#1a3828;
+  --green:#006030;--green-l:#107040;--gold:#e8c010;
   --text:#e0ece0;--muted:#5a8060;--dim:#2a3e2e;
   --red:#e05050;--blue:#50a0e0;--orange:#e08030;--purple:#a060e0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 
-.hdr{background:var(--surface);border-bottom:2px solid var(--green);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.hdr{background:#084022;border-bottom:3px solid var(--gold);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:96px;height:auto;display:block;flex-shrink:0}
 .hdr h1{font-size:1.3rem;font-weight:700;color:#fff}
 .hdr-sub{font-size:0.78rem;color:var(--muted);margin-top:1px}
 .live-badge{background:#200a0a;border:1px solid #6b1a1a;color:#ff6060;font-size:0.72rem;padding:3px 9px;border-radius:10px;animation:pulse 2s infinite}
@@ -172,7 +173,7 @@ tr:hover td{background:var(--surface2)}
 
 <div class="hdr">
   <div class="hdr-left">
-    <span style="font-size:2rem">⚽</span>
+    <img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="96" height="96">
     <div>
       <h1>Copa do Mundo 2026</h1>
       <div class="hdr-sub">EUA · México · Canadá · 11 Jun – 19 Jul 2026</div>

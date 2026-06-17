@@ -6,10 +6,10 @@
 <title>Copa do Mundo · GoTech Education</title>
 <style>
 :root{
-  --green:#1a6b35;--green-light:#2d9c52;--green-dark:#0d4020;
-  --gold:#f0b429;--gold-dim:#a07010;
-  --bg:#0c1a0f;--surface:#122018;--surface2:#1a2e20;
-  --border:#1f3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
+  --green:#006030;--green-light:#107040;--green-dark:#084022;
+  --gold:#e8c010;--gold-dim:#a08008;
+  --bg:#001810;--surface:#0a2018;--surface2:#122a1e;
+  --border:#1a3828;--text:#e8f0e8;--muted:#6a8f72;--dim:#3a5040;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -31,12 +31,12 @@ body::before{
 }
 
 .hdr{
-  background:var(--green-dark);
-  border-bottom:2px solid var(--green);
+  background:#084022;
+  border-bottom:3px solid var(--gold);
   padding:2rem 1.5rem;
   text-align:center;
 }
-.hdr-logo{font-size:3rem;line-height:1;margin-bottom:.5rem}
+.hdr-logo{display:block;width:240px;height:auto;margin:0 auto .75rem}
 .hdr h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;letter-spacing:-.5px}
 .hdr-sub{font-size:.9rem;color:var(--muted);margin-top:.4rem;max-width:520px;margin-inline:auto}
 
@@ -58,37 +58,6 @@ body::before{
 .video-wrap iframe{
   position:absolute;inset:0;width:100%;height:100%;border:0;
 }
-
-/* subscription */
-.subscribe{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:1.75rem;
-  margin-bottom:2.5rem;
-  text-align:center;
-}
-.subscribe h2{font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:.35rem}
-.subscribe p{font-size:.88rem;color:var(--muted);margin-bottom:1.25rem;max-width:480px;margin-inline:auto}
-.subscribe-form{
-  display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;max-width:440px;margin:0 auto;
-}
-.subscribe-form input[type=email]{
-  flex:1;min-width:200px;
-  background:var(--bg);border:1px solid var(--border);color:var(--text);
-  padding:11px 14px;border-radius:8px;font-size:.9rem;
-}
-.subscribe-form input[type=email]:focus{outline:none;border-color:var(--green-light)}
-.subscribe-form button{
-  background:var(--green);border:none;color:#fff;
-  padding:11px 22px;border-radius:8px;font-size:.9rem;font-weight:600;
-  cursor:pointer;transition:background .2s;
-}
-.subscribe-form button:hover{background:var(--green-light)}
-.subscribe-form button:disabled{opacity:.6;cursor:not-allowed}
-.form-msg{font-size:.82rem;margin-top:.75rem;min-height:1.2em}
-.form-msg.ok{color:var(--green-light)}
-.form-msg.err{color:#e07070}
 
 /* dashboard cards */
 .nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
@@ -129,7 +98,7 @@ body::before{
 <body>
 
 <header class="hdr">
-  <div class="hdr-logo" aria-hidden="true">⚽</div>
+  <img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="240" height="240">
   <h1>Copa do Mundo</h1>
   <p class="hdr-sub">Dashboards interativos de histórico e ao vivo · GoTech Education</p>
 </header>
@@ -142,17 +111,6 @@ body::before{
     <div class="video-wrap">
       <iframe id="video-iframe" title="Vídeo de apresentação" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-  </section>
-
-  <!-- Inscrição IA -->
-  <section class="subscribe" aria-labelledby="subscribe-title">
-    <h2 id="subscribe-title">Inscreva-se para conteúdos e trilhas de Inteligência Artificial</h2>
-    <p>Receba novidades sobre cursos, trilhas e materiais de IA da GoTech.Education</p>
-    <form class="subscribe-form" id="subscribe-form" novalidate>
-      <input type="email" name="email" id="email" placeholder="seu@email.com" autocomplete="email" required aria-label="E-mail">
-      <button type="submit" id="submit-btn">Inscrever</button>
-    </form>
-    <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
   </section>
 
   <!-- Links para dashboards -->
@@ -191,9 +149,6 @@ body::before{
  */
 const VIDEO_EMBED_URL = '';
 
-const NEWSLETTER_ENDPOINT = '/newsletter_subscribers';
-const NEWSLETTER_SOURCE = 'worldcup_landing';
-
 /* ── Vídeo ─────────────────────────────────────────────────── */
 (function initVideo() {
   const url = normalizeEmbedUrl(VIDEO_EMBED_URL);
@@ -218,60 +173,6 @@ function normalizeEmbedUrl(raw) {
   } catch (_) { /* use as-is */ }
   return s;
 }
-
-/* ── Inscrição ───────────────────────────────────────────────── */
-document.getElementById('subscribe-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const input = document.getElementById('email');
-  const msg = document.getElementById('form-msg');
-  const btn = document.getElementById('submit-btn');
-  const email = input.value.trim();
-
-  msg.className = 'form-msg';
-  msg.textContent = '';
-
-  if (!email || !input.checkValidity()) {
-    msg.className = 'form-msg err';
-    msg.textContent = 'Informe um e-mail válido.';
-    input.focus();
-    return;
-  }
-
-  btn.disabled = true;
-  try {
-    const res = await fetch(NEWSLETTER_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        source: NEWSLETTER_SOURCE,
-        metadata: {
-          page_url: window.location.href,
-          referrer: document.referrer || null
-        }
-      })
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (res.ok && data.ok) {
-      msg.className = 'form-msg ok';
-      msg.textContent = data.message || 'Inscrição enviada! Verifique seu e-mail em breve.';
-      input.value = '';
-    } else {
-      msg.className = 'form-msg err';
-      msg.textContent = (data.errors && data.errors[0]) || 'Não foi possível enviar. Tente novamente.';
-    }
-  } catch (_) {
-    msg.className = 'form-msg err';
-    msg.textContent = 'Não foi possível enviar. Tente novamente.';
-  } finally {
-    btn.disabled = false;
-  }
-});
 </script>
 </body>
 </html>
