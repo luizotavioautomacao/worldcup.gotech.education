@@ -64,6 +64,7 @@ TEAM_ALIASES = {
     "cote-d-ivoire": "ivory-coast",
     "dr-congo": "dr-congo",
     "democratic-republic-of-congo": "dr-congo",
+    "congo-dr": "dr-congo",
     "saudi-arabia": "saudi-arabia",
     "cape-verde": "cape-verde",
     "cabo-verde": "cape-verde",
