@@ -401,19 +401,36 @@ function setEspnPending(on) {
   espnPending = on;
 }
 
-function isKickoffToday(iso) {
-  if (!iso) return false;
-  const d = new Date(iso);
+const MATCH_WINDOW_MS = 3 * 60 * 60 * 1000;
+
+function espnDateStr(d) {
+  return d.getUTCFullYear().toString()
+    + String(d.getUTCMonth() + 1).padStart(2, '0')
+    + String(d.getUTCDate()).padStart(2, '0');
+}
+
+function espnDatesToFetch() {
   const now = new Date();
-  return d.getUTCFullYear() === now.getUTCFullYear()
-    && d.getUTCMonth() === now.getUTCMonth()
-    && d.getUTCDate() === now.getUTCDate();
+  const dates = new Set();
+  // ESPN agrupa jogos pelo dia local nos EUA; buscar alguns dias cobre viradas de UTC.
+  for (let offset = -2; offset <= 0; offset++) {
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + offset));
+    dates.add(espnDateStr(d));
+  }
+  return [...dates];
+}
+
+function isLikelyInPlay(iso) {
+  if (!iso) return false;
+  const kickoff = new Date(iso).getTime();
+  const now = Date.now();
+  return kickoff <= now && now <= kickoff + MATCH_WINDOW_MS;
 }
 
 function scoreNeedsSkeleton(m) {
   if (!espnPending || !liveMode || m._espn_enriched) return false;
   if (m.status === 'finished') return false;
-  return m.status === 'live' || isKickoffToday(m.kickoff_utc);
+  return m.status === 'live' || isLikelyInPlay(m.kickoff_utc);
 }
 
 function scoreSkeleton(kind) {
@@ -428,13 +445,7 @@ function renderLiveSection() {
   const matches = DATA.matches || [];
   const teams = DATA.teams || {};
   const venues = DATA.venues || {};
-  let live = matches.filter(m => m.status === 'live');
-
-  if (espnPending && liveMode && !live.length) {
-    live = matches.filter(m =>
-      m.stage === 'group' && m.status !== 'finished' && isKickoffToday(m.kickoff_utc)
-    );
-  }
+  const live = matches.filter(m => m.status === 'live' && isLikelyInPlay(m.kickoff_utc));
 
   const groupLive = live.filter(m => m.stage === 'group');
   renderCards(groupLive, 'live-cards', teams, venues, 'live');
@@ -455,6 +466,8 @@ function computeStats(matches) {
 }
 
 function applyData(data, fetchedAt) {
+  reconcileStaleLive(data.matches);
+  if (data.matches) data.stats = computeStats(data.matches);
   DATA = data;
   renderAll();
   const snapTime = data.updated_at
@@ -628,14 +641,21 @@ async function fetchKickoff26(){
 
 // ── ESPN scoreboard (ao vivo) ─────────────────────────────────────────────
 async function fetchESPN(){
-  try {
-    const r = await fetch(URLS.ESPN_SCOREBOARD, { cache: 'no-cache', signal: AbortSignal.timeout(URLS.FETCH_TIMEOUT_MS) });
-    if (r.ok) {
+  const allEvents = [];
+  const results = await Promise.allSettled(
+    espnDatesToFetch().map(async (day) => {
+      const url = `${URLS.ESPN_SCOREBOARD}?dates=${day}`;
+      const r = await fetch(url, { cache: 'no-cache', signal: AbortSignal.timeout(URLS.FETCH_TIMEOUT_MS) });
+      if (!r.ok) return [];
       const d = await r.json();
-      if (d.events) return { raw: d, source: 'espn' };
-    }
-  } catch (e) {}
-  return null;
+      return d.events || [];
+    })
+  );
+  for (const res of results) {
+    if (res.status === 'fulfilled') allEvents.push(...res.value);
+  }
+  if (!allEvents.length) return null;
+  return { raw: { events: allEvents }, source: 'espn' };
 }
 
 // ── SOURCE 3: Embedded static (always works) ──────────────────────────────
@@ -644,8 +664,20 @@ async function fetchStatic(){
 }
 
 // ── ENRICH: overlay ESPN live data over kickoff26 structure ───────────────
+function reconcileStaleLive(matches) {
+  const now = Date.now();
+  (matches || []).forEach(m => {
+    if (m.status !== 'live' || !m.kickoff_utc) return;
+    const kickoff = new Date(m.kickoff_utc).getTime();
+    if (now > kickoff + MATCH_WINDOW_MS) m.status = 'finished';
+  });
+}
+
 function enrichWithESPN(base, espn){
-  if(!espn || !espn.raw || !espn.raw.events) return base;
+  if(!espn || !espn.raw || !espn.raw.events) {
+    reconcileStaleLive(base.matches);
+    return base;
+  }
   espn.raw.events.forEach(evt => {
     const competitors = evt.competitions?.[0]?.competitors || [];
     const home = competitors.find(c=>c.homeAway==='home');
@@ -663,6 +695,7 @@ function enrichWithESPN(base, espn){
       match._espn_enriched = true;
     }
   });
+  reconcileStaleLive(base.matches);
   return { ...base, source: 'kickoff26+espn' };
 }
 
