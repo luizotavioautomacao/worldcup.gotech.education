@@ -182,6 +182,21 @@ def fetch_espn_events(start: date, end: date) -> list[dict]:
     return events
 
 
+def reconcile_stale_live(matches: list[dict]) -> None:
+    """Mark live matches as finished when kickoff + max duration has passed."""
+    now = datetime.now(timezone.utc)
+    max_duration = timedelta(hours=3)
+    for match in matches:
+        if match.get("status") != "live":
+            continue
+        kickoff_str = match.get("kickoff_utc")
+        if not kickoff_str:
+            continue
+        kickoff = datetime.fromisoformat(kickoff_str.replace("Z", "+00:00"))
+        if now > kickoff + max_duration:
+            match["status"] = "finished"
+
+
 def compute_stats(matches: list[dict]) -> dict[str, int]:
     stats = {"finished": 0, "live": 0, "scheduled": 0}
     for match in matches:
@@ -203,6 +218,7 @@ def build_snapshot(end_date: date | None = None) -> dict:
     print(f"fetching ESPN {TOURNAMENT_START} .. {end}...", file=sys.stderr)
     events = fetch_espn_events(TOURNAMENT_START, end)
     enriched = enrich_with_espn(matches, events)
+    reconcile_stale_live(matches)
 
     stats = compute_stats(matches)
     snapshot = {
