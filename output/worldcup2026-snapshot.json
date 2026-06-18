@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-18T00:11:25Z",
+  "updated_at": "2026-06-18T00:19:41Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 21,
+    "finished": 22,
     "live": 1,
-    "scheduled": 82
+    "scheduled": 81
   },
   "matches": [
     {
@@ -1421,8 +1421,8 @@
       "team2": "dr-congo",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          1
         ],
         "ht": [
           null,
@@ -1431,7 +1431,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 62,
