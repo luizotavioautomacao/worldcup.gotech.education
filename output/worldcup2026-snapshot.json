@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-21T22:30:55Z",
+  "updated_at": "2026-06-21T23:34:00Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 37,
@@ -1083,8 +1083,8 @@
       "team2": "cape-verde",
       "score": {
         "ft": [
-          0,
-          1
+          2,
+          2
         ],
         "ht": [
           null,
