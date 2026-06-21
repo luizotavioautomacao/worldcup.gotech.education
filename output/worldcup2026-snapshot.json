@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-21T20:37:48Z",
+  "updated_at": "2026-06-21T21:33:45Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 36,
-    "live": 1,
+    "finished": 37,
+    "live": 0,
     "scheduled": 67
   },
   "matches": [
@@ -927,7 +927,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
