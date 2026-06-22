@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-22T20:05:11Z",
+  "updated_at": "2026-06-22T21:44:21Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 40,
-    "live": 0,
-    "scheduled": 64
+    "live": 1,
+    "scheduled": 63
   },
   "matches": [
     {
@@ -1201,7 +1201,7 @@
       "team2": "iraq",
       "score": {
         "ft": [
-          0,
+          1,
           0
         ],
         "ht": [
@@ -1211,7 +1211,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
