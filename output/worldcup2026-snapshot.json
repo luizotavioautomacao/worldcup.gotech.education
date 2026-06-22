@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-22T16:36:39Z",
+  "updated_at": "2026-06-22T18:25:40Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 39,
-    "live": 0,
-    "scheduled": 65
+    "live": 1,
+    "scheduled": 64
   },
   "matches": [
     {
@@ -1343,7 +1343,7 @@
       "team2": "austria",
       "score": {
         "ft": [
-          0,
+          1,
           0
         ],
         "ht": [
@@ -1353,7 +1353,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
