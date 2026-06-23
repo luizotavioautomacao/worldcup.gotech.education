@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-23T03:14:54Z",
+  "updated_at": "2026-06-23T05:27:27Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 42,
-    "live": 1,
+    "finished": 43,
+    "live": 0,
     "scheduled": 61
   },
   "matches": [
@@ -1367,8 +1367,8 @@
       "team2": "algeria",
       "score": {
         "ft": [
-          0,
-          0
+          1,
+          2
         ],
         "ht": [
           null,
@@ -1377,7 +1377,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
