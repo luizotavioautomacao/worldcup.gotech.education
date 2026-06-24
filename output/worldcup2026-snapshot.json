@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-23T23:28:18Z",
+  "updated_at": "2026-06-24T00:56:13Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 45,
-    "live": 1,
+    "finished": 46,
+    "live": 0,
     "scheduled": 58
   },
   "matches": [
@@ -113,8 +113,8 @@
       "team2": "mexico",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -123,7 +123,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 6,
@@ -136,8 +137,8 @@
       "team2": "south-korea",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -146,7 +147,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 7,
@@ -255,8 +257,8 @@
       "team2": "canada",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -265,7 +267,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 12,
@@ -278,8 +281,8 @@
       "team2": "qatar",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -288,7 +291,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 13,
@@ -397,8 +401,8 @@
       "team2": "brazil",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -407,7 +411,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 18,
@@ -420,8 +425,8 @@
       "team2": "haiti",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -430,7 +435,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 19,
@@ -1652,7 +1658,7 @@
       "score": {
         "ft": [
           0,
-          0
+          1
         ],
         "ht": [
           null,
@@ -1661,7 +1667,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
