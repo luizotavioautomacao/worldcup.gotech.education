@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-24T19:36:31Z",
+  "updated_at": "2026-06-24T20:39:34Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 47,
@@ -257,8 +257,8 @@
       "team2": "canada",
       "score": {
         "ft": [
-          0,
-          0
+          2,
+          1
         ],
         "ht": [
           null,
@@ -282,7 +282,7 @@
       "score": {
         "ft": [
           2,
-          0
+          1
         ],
         "ht": [
           null,
