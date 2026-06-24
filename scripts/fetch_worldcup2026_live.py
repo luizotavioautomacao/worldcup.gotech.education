@@ -87,9 +87,7 @@ def team_name_matches(kickoff_id: str, espn_name: str) -> bool:
     e = normalize_team_key(espn_name)
     if not k or not e:
         return False
-    if k == e or k in e or e in k:
-        return True
-    return len(k) >= 4 and len(e) >= 4 and k[:4] == e[:4]
+    return k == e or k in e or e in k
 
 
 def find_match(matches: list[dict], home_name: str, away_name: str) -> dict | None:
