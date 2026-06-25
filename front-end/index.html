@@ -150,6 +150,8 @@ body::before{
     <p>Receba novidades sobre cursos, trilhas e materiais de IA da GoTech.Education</p>
     <form class="subscribe-form" id="subscribe-form" novalidate>
       <input type="email" name="email" id="email" placeholder="seu@email.com" autocomplete="email" required aria-label="E-mail">
+      <!-- honeypot: escondido de humanos, preenchido por bots -->
+      <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" style="display:none!important;position:absolute;left:-9999px" aria-hidden="true">
       <button type="submit" id="submit-btn">Inscrever</button>
     </form>
     <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
@@ -239,11 +241,13 @@ document.getElementById('subscribe-form').addEventListener('submit', async (e) =
 
   btn.disabled = true;
   try {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     const res = await fetch(NEWSLETTER_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-CSRF-Token': csrfToken
       },
       body: JSON.stringify({
         email,
