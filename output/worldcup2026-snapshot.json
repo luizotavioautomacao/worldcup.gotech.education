@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-25T19:38:00Z",
+  "updated_at": "2026-06-25T20:44:44Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 54,
-    "live": 0,
-    "scheduled": 50
+    "live": 2,
+    "scheduled": 48
   },
   "matches": [
     {
@@ -691,7 +691,7 @@
       "score": {
         "ft": [
           0,
-          0
+          1
         ],
         "ht": [
           null,
@@ -700,7 +700,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
@@ -714,8 +714,8 @@
       "team2": "germany",
       "score": {
         "ft": [
-          0,
-          0
+          1,
+          1
         ],
         "ht": [
           null,
@@ -724,7 +724,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
