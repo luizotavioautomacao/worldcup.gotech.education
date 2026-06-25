@@ -183,6 +183,8 @@ tr:hover td{background:var(--surface2)}
   content:'';position:absolute;right:-6px;top:10%;bottom:10%;width:1px;background:var(--dim);
 }
 .bracket-side.right .bracket-round:not(:last-child)::after{right:auto;left:-6px}
+.brk-team.provisional .bn{color:var(--gold);opacity:.88}
+.prov-badge{font-size:.48rem;background:rgba(240,180,41,.15);color:var(--gold);border:1px solid rgba(240,180,41,.3);border-radius:3px;padding:0 3px;letter-spacing:.3px;text-transform:uppercase;vertical-align:middle;margin-left:3px;white-space:nowrap}
 
 /* REFRESH */
 .refresh-bar{background:var(--surface2);border-top:1px solid var(--border);padding:.5rem 1.5rem;font-size:0.72rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
@@ -846,15 +848,61 @@ const BRACKET_RIGHT = {
 };
 const ROUND_LABELS = { r32:'R32', r16:'Oitavas', qf:'Quartas', sf:'Semi' };
 
-function renderBracketTeam(teamId, teams, side, isWinner){
+// ── BRACKET SLOT RESOLUTION ────────────────────────────────────────────────
+function computeGroupStandings(matches) {
+  const groups = [...new Set(matches.filter(m=>m.stage==='group').map(m=>m.group).filter(Boolean))].sort();
+  const standings = {};
+  groups.forEach(g => {
+    const gm = matches.filter(m=>m.stage==='group'&&m.group===g);
+    const counted = gm.filter(m=>m.status==='finished'||m.status==='live');
+    const tids = [...new Set([...gm.map(m=>m.team1),...gm.map(m=>m.team2)])];
+    standings[g] = tids.map(tid => {
+      let pts=0,gf=0,ga=0;
+      counted.filter(m=>m.team1===tid||m.team2===tid).forEach(m=>{
+        const sc=m.score?.ft||[0,0];
+        const home=m.team1===tid;
+        const tg=home?sc[0]:sc[1], og=home?sc[1]:sc[0];
+        gf+=tg; ga+=og;
+        if(tg>og) pts+=3; else if(tg===og) pts+=1;
+      });
+      return {tid, group:g, pts, gf, ga, gd:gf-ga};
+    }).sort((a,b)=>b.pts-a.pts||(b.gd-a.gd)||(b.gf-a.gf));
+  });
+  return standings;
+}
+
+function computeQualifiedThirds(groupStandings) {
+  const thirds = Object.values(groupStandings)
+    .filter(t=>t.length>=3).map(t=>t[2]);
+  return [...thirds].sort((a,b)=>b.pts-a.pts||(b.gd-a.gd)||(b.gf-a.gf)||(a.ga-b.ga)).slice(0,8);
+}
+
+function resolveSlot(slotId, groupStandings, qualifiedThirds) {
+  if (!slotId || !groupStandings) return null;
+  const m1 = slotId.match(/^([12])([A-L])$/);
+  if (m1) {
+    const pos = parseInt(m1[1]) - 1;
+    return groupStandings[m1[2]]?.[pos]?.tid || null;
+  }
+  const m2 = slotId.match(/^3([A-L](?:\/[A-L])+)$/);
+  if (m2) {
+    const groups = m2[1].split('/');
+    return qualifiedThirds.find(t=>groups.includes(t.group))?.tid || null;
+  }
+  return null;
+}
+
+function renderBracketTeam(teamId, teams, side, isWinner, provisional, slotLabel){
   const t = teamInfo(teamId, teams);
   const ph = !teams[teamId];
   const icon = ph
     ? '<span class="bk-dot"></span>'
     : `<span class="bk-flag">${t.flag}</span>`;
-  return `<div class="brk-team${isWinner?' win':''}${ph?' placeholder':''}">
+  const provBadge = provisional && !ph ? '<span class="prov-badge">prov</span>' : '';
+  const titleAttr = provisional && slotLabel ? ` title="${placeholderLabel(slotLabel)} (provisório)"` : '';
+  return `<div class="brk-team${isWinner?' win':''}${ph?' placeholder':''}${provisional&&!ph?' provisional':''}"${titleAttr}>
     ${icon}
-    <span class="bn">${t.name}</span>
+    <span class="bn">${t.name}${provBadge}</span>
     <span class="bs">${side||''}</span>
   </div>`;
 }
@@ -867,8 +915,8 @@ function renderBracketMatch(m, teams){
   const hScore = pending ? scoreSkeleton('brk') : sc ? sc[0] : (m.status==='scheduled' ? '' : '–');
   const aScore = pending ? scoreSkeleton('brk') : sc ? sc[1] : (m.status==='scheduled' ? '' : '–');
   return `<div class="brk-match ${m.status}${pending ? ' score-pending' : ''}">
-    ${renderBracketTeam(m.team1, teams, hScore, w===1)}
-    ${renderBracketTeam(m.team2, teams, aScore, w===2)}
+    ${renderBracketTeam(m.team1, teams, hScore, w===1, m._prov1, m._slot1)}
+    ${renderBracketTeam(m.team2, teams, aScore, w===2, m._prov2, m._slot2)}
     <div class="brk-date">${formatDateShort(m.kickoff_utc)} · ${stageLabel(m.stage)}</div>
   </div>`;
 }
@@ -890,7 +938,29 @@ function renderBracketSide(sideMap, matchesById, teams, sideClass){
 
 function renderBracket(matches, teams){
   const el = document.getElementById('bracket-arena');
-  const matchesById = Object.fromEntries(matches.map(m=>[m.id, m]));
+
+  // Resolve group slot placeholders (1A, 2B, 3A/B/...) to real team ids
+  const groupStandings = computeGroupStandings(matches);
+  const qualifiedThirds = computeQualifiedThirds(groupStandings);
+  const matchesById = {};
+  matches.forEach(m => {
+    if (m.stage === 'r32') {
+      const tid1 = resolveSlot(m.team1, groupStandings, qualifiedThirds);
+      const tid2 = resolveSlot(m.team2, groupStandings, qualifiedThirds);
+      matchesById[m.id] = {
+        ...m,
+        team1: tid1 || m.team1,
+        team2: tid2 || m.team2,
+        _prov1: !!(tid1 && !teams[m.team1]),
+        _prov2: !!(tid2 && !teams[m.team2]),
+        _slot1: m.team1,
+        _slot2: m.team2,
+      };
+    } else {
+      matchesById[m.id] = m;
+    }
+  });
+
   const finalM = matchesById[104];
   const thirdM = matchesById[103];
 

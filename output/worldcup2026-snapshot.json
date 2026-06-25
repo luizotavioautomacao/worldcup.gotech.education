@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-24T23:30:03Z",
+  "updated_at": "2026-06-25T22:00:03Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 50,
-    "live": 2,
-    "scheduled": 52
+    "finished": 56,
+    "live": 0,
+    "scheduled": 48
   },
   "matches": [
     {
@@ -115,7 +115,7 @@
       "score": {
         "ft": [
           0,
-          0
+          3
         ],
         "ht": [
           null,
@@ -124,7 +124,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -138,7 +138,7 @@
       "team2": "south-korea",
       "score": {
         "ft": [
-          0,
+          1,
           0
         ],
         "ht": [
@@ -148,7 +148,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -412,7 +412,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -426,7 +426,7 @@
       "team2": "haiti",
       "score": {
         "ft": [
-          2,
+          4,
           2
         ],
         "ht": [
@@ -436,7 +436,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -546,8 +546,8 @@
       "team2": "usa",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -556,7 +556,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 24,
@@ -569,8 +570,8 @@
       "team2": "australia",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -579,7 +580,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 25,
@@ -688,8 +690,8 @@
       "team2": "ivory-coast",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          2
         ],
         "ht": [
           null,
@@ -698,7 +700,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 30,
@@ -711,8 +714,8 @@
       "team2": "germany",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          1
         ],
         "ht": [
           null,
@@ -721,7 +724,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 31,
@@ -830,8 +834,8 @@
       "team2": "sweden",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -840,7 +844,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 36,
@@ -853,8 +858,8 @@
       "team2": "netherlands",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -863,7 +868,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 37,
