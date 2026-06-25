@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-25T01:49:15Z",
+  "updated_at": "2026-06-25T03:14:57Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 52,
-    "live": 2,
+    "finished": 54,
+    "live": 0,
     "scheduled": 50
   },
   "matches": [
@@ -115,7 +115,7 @@
       "score": {
         "ft": [
           0,
-          0
+          3
         ],
         "ht": [
           null,
@@ -124,7 +124,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -138,7 +138,7 @@
       "team2": "south-korea",
       "score": {
         "ft": [
-          0,
+          1,
           0
         ],
         "ht": [
@@ -148,7 +148,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
