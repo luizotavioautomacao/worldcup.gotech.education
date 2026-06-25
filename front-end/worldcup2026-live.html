@@ -115,6 +115,8 @@ tr:hover td{background:var(--surface2)}
 .group-hdr{background:var(--surface2);padding:.6rem 1rem;font-size:0.75rem;font-weight:600;color:var(--gold);border-bottom:1px solid var(--border)}
 .group-table{width:100%;border-collapse:collapse;font-size:0.78rem}
 .group-table th{padding:5px 8px;color:var(--muted);font-weight:500;font-size:0.68rem;text-align:center}
+.live-row td{color:var(--red)!important;font-weight:600}
+.live-row td:first-child::after{content:' ●';font-size:.6rem;animation:pulse 1s infinite;vertical-align:middle}
 .group-table th:first-child{text-align:left}
 .group-table td{padding:5px 8px;border-top:1px solid var(--dim);text-align:center}
 .group-table td:first-child{text-align:left}
@@ -357,8 +359,7 @@ function teamNameMatches(kickoffId, espnName) {
   const k = normalizeTeamKey(kickoffId);
   const e = normalizeTeamKey(espnName);
   if (!k || !e) return false;
-  if (k === e || k.includes(e) || e.includes(k)) return true;
-  return k.length >= 4 && e.length >= 4 && k.slice(0, 4) === e.slice(0, 4);
+  return k === e || k.includes(e) || e.includes(k);
 }
 
 function findEspnMatch(matches, homeName, awayName) {
@@ -1028,35 +1029,37 @@ function renderStandings(matches, teams){
   const groups=[...new Set(matches.filter(m=>m.stage==='group').map(m=>m.group).filter(Boolean))].sort();
   const grid=document.getElementById('standings-grid');
   grid.innerHTML=groups.map(g=>{
-    const groupMatches=matches.filter(m=>m.stage==='group'&&m.group===g&&m.status==='finished');
-    const teamIds=[...new Set([...groupMatches.map(m=>m.team1),...groupMatches.map(m=>m.team2)])];
-    // Also add scheduled teams
     const allGroupMatches=matches.filter(m=>m.stage==='group'&&m.group===g);
+    const countedMatches=allGroupMatches.filter(m=>m.status==='finished'||m.status==='live');
     const allTeamIds=[...new Set([...allGroupMatches.map(m=>m.team1),...allGroupMatches.map(m=>m.team2)])];
+    const liveTeams=new Set(countedMatches.filter(m=>m.status==='live').flatMap(m=>[m.team1,m.team2]));
 
     const table=allTeamIds.map(tid=>{
-      const played=groupMatches.filter(m=>m.team1===tid||m.team2===tid);
+      const played=countedMatches.filter(m=>m.team1===tid||m.team2===tid);
       let pts=0,gf=0,ga=0,w=0,d=0,l=0;
       played.forEach(m=>{
         const sc=m.score?.ft||[0,0];
         const isHome=m.team1===tid;
         const tg=isHome?sc[0]:sc[1], og=isHome?sc[1]:sc[0];
-        gf+=tg;ga+=og;
+        gf+=tg; ga+=og;
         if(tg>og){pts+=3;w++;}else if(tg===og){pts+=1;d++;}else l++;
       });
-      return {tid,pts,gf,ga,gd:gf-ga,played:played.length,w,d,l};
+      return {tid,pts,gf,ga,gd:gf-ga,played:played.length,w,d,l,live:liveTeams.has(tid)};
     }).sort((a,b)=>b.pts-a.pts||(b.gd-a.gd)||(b.gf-a.gf));
 
     const rows=table.map((r,i)=>{
       const t=teamInfo(r.tid,teams);
-      return `<tr>
+      const isLive=r.live;
+      const gdColor=isLive?'inherit':(r.gd>=0?'var(--green-l)':'var(--red)');
+      return `<tr class="${isLive?'live-row':''}">
         <td class="${i<2?'advance':''}">${i<2?'✦ ':''}<span title="${t.name}">${t.flag} ${t.name}</span></td>
-        <td>${r.played}</td><td>${r.pts}</td><td>${r.gf}</td><td>${r.ga}</td><td style="color:${r.gd>=0?'var(--green-l)':'var(--red)'}">${r.gd>0?'+':''}${r.gd}</td>
+        <td>${r.played}</td><td>${r.pts}</td><td>${r.gf}</td><td>${r.ga}</td><td style="color:${gdColor}">${r.gd>0?'+':''}${r.gd}</td>
       </tr>`;
     }).join('');
 
-    return `<div class="group-card">
-      <div class="group-hdr">Grupo ${g}</div>
+    const hasLive=table.some(r=>r.live);
+    return `<div class="group-card${hasLive?' live-group':''}">
+      <div class="group-hdr">Grupo ${g}${hasLive?' <span class="live-badge" style="font-size:.6rem;padding:2px 6px;margin-left:6px">AO VIVO</span>':''}</div>
       <table class="group-table">
         <thead><tr><th>Seleção</th><th>J</th><th>Pts</th><th>GP</th><th>GC</th><th>SG</th></tr></thead>
         <tbody>${rows}</tbody>
