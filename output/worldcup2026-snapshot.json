@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-25T20:44:44Z",
+  "updated_at": "2026-06-25T21:36:39Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 54,
@@ -691,7 +691,7 @@
       "score": {
         "ft": [
           0,
-          1
+          2
         ],
         "ht": [
           null,
