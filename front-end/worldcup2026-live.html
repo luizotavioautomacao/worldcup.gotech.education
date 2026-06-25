@@ -117,6 +117,8 @@ tr:hover td{background:var(--surface2)}
 .group-table th{padding:5px 8px;color:var(--muted);font-weight:500;font-size:0.68rem;text-align:center}
 .live-row td{color:var(--red)!important;font-weight:600}
 .live-row td:first-child::after{content:' ●';font-size:.6rem;animation:pulse 1s infinite;vertical-align:middle}
+.pts-badge{display:inline-block;background:rgba(255,255,255,.13);color:#fff;font-weight:700;min-width:22px;padding:2px 6px;border-radius:999px;text-align:center;font-size:.78rem}
+.live-row .pts-badge{background:rgba(255,96,96,.18);color:var(--red)}
 .group-table th:first-child{text-align:left}
 .group-table td{padding:5px 8px;border-top:1px solid var(--dim);text-align:center}
 .group-table td:first-child{text-align:left}
@@ -1053,7 +1055,7 @@ function renderStandings(matches, teams){
       const gdColor=isLive?'inherit':(r.gd>=0?'var(--green-l)':'var(--red)');
       return `<tr class="${isLive?'live-row':''}">
         <td class="${i<2?'advance':''}">${i<2?'✦ ':''}<span title="${t.name}">${t.flag} ${t.name}</span></td>
-        <td>${r.played}</td><td>${r.pts}</td><td>${r.gf}</td><td>${r.ga}</td><td style="color:${gdColor}">${r.gd>0?'+':''}${r.gd}</td>
+        <td><span class="pts-badge">${r.pts}</span></td><td>${r.played}</td><td>${r.gf}</td><td>${r.ga}</td><td style="color:${gdColor}">${r.gd>0?'+':''}${r.gd}</td>
       </tr>`;
     }).join('');
 
@@ -1061,7 +1063,7 @@ function renderStandings(matches, teams){
     return `<div class="group-card${hasLive?' live-group':''}">
       <div class="group-hdr">Grupo ${g}${hasLive?' <span class="live-badge" style="font-size:.6rem;padding:2px 6px;margin-left:6px">AO VIVO</span>':''}</div>
       <table class="group-table">
-        <thead><tr><th>Seleção</th><th>J</th><th>Pts</th><th>GP</th><th>GC</th><th>SG</th></tr></thead>
+        <thead><tr><th>Seleção</th><th>Pts</th><th>J</th><th>GP</th><th>GC</th><th>SG</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
