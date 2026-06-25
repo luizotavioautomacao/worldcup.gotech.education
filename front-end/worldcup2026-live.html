@@ -119,6 +119,16 @@ tr:hover td{background:var(--surface2)}
 .live-row td:first-child::after{content:' ●';font-size:.6rem;animation:pulse 1s infinite;vertical-align:middle}
 .pts-badge{display:inline-block;background:rgba(255,255,255,.13);color:#fff;font-weight:700;min-width:22px;padding:2px 6px;border-radius:999px;text-align:center;font-size:.78rem}
 .live-row .pts-badge{background:rgba(255,96,96,.18);color:var(--red)}
+#best-thirds-table thead th{background:var(--surface2);color:var(--muted);font-size:.68rem;font-weight:500;text-align:center}
+#best-thirds-table thead th:first-child,#best-thirds-table thead th:nth-child(2){text-align:left}
+#best-thirds-table td{padding:5px 8px;border-top:1px solid var(--dim);font-size:.78rem;text-align:center}
+#best-thirds-table td:first-child,#best-thirds-table td:nth-child(2){text-align:left}
+#best-thirds-table tr:hover td{background:var(--surface2)}
+.third-qualify td{background:rgba(245,158,11,.06)}
+.third-qualify td:first-child{border-left:3px solid var(--gold)}
+.third-out td{opacity:.55}
+.third-live td{color:var(--red)!important;font-weight:600}
+.third-live td:nth-child(2)::after{content:' ●';font-size:.6rem;animation:pulse 1s infinite;vertical-align:middle}
 .group-table th:first-child{text-align:left}
 .group-table td{padding:5px 8px;border-top:1px solid var(--dim);text-align:center}
 .group-table td:first-child{text-align:left}
@@ -286,6 +296,19 @@ tr:hover td{background:var(--surface2)}
 <div class="tab-content" id="tab-grupos">
   <div class="section">
     <div class="standings-grid" id="standings-grid"></div>
+  </div>
+  <div class="section" style="margin-top:1.5rem">
+    <div class="section-hdr" id="best-thirds-hdr" style="margin-bottom:.75rem">🏅 8 Melhores Terceiros Lugares</div>
+    <div id="best-thirds-wrap" style="overflow-x:auto">
+      <table class="group-table" id="best-thirds-table" style="max-width:680px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <thead><tr>
+          <th style="text-align:left;padding:6px 10px">#</th>
+          <th style="text-align:left;padding:6px 10px">Seleção</th>
+          <th>Grp</th><th>Pts</th><th>J</th><th>GP</th><th>GC</th><th>SG</th>
+        </tr></thead>
+        <tbody id="best-thirds-body"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -733,6 +756,7 @@ function renderAll(){
   populateFilters(matches, teams);
   renderTable();
   renderStandings(matches, teams);
+  renderBestThirds(matches, teams);
 }
 
 function teamInfo(id, teams){
@@ -1068,6 +1092,61 @@ function renderStandings(matches, teams){
       </table>
     </div>`;
   }).join('');
+}
+
+// ── BEST THIRDS ────────────────────────────────────────────────────────────
+function renderBestThirds(matches, teams) {
+  const groups = [...new Set(matches.filter(m=>m.stage==='group').map(m=>m.group).filter(Boolean))].sort();
+  const thirds = [];
+
+  groups.forEach(g => {
+    const allGroupMatches = matches.filter(m=>m.stage==='group'&&m.group===g);
+    const countedMatches = allGroupMatches.filter(m=>m.status==='finished'||m.status==='live');
+    const allTeamIds = [...new Set([...allGroupMatches.map(m=>m.team1),...allGroupMatches.map(m=>m.team2)])];
+    const liveTeams = new Set(countedMatches.filter(m=>m.status==='live').flatMap(m=>[m.team1,m.team2]));
+
+    const table = allTeamIds.map(tid => {
+      const played = countedMatches.filter(m=>m.team1===tid||m.team2===tid);
+      let pts=0,gf=0,ga=0,w=0,d=0,l=0;
+      played.forEach(m => {
+        const sc=m.score?.ft||[0,0];
+        const isHome=m.team1===tid;
+        const tg=isHome?sc[0]:sc[1], og=isHome?sc[1]:sc[0];
+        gf+=tg; ga+=og;
+        if(tg>og){pts+=3;w++;}else if(tg===og){pts+=1;d++;}else l++;
+      });
+      return {tid,group:g,pts,gf,ga,gd:gf-ga,played:played.length,w,d,l,live:liveTeams.has(tid)};
+    }).sort((a,b)=>b.pts-a.pts||(b.gd-a.gd)||(b.gf-a.gf));
+
+    if (table.length >= 3) thirds.push(table[2]);
+  });
+
+  // Sort all thirds: PTS → GD → GF → GA (menor é melhor invertido)
+  thirds.sort((a,b) => b.pts-a.pts || (b.gd-a.gd) || (b.gf-a.gf) || (a.ga-b.ga));
+
+  const tbody = document.getElementById('best-thirds-body');
+  if (!tbody) return;
+
+  tbody.innerHTML = thirds.map((r, i) => {
+    const t = teamInfo(r.tid, teams);
+    const qualify = i < 8;
+    const isLive = r.live;
+    const gdColor = isLive ? 'inherit' : (r.gd >= 0 ? 'var(--green-l)' : 'var(--red)');
+    let rowClass = isLive ? 'third-live' : (qualify ? 'third-qualify' : 'third-out');
+    return `<tr class="${rowClass}">
+      <td>${i+1}º</td>
+      <td><span title="${t.name}">${t.flag} ${t.name}</span></td>
+      <td>${r.group}</td>
+      <td><span class="pts-badge">${r.pts}</span></td>
+      <td>${r.played}</td>
+      <td>${r.gf}</td><td>${r.ga}</td>
+      <td style="color:${gdColor}">${r.gd>0?'+':''}${r.gd}</td>
+    </tr>`;
+  }).join('');
+
+  // Separador visual entre 8º e 9º
+  const rows = tbody.querySelectorAll('tr');
+  if (rows[7]) rows[7].style.borderBottom = '2px solid var(--gold)';
 }
 
 // ── TABS ───────────────────────────────────────────────────────────────────
