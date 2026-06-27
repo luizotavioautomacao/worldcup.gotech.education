@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-27T03:14:15Z",
+  "updated_at": "2026-06-27T05:23:09Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 64,
-    "live": 2,
+    "finished": 66,
+    "live": 0,
     "scheduled": 38
   },
   "matches": [
@@ -979,7 +979,7 @@
       "score": {
         "ft": [
           1,
-          0
+          1
         ],
         "ht": [
           null,
@@ -988,7 +988,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -1002,8 +1002,8 @@
       "team2": "belgium",
       "score": {
         "ft": [
-          0,
-          0
+          1,
+          5
         ],
         "ht": [
           null,
@@ -1012,7 +1012,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
