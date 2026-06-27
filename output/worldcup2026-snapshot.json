@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-27T21:28:04Z",
+  "updated_at": "2026-06-27T22:27:18Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 66,
@@ -1699,7 +1699,7 @@
       "score": {
         "ft": [
           0,
-          0
+          2
         ],
         "ht": [
           null,
@@ -1722,7 +1722,7 @@
       "team2": "ghana",
       "score": {
         "ft": [
-          0,
+          1,
           0
         ],
         "ht": [
