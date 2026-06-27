@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-27T22:27:18Z",
+  "updated_at": "2026-06-27T23:26:57Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 66,
-    "live": 2,
+    "finished": 68,
+    "live": 0,
     "scheduled": 36
   },
   "matches": [
@@ -1708,7 +1708,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -1722,8 +1722,8 @@
       "team2": "ghana",
       "score": {
         "ft": [
-          1,
-          0
+          2,
+          1
         ],
         "ht": [
           null,
@@ -1732,7 +1732,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
