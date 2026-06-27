@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-27T01:46:17Z",
+  "updated_at": "2026-06-27T03:14:15Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 62,
+    "finished": 64,
     "live": 2,
-    "scheduled": 40
+    "scheduled": 38
   },
   "matches": [
     {
@@ -978,7 +978,7 @@
       "team2": "iran",
       "score": {
         "ft": [
-          0,
+          1,
           0
         ],
         "ht": [
@@ -988,7 +988,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
@@ -1012,7 +1012,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
@@ -1132,7 +1132,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -1156,7 +1156,7 @@
         "et": null,
         "pens": null
       },
-      "status": "live",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
