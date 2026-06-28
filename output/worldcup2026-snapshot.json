@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-27T23:26:57Z",
+  "updated_at": "2026-06-28T01:03:16Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 68,
-    "live": 0,
-    "scheduled": 36
+    "live": 2,
+    "scheduled": 34
   },
   "matches": [
     {
@@ -1564,7 +1564,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
@@ -1578,8 +1578,8 @@
       "team2": "uzbekistan",
       "score": {
         "ft": [
-          0,
-          0
+          1,
+          1
         ],
         "ht": [
           null,
@@ -1588,7 +1588,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "live",
       "_espn_enriched": true
     },
     {
