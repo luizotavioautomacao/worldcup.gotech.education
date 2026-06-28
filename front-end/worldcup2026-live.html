@@ -835,15 +835,15 @@ function renderGroupsResults(matches, teams){
 }
 
 const BRACKET_LEFT = {
-  r32: [73,74,75,76,77,78,79,80],
-  r16: [90,89,91,92],
-  qf:  [97,99],
+  r32: [74,77,73,75, 83,84,81,82],
+  r16: [89,90,       93,94],
+  qf:  [97,          98],
   sf:  [101]
 };
 const BRACKET_RIGHT = {
-  r32: [83,84,81,82,86,88,85,87],
-  r16: [93,94,95,96],
-  qf:  [98,100],
+  r32: [76,78,79,80, 86,88,85,87],
+  r16: [91,92,       95,96],
+  qf:  [99,          100],
   sf:  [102]
 };
 const ROUND_LABELS = { r32:'R32', r16:'Oitavas', qf:'Quartas', sf:'Semi' };
@@ -877,18 +877,35 @@ function computeQualifiedThirds(groupStandings) {
   return [...thirds].sort((a,b)=>b.pts-a.pts||(b.gd-a.gd)||(b.gf-a.gf)||(a.ga-b.ga)).slice(0,8);
 }
 
-function resolveSlot(slotId, groupStandings, qualifiedThirds) {
+// Pré-atribui cada slot "3X/Y/Z" a exatamente um time (greedy, melhor terceiro disponível).
+// Evita que o mesmo time apareça em múltiplos slots.
+function computeThirdSlotAssignments(r32Matches, qualifiedThirds) {
+  const slots = [];
+  r32Matches.forEach(m => {
+    if (/^3[A-L]/.test(m.team1)) slots.push(m.team1);
+    if (/^3[A-L]/.test(m.team2)) slots.push(m.team2);
+  });
+  const remaining = [...qualifiedThirds]; // sorted best→worst
+  const assignment = {};
+  slots.forEach(slot => {
+    const groups = slot.slice(1).split('/');
+    const idx = remaining.findIndex(t => groups.includes(t.group));
+    if (idx !== -1) {
+      assignment[slot] = remaining[idx].tid;
+      remaining.splice(idx, 1);
+    }
+  });
+  return assignment;
+}
+
+function resolveSlot(slotId, groupStandings, thirdAssignments) {
   if (!slotId || !groupStandings) return null;
   const m1 = slotId.match(/^([12])([A-L])$/);
   if (m1) {
     const pos = parseInt(m1[1]) - 1;
     return groupStandings[m1[2]]?.[pos]?.tid || null;
   }
-  const m2 = slotId.match(/^3([A-L](?:\/[A-L])+)$/);
-  if (m2) {
-    const groups = m2[1].split('/');
-    return qualifiedThirds.find(t=>groups.includes(t.group))?.tid || null;
-  }
+  if (/^3[A-L]/.test(slotId)) return thirdAssignments[slotId] || null;
   return null;
 }
 
@@ -942,11 +959,13 @@ function renderBracket(matches, teams){
   // Resolve group slot placeholders (1A, 2B, 3A/B/...) to real team ids
   const groupStandings = computeGroupStandings(matches);
   const qualifiedThirds = computeQualifiedThirds(groupStandings);
+  const r32Matches = matches.filter(m => m.stage === 'r32');
+  const thirdAssignments = computeThirdSlotAssignments(r32Matches, qualifiedThirds);
   const matchesById = {};
   matches.forEach(m => {
     if (m.stage === 'r32') {
-      const tid1 = resolveSlot(m.team1, groupStandings, qualifiedThirds);
-      const tid2 = resolveSlot(m.team2, groupStandings, qualifiedThirds);
+      const tid1 = resolveSlot(m.team1, groupStandings, thirdAssignments);
+      const tid2 = resolveSlot(m.team2, groupStandings, thirdAssignments);
       matchesById[m.id] = {
         ...m,
         team1: tid1 || m.team1,
