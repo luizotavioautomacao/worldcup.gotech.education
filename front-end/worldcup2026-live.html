@@ -157,7 +157,7 @@ tr:hover td{background:var(--surface2)}
 .bracket-arena{display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem 1rem;padding:1rem 0;overflow-x:auto;min-height:520px}
 .bracket-side{display:flex;align-items:stretch;gap:10px}
 .bracket-side.left{justify-content:flex-end}
-.bracket-side.right{justify-content:flex-start;flex-direction:row-reverse}
+.bracket-side.right{justify-content:flex-end;flex-direction:row-reverse}
 .bracket-round{display:flex;flex-direction:column;justify-content:space-around;gap:6px;min-width:148px;position:relative}
 .bracket-round-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);text-align:center;margin-bottom:4px;font-style:normal}
 .brk-match{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.5rem .55rem;font-size:.72rem;position:relative;min-height:52px;display:flex;flex-direction:column;justify-content:center;gap:3px;-webkit-font-smoothing:antialiased}
@@ -953,10 +953,20 @@ function renderBracketSide(sideMap, matchesById, teams, sideClass){
   return `<div class="bracket-side ${sideClass}">${rounds}</div>`;
 }
 
+function resolveWinnerSlot(slotId, resolvedById) {
+  const wm = slotId?.match(/^W(\d+)$/);
+  if (!wm) return null;
+  const src = resolvedById[+wm[1]];
+  if (!src) return null;
+  const w = winnerSide(src);
+  if (!w) return null;
+  return w === 1 ? src.team1 : src.team2;
+}
+
 function renderBracket(matches, teams){
   const el = document.getElementById('bracket-arena');
 
-  // Resolve group slot placeholders (1A, 2B, 3A/B/...) to real team ids
+  // 1. Resolve R32 group placeholders (1A, 2B, 3A/B/...)
   const groupStandings = computeGroupStandings(matches);
   const qualifiedThirds = computeQualifiedThirds(groupStandings);
   const r32Matches = matches.filter(m => m.stage === 'r32');
@@ -978,6 +988,21 @@ function renderBracket(matches, teams){
     } else {
       matchesById[m.id] = m;
     }
+  });
+
+  // 2. Resolve W<id> winner slots in order (r16 → qf → sf → final/third)
+  ['r16','qf','sf','final','third'].forEach(stage => {
+    matches.filter(m => m.stage === stage).forEach(m => {
+      const tid1 = resolveWinnerSlot(m.team1, matchesById);
+      const tid2 = resolveWinnerSlot(m.team2, matchesById);
+      matchesById[m.id] = {
+        ...m,
+        team1: tid1 || m.team1,
+        team2: tid2 || m.team2,
+        _prov1: false,
+        _prov2: false,
+      };
+    });
   });
 
   const finalM = matchesById[104];
