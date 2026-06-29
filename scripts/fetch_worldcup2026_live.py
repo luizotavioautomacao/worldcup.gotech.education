@@ -144,7 +144,7 @@ def enrich_with_espn(matches: list[dict], events: list[dict]) -> int:
 
         home_score = parse_score(home.get("score"))
         away_score = parse_score(away.get("score"))
-        if home_score is not None and away_score is not None:
+        if home_score is not None and away_score is not None and mapped in ("finished", "live"):
             match["score"] = {
                 "ft": [home_score, away_score],
                 "ht": [None, None],

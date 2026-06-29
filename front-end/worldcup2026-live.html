@@ -926,7 +926,7 @@ function renderBracketTeam(teamId, teams, side, isWinner, provisional, slotLabel
 
 function renderBracketMatch(m, teams){
   if(!m) return '';
-  const sc = matchScore(m);
+  const sc = m.status !== 'scheduled' ? matchScore(m) : null;
   const w = winnerSide(m);
   const pending = scoreNeedsSkeleton(m);
   const hScore = pending ? scoreSkeleton('brk') : sc ? sc[0] : (m.status==='scheduled' ? '' : '–');

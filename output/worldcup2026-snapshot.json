@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-29T01:03:25Z",
+  "updated_at": "2026-06-29T04:12:19Z",
   "source": "kickoff26+espn",
   "stats": {
     "finished": 73,
@@ -1793,8 +1793,8 @@
       "team2": "morocco",
       "score": {
         "ft": [
-          0,
-          0
+          null,
+          null
         ],
         "ht": [
           null,
@@ -1817,8 +1817,8 @@
       "team2": "japan",
       "score": {
         "ft": [
-          0,
-          0
+          null,
+          null
         ],
         "ht": [
           null,
