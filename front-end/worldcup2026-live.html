@@ -920,7 +920,7 @@ function renderBracketTeam(teamId, teams, side, isWinner, provisional, slotLabel
   return `<div class="brk-team${isWinner?' win':''}${ph?' placeholder':''}${provisional&&!ph?' provisional':''}"${titleAttr}>
     ${icon}
     <span class="bn">${t.name}${provBadge}</span>
-    <span class="bs">${side||''}</span>
+    <span class="bs">${side ?? ''}</span>
   </div>`;
 }
 
