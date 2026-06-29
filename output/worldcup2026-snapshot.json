@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-25T22:00:03Z",
+  "updated_at": "2026-06-29T01:03:25Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 56,
+    "finished": 73,
     "live": 0,
-    "scheduled": 48
+    "scheduled": 31
   },
   "matches": [
     {
@@ -546,8 +546,8 @@
       "team2": "usa",
       "score": {
         "ft": [
-          0,
-          0
+          3,
+          2
         ],
         "ht": [
           null,
@@ -556,7 +556,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -580,7 +580,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -834,8 +834,8 @@
       "team2": "sweden",
       "score": {
         "ft": [
-          0,
-          0
+          1,
+          1
         ],
         "ht": [
           null,
@@ -844,7 +844,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -858,8 +858,8 @@
       "team2": "netherlands",
       "score": {
         "ft": [
-          0,
-          0
+          1,
+          3
         ],
         "ht": [
           null,
@@ -868,7 +868,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -978,8 +978,8 @@
       "team2": "iran",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          1
         ],
         "ht": [
           null,
@@ -988,7 +988,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 42,
@@ -1001,8 +1002,8 @@
       "team2": "belgium",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          5
         ],
         "ht": [
           null,
@@ -1011,7 +1012,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 43,
@@ -1120,8 +1122,8 @@
       "team2": "saudi-arabia",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -1130,7 +1132,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 48,
@@ -1143,8 +1146,8 @@
       "team2": "spain",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          1
         ],
         "ht": [
           null,
@@ -1153,7 +1156,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 49,
@@ -1262,8 +1266,8 @@
       "team2": "france",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          4
         ],
         "ht": [
           null,
@@ -1272,7 +1276,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 54,
@@ -1285,8 +1290,8 @@
       "team2": "iraq",
       "score": {
         "ft": [
-          null,
-          null
+          5,
+          0
         ],
         "ht": [
           null,
@@ -1295,7 +1300,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 55,
@@ -1404,8 +1410,8 @@
       "team2": "austria",
       "score": {
         "ft": [
-          null,
-          null
+          3,
+          3
         ],
         "ht": [
           null,
@@ -1414,7 +1420,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 60,
@@ -1427,8 +1434,8 @@
       "team2": "argentina",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          3
         ],
         "ht": [
           null,
@@ -1437,7 +1444,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 61,
@@ -1546,8 +1554,8 @@
       "team2": "portugal",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -1556,7 +1564,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 66,
@@ -1569,8 +1578,8 @@
       "team2": "uzbekistan",
       "score": {
         "ft": [
-          null,
-          null
+          3,
+          1
         ],
         "ht": [
           null,
@@ -1579,7 +1588,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 67,
@@ -1688,8 +1698,8 @@
       "team2": "england",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          2
         ],
         "ht": [
           null,
@@ -1698,7 +1708,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 72,
@@ -1711,8 +1722,8 @@
       "team2": "ghana",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          1
         ],
         "ht": [
           null,
@@ -1721,7 +1732,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 73,
@@ -1730,12 +1742,12 @@
       "group": null,
       "kickoff_utc": "2026-06-28T19:00:00Z",
       "venue_id": "sofi-stadium",
-      "team1": "2A",
-      "team2": "2B",
+      "team1": "south-africa",
+      "team2": "canada",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          1
         ],
         "ht": [
           null,
@@ -1744,7 +1756,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 74,
@@ -1753,8 +1766,8 @@
       "group": null,
       "kickoff_utc": "2026-06-29T20:30:00Z",
       "venue_id": "gillette-stadium",
-      "team1": "1E",
-      "team2": "3A/B/C/D/F",
+      "team1": "germany",
+      "team2": "sweden",
       "score": {
         "ft": [
           null,
@@ -1776,12 +1789,12 @@
       "group": null,
       "kickoff_utc": "2026-06-30T01:00:00Z",
       "venue_id": "estadio-bbva",
-      "team1": "1F",
-      "team2": "2C",
+      "team1": "netherlands",
+      "team2": "morocco",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -1790,7 +1803,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 76,
@@ -1799,12 +1813,12 @@
       "group": null,
       "kickoff_utc": "2026-06-29T17:00:00Z",
       "venue_id": "nrg-stadium",
-      "team1": "1C",
-      "team2": "2F",
+      "team1": "brazil",
+      "team2": "japan",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          0
         ],
         "ht": [
           null,
@@ -1813,7 +1827,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 77,
@@ -1822,8 +1837,8 @@
       "group": null,
       "kickoff_utc": "2026-06-30T21:00:00Z",
       "venue_id": "metlife-stadium",
-      "team1": "1I",
-      "team2": "3C/D/F/G/H",
+      "team1": "france",
+      "team2": "paraguay",
       "score": {
         "ft": [
           null,
@@ -1845,8 +1860,8 @@
       "group": null,
       "kickoff_utc": "2026-06-30T17:00:00Z",
       "venue_id": "att-stadium",
-      "team1": "2E",
-      "team2": "2I",
+      "team1": "ivory-coast",
+      "team2": "norway",
       "score": {
         "ft": [
           null,
@@ -1868,8 +1883,8 @@
       "group": null,
       "kickoff_utc": "2026-07-01T01:00:00Z",
       "venue_id": "estadio-azteca",
-      "team1": "1A",
-      "team2": "3C/E/F/H/I",
+      "team1": "mexico",
+      "team2": "ecuador",
       "score": {
         "ft": [
           null,
@@ -1891,8 +1906,8 @@
       "group": null,
       "kickoff_utc": "2026-07-01T16:00:00Z",
       "venue_id": "mercedes-benz-stadium",
-      "team1": "1L",
-      "team2": "3E/H/I/J/K",
+      "team1": "england",
+      "team2": "dr-congo",
       "score": {
         "ft": [
           null,
@@ -1914,8 +1929,8 @@
       "group": null,
       "kickoff_utc": "2026-07-02T00:00:00Z",
       "venue_id": "levis-stadium",
-      "team1": "1D",
-      "team2": "3B/E/F/I/J",
+      "team1": "usa",
+      "team2": "bosnia-herzegovina",
       "score": {
         "ft": [
           null,
@@ -1937,8 +1952,8 @@
       "group": null,
       "kickoff_utc": "2026-07-01T20:00:00Z",
       "venue_id": "lumen-field",
-      "team1": "1G",
-      "team2": "3A/E/H/I/J",
+      "team1": "belgium",
+      "team2": "algeria",
       "score": {
         "ft": [
           null,
@@ -1960,8 +1975,8 @@
       "group": null,
       "kickoff_utc": "2026-07-02T23:00:00Z",
       "venue_id": "bmo-field",
-      "team1": "2K",
-      "team2": "2L",
+      "team1": "portugal",
+      "team2": "croatia",
       "score": {
         "ft": [
           null,
@@ -1983,8 +1998,8 @@
       "group": null,
       "kickoff_utc": "2026-07-02T19:00:00Z",
       "venue_id": "sofi-stadium",
-      "team1": "1H",
-      "team2": "2J",
+      "team1": "spain",
+      "team2": "austria",
       "score": {
         "ft": [
           null,
@@ -2006,8 +2021,8 @@
       "group": null,
       "kickoff_utc": "2026-07-03T03:00:00Z",
       "venue_id": "bc-place",
-      "team1": "1B",
-      "team2": "3E/F/G/I/J",
+      "team1": "switzerland",
+      "team2": "senegal",
       "score": {
         "ft": [
           null,
@@ -2029,8 +2044,8 @@
       "group": null,
       "kickoff_utc": "2026-07-03T22:00:00Z",
       "venue_id": "hard-rock-stadium",
-      "team1": "1J",
-      "team2": "2H",
+      "team1": "argentina",
+      "team2": "cape-verde",
       "score": {
         "ft": [
           null,
@@ -2052,8 +2067,8 @@
       "group": null,
       "kickoff_utc": "2026-07-04T01:30:00Z",
       "venue_id": "arrowhead-stadium",
-      "team1": "1K",
-      "team2": "3D/E/I/J/L",
+      "team1": "colombia",
+      "team2": "ghana",
       "score": {
         "ft": [
           null,
@@ -2075,8 +2090,8 @@
       "group": null,
       "kickoff_utc": "2026-07-03T18:00:00Z",
       "venue_id": "att-stadium",
-      "team1": "2D",
-      "team2": "2G",
+      "team1": "australia",
+      "team2": "egypt",
       "score": {
         "ft": [
           null,
@@ -2121,7 +2136,7 @@
       "group": null,
       "kickoff_utc": "2026-07-04T17:00:00Z",
       "venue_id": "nrg-stadium",
-      "team1": "W73",
+      "team1": "canada",
       "team2": "W75",
       "score": {
         "ft": [

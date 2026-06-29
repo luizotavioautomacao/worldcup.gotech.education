@@ -181,6 +181,111 @@ def fetch_espn_events(start: date, end: date) -> list[dict]:
     return events
 
 
+def compute_group_standings(matches: list[dict]) -> dict[str, list[dict]]:
+    """Returns {group: [sorted team rows]} from finished/live group matches."""
+    from collections import defaultdict
+    counted = [m for m in matches if m.get("stage") == "group" and m.get("status") in ("finished", "live")]
+    by_group: dict[str, list] = defaultdict(list)
+    for m in counted:
+        by_group[m["group"]].append(m)
+    standings: dict[str, list[dict]] = {}
+    for grp, gms in by_group.items():
+        tids = list(dict.fromkeys(t for m in gms for t in [m["team1"], m["team2"]]))
+        table = []
+        for tid in tids:
+            pts = gf = ga = 0
+            for m in gms:
+                if tid not in (m["team1"], m["team2"]):
+                    continue
+                sc = (m.get("score") or {}).get("ft") or [0, 0]
+                sc = [v if v is not None else 0 for v in sc]
+                home = m["team1"] == tid
+                tg, og = (sc[0], sc[1]) if home else (sc[1], sc[0])
+                gf += tg; ga += og
+                if tg > og:
+                    pts += 3
+                elif tg == og:
+                    pts += 1
+            table.append({"tid": tid, "group": grp, "pts": pts, "gf": gf, "ga": ga, "gd": gf - ga})
+        table.sort(key=lambda r: (-r["pts"], -r["gd"], -r["gf"]))
+        standings[grp] = table
+    return standings
+
+
+def build_slot_map(standings: dict[str, list[dict]]) -> dict[str, str]:
+    """Build {slot_id: team_id} for 1X and 2X slots."""
+    slot_map: dict[str, str] = {}
+    for grp, table in standings.items():
+        for i, row in enumerate(table):
+            slot_map[f"{i + 1}{grp}"] = row["tid"]
+    return slot_map
+
+
+def compute_qualified_thirds(standings: dict[str, list[dict]]) -> list[dict]:
+    """Return the 8 best third-place teams sorted by PTS→GD→GF→GA."""
+    thirds = [table[2] for table in standings.values() if len(table) >= 3]
+    thirds.sort(key=lambda r: (-r["pts"], -r["gd"], -r["gf"], r["ga"]))
+    return thirds[:8]
+
+
+def assign_third_slots(r32_matches: list[dict], qualified_thirds: list[dict]) -> dict[str, str]:
+    """Greedy assignment: each 3X/Y/Z slot gets the best available third from those groups."""
+    slots = []
+    for m in r32_matches:
+        for val in (m["team1"], m["team2"]):
+            if re.match(r"^3[A-L]", val):
+                slots.append(val)
+    remaining = list(qualified_thirds)
+    assignment: dict[str, str] = {}
+    for slot in slots:
+        groups = slot[1:].split("/")
+        idx = next((i for i, t in enumerate(remaining) if t["group"] in groups), None)
+        if idx is not None:
+            assignment[slot] = remaining[idx]["tid"]
+            remaining.pop(idx)
+    return assignment
+
+
+def resolve_knockout_slots(matches: list[dict], slot_map: dict[str, str],
+                           third_assignments: dict[str, str]) -> None:
+    """Resolve 1X/2X/3X/Y/Z placeholders in R32 matches (in-place)."""
+    for m in matches:
+        if m.get("stage") != "r32":
+            continue
+        for key in ("team1", "team2"):
+            val = m[key]
+            if re.match(r"^[12][A-L]$", val):
+                m[key] = slot_map.get(val, val)
+            elif re.match(r"^3[A-L]", val):
+                m[key] = third_assignments.get(val, val)
+
+
+def propagate_winners(matches: list[dict]) -> None:
+    """Resolve W<id>/L<id> slots in R16+ matches using finished R32+ results."""
+    by_id = {m["id"]: m for m in matches}
+    for stage in ("r16", "qf", "sf", "final", "third"):
+        for m in matches:
+            if m.get("stage") != stage:
+                continue
+            for key in ("team1", "team2"):
+                val = m[key]
+                wm = re.match(r"^([WL])(\d+)$", val)
+                if not wm:
+                    continue
+                src = by_id.get(int(wm.group(2)))
+                if not src or src.get("status") != "finished":
+                    continue
+                sc = (src.get("score") or {}).get("ft") or [None, None]
+                if sc[0] is None or sc[1] is None:
+                    continue
+                winner = src["team1"] if sc[0] > sc[1] else src["team2"] if sc[1] > sc[0] else None
+                loser = src["team2"] if sc[0] > sc[1] else src["team1"] if sc[1] > sc[0] else None
+                if wm.group(1) == "W" and winner:
+                    m[key] = winner
+                elif wm.group(1) == "L" and loser:
+                    m[key] = loser
+
+
 def reconcile_stale_live(matches: list[dict]) -> None:
     """Mark live matches as finished when kickoff + max duration has passed."""
     now = datetime.now(timezone.utc)
@@ -216,7 +321,26 @@ def build_snapshot(end_date: date | None = None) -> dict:
 
     print(f"fetching ESPN {TOURNAMENT_START} .. {end}...", file=sys.stderr)
     events = fetch_espn_events(TOURNAMENT_START, end)
+
+    # Pass 1: enrich group stage matches
     enriched = enrich_with_espn(matches, events)
+    reconcile_stale_live(matches)
+
+    # Resolve knockout slot placeholders using computed group standings
+    standings = compute_group_standings(matches)
+    slot_map = build_slot_map(standings)
+    qualified_thirds = compute_qualified_thirds(standings)
+    r32 = [m for m in matches if m.get("stage") == "r32"]
+    third_assignments = assign_third_slots(r32, qualified_thirds)
+    resolve_knockout_slots(matches, slot_map, third_assignments)
+
+    # Pass 2: enrich R32 matches (now have real team names)
+    enriched += enrich_with_espn(matches, events)
+    reconcile_stale_live(matches)
+
+    # Propagate R32 winners into R16 team slots, then enrich R16+
+    propagate_winners(matches)
+    enriched += enrich_with_espn(matches, events)
     reconcile_stale_live(matches)
 
     stats = compute_stats(matches)
