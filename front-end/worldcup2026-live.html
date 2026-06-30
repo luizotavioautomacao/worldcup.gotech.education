@@ -171,6 +171,7 @@ tr:hover td{background:var(--surface2)}
 .brk-team .bs{font-weight:700;color:#fff;min-width:14px;text-align:right;font-variant-numeric:tabular-nums}
 .brk-team.win .bn{color:var(--green-l);font-weight:600}
 .brk-date{font-size:.6rem;color:var(--dim);text-align:center;margin-top:2px;letter-spacing:0;font-style:normal}
+.brk-live-dot{color:var(--red);font-size:.55rem;font-weight:700;animation:pulse 1s infinite;margin-left:4px}
 .bracket-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0 .8rem;min-width:160px}
 .bracket-trophy{font-size:4.5rem;line-height:1;filter:drop-shadow(0 0 24px rgba(240,180,41,.45));animation:trophy-glow 3s ease-in-out infinite}
 @keyframes trophy-glow{0%,100%{filter:drop-shadow(0 0 16px rgba(240,180,41,.35))}50%{filter:drop-shadow(0 0 32px rgba(240,180,41,.65))}}
@@ -720,7 +721,7 @@ function enrichWithESPN(base, espn){
       if(status === 'STATUS_FINAL' || status === 'STATUS_FULL_TIME') match.status = 'finished';
       else if(['STATUS_IN_PROGRESS','STATUS_FIRST_HALF','STATUS_SECOND_HALF','STATUS_HALFTIME','STATUS_END_PERIOD'].includes(status)) match.status = 'live';
       const hs = parseInt(home.score), as_ = parseInt(away.score);
-      if(!isNaN(hs) && !isNaN(as_)) match.score = {ft:[hs,as_],ht:[null,null],et:null,pens:null};
+      if(!isNaN(hs) && !isNaN(as_) && match.status !== 'scheduled') match.score = {ft:[hs,as_],ht:[null,null],et:null,pens:null};
       match._espn_enriched = true;
     }
   });
@@ -929,12 +930,13 @@ function renderBracketMatch(m, teams){
   const sc = m.status !== 'scheduled' ? matchScore(m) : null;
   const w = winnerSide(m);
   const pending = scoreNeedsSkeleton(m);
-  const hScore = pending ? scoreSkeleton('brk') : sc ? sc[0] : (m.status==='scheduled' ? '' : '–');
-  const aScore = pending ? scoreSkeleton('brk') : sc ? sc[1] : (m.status==='scheduled' ? '' : '–');
+  const hScore = pending ? scoreSkeleton('brk') : sc != null ? sc[0] : (m.status==='scheduled' ? '' : '–');
+  const aScore = pending ? scoreSkeleton('brk') : sc != null ? sc[1] : (m.status==='scheduled' ? '' : '–');
+  const liveTag = m.status==='live' ? '<span class="brk-live-dot">● AO VIVO</span>' : '';
   return `<div class="brk-match ${m.status}${pending ? ' score-pending' : ''}">
     ${renderBracketTeam(m.team1, teams, hScore, w===1, m._prov1, m._slot1)}
     ${renderBracketTeam(m.team2, teams, aScore, w===2, m._prov2, m._slot2)}
-    <div class="brk-date">${formatDateShort(m.kickoff_utc)} · ${stageLabel(m.stage)}</div>
+    <div class="brk-date">${formatDateShort(m.kickoff_utc)} · ${stageLabel(m.stage)}${liveTag}</div>
   </div>`;
 }
 
