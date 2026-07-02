@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-06-29T04:12:19Z",
+  "updated_at": "2026-07-02T21:00:05Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 73,
+    "finished": 83,
     "live": 0,
-    "scheduled": 31
+    "scheduled": 21
   },
   "matches": [
     {
@@ -1767,20 +1767,24 @@
       "kickoff_utc": "2026-06-29T20:30:00Z",
       "venue_id": "gillette-stadium",
       "team1": "germany",
-      "team2": "sweden",
+      "team2": "paraguay",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          1
         ],
         "ht": [
           null,
           null
         ],
         "et": null,
-        "pens": null
+        "pens": [
+          3,
+          4
+        ]
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 75,
@@ -1793,17 +1797,20 @@
       "team2": "morocco",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          1
         ],
         "ht": [
           null,
           null
         ],
         "et": null,
-        "pens": null
+        "pens": [
+          2,
+          3
+        ]
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -1817,8 +1824,8 @@
       "team2": "japan",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          1
         ],
         "ht": [
           null,
@@ -1827,7 +1834,7 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled",
+      "status": "finished",
       "_espn_enriched": true
     },
     {
@@ -1838,11 +1845,11 @@
       "kickoff_utc": "2026-06-30T21:00:00Z",
       "venue_id": "metlife-stadium",
       "team1": "france",
-      "team2": "paraguay",
+      "team2": "sweden",
       "score": {
         "ft": [
-          null,
-          null
+          3,
+          0
         ],
         "ht": [
           null,
@@ -1851,7 +1858,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 78,
@@ -1864,8 +1872,8 @@
       "team2": "norway",
       "score": {
         "ft": [
-          null,
-          null
+          1,
+          2
         ],
         "ht": [
           null,
@@ -1874,7 +1882,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 79,
@@ -1887,8 +1896,8 @@
       "team2": "ecuador",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          0
         ],
         "ht": [
           null,
@@ -1897,7 +1906,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 80,
@@ -1910,8 +1920,8 @@
       "team2": "dr-congo",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          1
         ],
         "ht": [
           null,
@@ -1920,7 +1930,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 81,
@@ -1933,8 +1944,8 @@
       "team2": "bosnia-herzegovina",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          0
         ],
         "ht": [
           null,
@@ -1943,7 +1954,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 82,
@@ -1953,11 +1965,11 @@
       "kickoff_utc": "2026-07-01T20:00:00Z",
       "venue_id": "lumen-field",
       "team1": "belgium",
-      "team2": "algeria",
+      "team2": "senegal",
       "score": {
         "ft": [
-          null,
-          null
+          3,
+          2
         ],
         "ht": [
           null,
@@ -1966,7 +1978,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 83,
@@ -1989,7 +2002,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 84,
@@ -2002,8 +2016,8 @@
       "team2": "austria",
       "score": {
         "ft": [
-          null,
-          null
+          3,
+          0
         ],
         "ht": [
           null,
@@ -2012,7 +2026,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 85,
@@ -2022,7 +2037,7 @@
       "kickoff_utc": "2026-07-03T03:00:00Z",
       "venue_id": "bc-place",
       "team1": "switzerland",
-      "team2": "senegal",
+      "team2": "algeria",
       "score": {
         "ft": [
           null,
@@ -2035,7 +2050,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "scheduled",
+      "_espn_enriched": true
     },
     {
       "id": 86,
@@ -2113,8 +2129,8 @@
       "group": null,
       "kickoff_utc": "2026-07-04T21:00:00Z",
       "venue_id": "lincoln-financial-field",
-      "team1": "W74",
-      "team2": "W77",
+      "team1": "paraguay",
+      "team2": "france",
       "score": {
         "ft": [
           null,
@@ -2137,7 +2153,7 @@
       "kickoff_utc": "2026-07-04T17:00:00Z",
       "venue_id": "nrg-stadium",
       "team1": "canada",
-      "team2": "W75",
+      "team2": "morocco",
       "score": {
         "ft": [
           null,
@@ -2159,8 +2175,8 @@
       "group": null,
       "kickoff_utc": "2026-07-05T20:00:00Z",
       "venue_id": "metlife-stadium",
-      "team1": "W76",
-      "team2": "W78",
+      "team1": "brazil",
+      "team2": "norway",
       "score": {
         "ft": [
           null,
@@ -2182,8 +2198,8 @@
       "group": null,
       "kickoff_utc": "2026-07-06T00:00:00Z",
       "venue_id": "estadio-azteca",
-      "team1": "W79",
-      "team2": "W80",
+      "team1": "mexico",
+      "team2": "england",
       "score": {
         "ft": [
           null,
@@ -2206,7 +2222,7 @@
       "kickoff_utc": "2026-07-06T19:00:00Z",
       "venue_id": "att-stadium",
       "team1": "W83",
-      "team2": "W84",
+      "team2": "spain",
       "score": {
         "ft": [
           null,
@@ -2228,8 +2244,8 @@
       "group": null,
       "kickoff_utc": "2026-07-07T00:00:00Z",
       "venue_id": "lumen-field",
-      "team1": "W81",
-      "team2": "W82",
+      "team1": "usa",
+      "team2": "belgium",
       "score": {
         "ft": [
           null,
@@ -3038,5 +3054,1736 @@
       "tz": "America/Los_Angeles",
       "capacity": 70240
     }
-  }
+  },
+  "scorers": [
+    {
+      "name": "Kylian Mbappé",
+      "team": "france",
+      "goals": 6,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "66'",
+        "90'+6'",
+        "14'",
+        "54'",
+        "45'",
+        "74'"
+      ]
+    },
+    {
+      "name": "Lionel Messi",
+      "team": "argentina",
+      "goals": 6,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "17'",
+        "60'",
+        "76'",
+        "38'",
+        "90'+5'",
+        "80'"
+      ]
+    },
+    {
+      "name": "Erling Haaland",
+      "team": "norway",
+      "goals": 5,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "29'",
+        "43'",
+        "48'",
+        "58'",
+        "86'"
+      ]
+    },
+    {
+      "name": "Harry Kane",
+      "team": "england",
+      "goals": 5,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "12'",
+        "42'",
+        "67'",
+        "75'",
+        "86'"
+      ]
+    },
+    {
+      "name": "Ismaïla Sarr",
+      "team": "senegal",
+      "goals": 4,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "53'",
+        "90'+3'",
+        "56'",
+        "51'"
+      ]
+    },
+    {
+      "name": "Mikel Oyarzabal",
+      "team": "spain",
+      "goals": 4,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'",
+        "24'",
+        "36'",
+        "89'"
+      ]
+    },
+    {
+      "name": "Ousmane Dembélé",
+      "team": "france",
+      "goals": 4,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "66'",
+        "7'",
+        "20'",
+        "32'"
+      ]
+    },
+    {
+      "name": "Vinícius Júnior",
+      "team": "brazil",
+      "goals": 4,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "32'",
+        "45'+3'",
+        "7'",
+        "45'+3'"
+      ]
+    },
+    {
+      "name": "Brian Brobbey",
+      "team": "netherlands",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "5'",
+        "17'",
+        "7'"
+      ]
+    },
+    {
+      "name": "Cody Gakpo",
+      "team": "netherlands",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "47'",
+        "54'",
+        "72'"
+      ]
+    },
+    {
+      "name": "Deniz Undav",
+      "team": "germany",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "78'",
+        "68'",
+        "90'+4'"
+      ]
+    },
+    {
+      "name": "Elijah Just",
+      "team": "new-zealand",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "7'",
+        "54'",
+        "84'"
+      ]
+    },
+    {
+      "name": "Folarin Balogun",
+      "team": "usa",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "31'",
+        "45'+5'",
+        "45'"
+      ]
+    },
+    {
+      "name": "Ismael Saibari",
+      "team": "morocco",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'",
+        "2'",
+        "45'+1'"
+      ]
+    },
+    {
+      "name": "Johan Manzambi",
+      "team": "switzerland",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "74'",
+        "90'",
+        "57'"
+      ]
+    },
+    {
+      "name": "Jonathan David",
+      "team": "canada",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "29'",
+        "45'+3'",
+        "90'+2'"
+      ]
+    },
+    {
+      "name": "Julián Quiñones",
+      "team": "mexico",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "9'",
+        "61'",
+        "22'"
+      ]
+    },
+    {
+      "name": "Kai Havertz",
+      "team": "germany",
+      "goals": 3,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "45'+5'",
+        "88'",
+        "54'"
+      ]
+    },
+    {
+      "name": "Matheus Cunha",
+      "team": "brazil",
+      "goals": 3,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "23'",
+        "36'",
+        "60'"
+      ]
+    },
+    {
+      "name": "Yoane Wissa",
+      "team": "dr-congo",
+      "goals": 3,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "45'+5'",
+        "68'",
+        "90'+1'"
+      ]
+    },
+    {
+      "name": "Amad Diallo",
+      "team": "ivory-coast",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'",
+        "74'"
+      ]
+    },
+    {
+      "name": "Anthony Elanga",
+      "team": "sweden",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "59'",
+        "62'"
+      ]
+    },
+    {
+      "name": "Ayase Ueda",
+      "team": "japan",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "31'",
+        "83'"
+      ]
+    },
+    {
+      "name": "Bradley Barcola",
+      "team": "france",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "82'",
+        "53'"
+      ]
+    },
+    {
+      "name": "Cristiano Ronaldo",
+      "team": "portugal",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "6'",
+        "39'"
+      ]
+    },
+    {
+      "name": "Crysencio Summerville",
+      "team": "netherlands",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "64'",
+        "89'"
+      ]
+    },
+    {
+      "name": "Cyle Larin",
+      "team": "canada",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "78'",
+        "16'"
+      ]
+    },
+    {
+      "name": "Daichi Kamada",
+      "team": "japan",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "89'",
+        "4'"
+      ]
+    },
+    {
+      "name": "Daniel Muñoz",
+      "team": "colombia",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "40'",
+        "76'"
+      ]
+    },
+    {
+      "name": "Ermin Mahmic",
+      "team": "bosnia-herzegovina",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+3'",
+        "80'"
+      ]
+    },
+    {
+      "name": "Habib Diarra",
+      "team": "senegal",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "4'",
+        "24'"
+      ]
+    },
+    {
+      "name": "Jude Bellingham",
+      "team": "england",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "47'",
+        "62'"
+      ]
+    },
+    {
+      "name": "Leandro Trossard",
+      "team": "belgium",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "28'",
+        "50'"
+      ]
+    },
+    {
+      "name": "Marko Arnautovic",
+      "team": "austria",
+      "goals": 2,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "90'+12'",
+        "28'"
+      ]
+    },
+    {
+      "name": "Maxi Araújo",
+      "team": "uruguay",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "80'",
+        "44'"
+      ]
+    },
+    {
+      "name": "Nicolas Pépé",
+      "team": "ivory-coast",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "7'",
+        "64'"
+      ]
+    },
+    {
+      "name": "Pape Gueye",
+      "team": "senegal",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "59'",
+        "71'"
+      ]
+    },
+    {
+      "name": "Ramin Rezaeian",
+      "team": "iran",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "32'",
+        "14'"
+      ]
+    },
+    {
+      "name": "Raúl Jiménez",
+      "team": "mexico",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "67'",
+        "31'"
+      ]
+    },
+    {
+      "name": "Riyad Mahrez",
+      "team": "algeria",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "60'",
+        "90'+3'"
+      ]
+    },
+    {
+      "name": "Romelu Lukaku",
+      "team": "belgium",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "86'",
+        "86'"
+      ]
+    },
+    {
+      "name": "Rubén Vargas",
+      "team": "switzerland",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "84'",
+        "46'"
+      ]
+    },
+    {
+      "name": "Yasin Ayari",
+      "team": "sweden",
+      "goals": 2,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "7'",
+        "90'+6'"
+      ]
+    },
+    {
+      "name": "Youri Tielemans",
+      "team": "belgium",
+      "goals": 2,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "89'",
+        "120'+5'"
+      ]
+    },
+    {
+      "name": "Abbosbek Fayzullaev",
+      "team": "uzbekistan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "60'"
+      ]
+    },
+    {
+      "name": "Abdulelah Al-Amri",
+      "team": "saudi-arabia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "41'"
+      ]
+    },
+    {
+      "name": "Achraf Hakimi",
+      "team": "morocco",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "39'"
+      ]
+    },
+    {
+      "name": "Agustín Canobbio",
+      "team": "uruguay",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "45'+6'"
+      ]
+    },
+    {
+      "name": "Alex Freeman",
+      "team": "usa",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "43'"
+      ]
+    },
+    {
+      "name": "Alexander Isak",
+      "team": "sweden",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "30'"
+      ]
+    },
+    {
+      "name": "Alexis Saelemaekers",
+      "team": "belgium",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+4'"
+      ]
+    },
+    {
+      "name": "Ali Olwan",
+      "team": "jordan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "50'"
+      ]
+    },
+    {
+      "name": "Amine Gouiri",
+      "team": "algeria",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "82'"
+      ]
+    },
+    {
+      "name": "Ante Budimir",
+      "team": "croatia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "54'"
+      ]
+    },
+    {
+      "name": "Antonio Nusa",
+      "team": "norway",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "39'"
+      ]
+    },
+    {
+      "name": "Arda Güler",
+      "team": "turkey",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "10'"
+      ]
+    },
+    {
+      "name": "Auston Trusty",
+      "team": "usa",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "3'"
+      ]
+    },
+    {
+      "name": "Aymen Hussein",
+      "team": "iraq",
+      "goals": 1,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "39'",
+        "90'+6'"
+      ]
+    },
+    {
+      "name": "Baris Alper Yilmaz",
+      "team": "turkey",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "31'"
+      ]
+    },
+    {
+      "name": "Breel Embolo",
+      "team": "switzerland",
+      "goals": 1,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "17'"
+      ]
+    },
+    {
+      "name": "Brian Cipenga",
+      "team": "dr-congo",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "7'"
+      ]
+    },
+    {
+      "name": "Caleb Yirenkyi",
+      "team": "ghana",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+5'"
+      ]
+    },
+    {
+      "name": "Casemiro",
+      "team": "brazil",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "56'"
+      ]
+    },
+    {
+      "name": "Connor Metcalfe",
+      "team": "australia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "75'"
+      ]
+    },
+    {
+      "name": "Daizen Maeda",
+      "team": "japan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "56'"
+      ]
+    },
+    {
+      "name": "Derrick Luckassen",
+      "team": "ghana",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "73'"
+      ]
+    },
+    {
+      "name": "Désiré Doué",
+      "team": "france",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+4'"
+      ]
+    },
+    {
+      "name": "Eldor Shomurodov",
+      "team": "uzbekistan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "10'"
+      ]
+    },
+    {
+      "name": "Emam Ashour",
+      "team": "egypt",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "20'"
+      ]
+    },
+    {
+      "name": "Felix Nmecha",
+      "team": "germany",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "6'"
+      ]
+    },
+    {
+      "name": "Finn Surman",
+      "team": "new-zealand",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "15'"
+      ]
+    },
+    {
+      "name": "Fiston Mayele",
+      "team": "dr-congo",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "78'"
+      ]
+    },
+    {
+      "name": "Franck Kessié",
+      "team": "ivory-coast",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "30'"
+      ]
+    },
+    {
+      "name": "Gabriel Martinelli",
+      "team": "brazil",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+5'"
+      ]
+    },
+    {
+      "name": "Gessime Yassine",
+      "team": "morocco",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "89'"
+      ]
+    },
+    {
+      "name": "Giovani Lo Celso",
+      "team": "argentina",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "19'"
+      ]
+    },
+    {
+      "name": "Giovanni Reyna",
+      "team": "usa",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+8'"
+      ]
+    },
+    {
+      "name": "Gonzalo Plata",
+      "team": "ecuador",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "77'"
+      ]
+    },
+    {
+      "name": "Granit Xhaka",
+      "team": "switzerland",
+      "goals": 1,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "90'+7'"
+      ]
+    },
+    {
+      "name": "Hassan Al-Haydos",
+      "team": "qatar",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "42'"
+      ]
+    },
+    {
+      "name": "Hazem Mastouri",
+      "team": "tunisia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "54'"
+      ]
+    },
+    {
+      "name": "Hwang In-Beom",
+      "team": "south-korea",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "67'"
+      ]
+    },
+    {
+      "name": "Hélio Varela",
+      "team": "cape-verde",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "61'"
+      ]
+    },
+    {
+      "name": "Ibrahim Mbaye",
+      "team": "senegal",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+5'"
+      ]
+    },
+    {
+      "name": "Iliman Ndiaye",
+      "team": "senegal",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "82'"
+      ]
+    },
+    {
+      "name": "Issa Diop",
+      "team": "morocco",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+1'"
+      ]
+    },
+    {
+      "name": "Jamal Musiala",
+      "team": "germany",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "47'"
+      ]
+    },
+    {
+      "name": "Jan Paul van Hecke",
+      "team": "netherlands",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "62'"
+      ]
+    },
+    {
+      "name": "John McGinn",
+      "team": "scotland",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "28'"
+      ]
+    },
+    {
+      "name": "Jovo Lukic",
+      "team": "bosnia-herzegovina",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'"
+      ]
+    },
+    {
+      "name": "João Neves",
+      "team": "portugal",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "6'"
+      ]
+    },
+    {
+      "name": "Julio Enciso",
+      "team": "paraguay",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "42'"
+      ]
+    },
+    {
+      "name": "Junya Ito",
+      "team": "japan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "69'"
+      ]
+    },
+    {
+      "name": "Jáminton Campaz",
+      "team": "colombia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+9'"
+      ]
+    },
+    {
+      "name": "Kaan Ayhan",
+      "team": "turkey",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+8'"
+      ]
+    },
+    {
+      "name": "Kaishu Sano",
+      "team": "japan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "29'"
+      ]
+    },
+    {
+      "name": "Keito Nakamura",
+      "team": "japan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "57'"
+      ]
+    },
+    {
+      "name": "Kerim Alajbegovic",
+      "team": "bosnia-herzegovina",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "29'"
+      ]
+    },
+    {
+      "name": "Kevin De Bruyne",
+      "team": "belgium",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "66'"
+      ]
+    },
+    {
+      "name": "Kevin Pina",
+      "team": "cape-verde",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'"
+      ]
+    },
+    {
+      "name": "Ladislav Krejcí",
+      "team": "czech-republic",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "59'"
+      ]
+    },
+    {
+      "name": "Lamine Yamal",
+      "team": "spain",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "10'"
+      ]
+    },
+    {
+      "name": "Lautaro Martínez",
+      "team": "argentina",
+      "goals": 1,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "31'"
+      ]
+    },
+    {
+      "name": "Leo Østigard",
+      "team": "norway",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "76'"
+      ]
+    },
+    {
+      "name": "Leroy Sané",
+      "team": "germany",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "2'"
+      ]
+    },
+    {
+      "name": "Livano Comenencia",
+      "team": "curacao",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'"
+      ]
+    },
+    {
+      "name": "Luis Díaz",
+      "team": "colombia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "65'"
+      ]
+    },
+    {
+      "name": "Luis Romo",
+      "team": "mexico",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "50'"
+      ]
+    },
+    {
+      "name": "Mahmoud Saber",
+      "team": "egypt",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "5'"
+      ]
+    },
+    {
+      "name": "Malik Tillman",
+      "team": "usa",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "82'"
+      ]
+    },
+    {
+      "name": "Marcel Sabitzer",
+      "team": "austria",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "55'"
+      ]
+    },
+    {
+      "name": "Marcus Holmgren Pedersen",
+      "team": "norway",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "43'"
+      ]
+    },
+    {
+      "name": "Marcus Rashford",
+      "team": "england",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "85'"
+      ]
+    },
+    {
+      "name": "Martin Baturina",
+      "team": "croatia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "36'"
+      ]
+    },
+    {
+      "name": "Mateo Chávez",
+      "team": "mexico",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "55'"
+      ]
+    },
+    {
+      "name": "Mattias Svanberg",
+      "team": "sweden",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "84'"
+      ]
+    },
+    {
+      "name": "Matías Galarza",
+      "team": "paraguay",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "2'"
+      ]
+    },
+    {
+      "name": "Maurício",
+      "team": "paraguay",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "73'"
+      ]
+    },
+    {
+      "name": "Michal Sadílek",
+      "team": "czech-republic",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "6'"
+      ]
+    },
+    {
+      "name": "Mohamed Salah",
+      "team": "egypt",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "67'"
+      ]
+    },
+    {
+      "name": "Mohammad Mohebbi",
+      "team": "iran",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "64'"
+      ]
+    },
+    {
+      "name": "Mostafa Zico",
+      "team": "egypt",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "58'"
+      ]
+    },
+    {
+      "name": "Mousa Al-Tamari",
+      "team": "jordan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "55'"
+      ]
+    },
+    {
+      "name": "Nadhir Benbouali",
+      "team": "algeria",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "69'"
+      ]
+    },
+    {
+      "name": "Nathan Saliba",
+      "team": "canada",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "64'"
+      ]
+    },
+    {
+      "name": "Nathaniel Brown",
+      "team": "germany",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "68'"
+      ]
+    },
+    {
+      "name": "Nestory Irankunda",
+      "team": "australia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "27'"
+      ]
+    },
+    {
+      "name": "Nico Schlotterbeck",
+      "team": "germany",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "38'"
+      ]
+    },
+    {
+      "name": "Nikola Vlasic",
+      "team": "croatia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "83'"
+      ]
+    },
+    {
+      "name": "Nilson Angulo",
+      "team": "ecuador",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "9'"
+      ]
+    },
+    {
+      "name": "Nizar Al-Rashdan",
+      "team": "jordan",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "36'"
+      ]
+    },
+    {
+      "name": "Nuno Mendes",
+      "team": "portugal",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "17'"
+      ]
+    },
+    {
+      "name": "Oh Hyeon-Gyu",
+      "team": "south-korea",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "80'"
+      ]
+    },
+    {
+      "name": "Omar Rekik",
+      "team": "tunisia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "43'"
+      ]
+    },
+    {
+      "name": "Pedro Porro",
+      "team": "spain",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "66'"
+      ]
+    },
+    {
+      "name": "Petar Musa",
+      "team": "croatia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "45'+5'"
+      ]
+    },
+    {
+      "name": "Petar Sucic",
+      "team": "croatia",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "31'"
+      ]
+    },
+    {
+      "name": "Promise David",
+      "team": "canada",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "76'"
+      ]
+    },
+    {
+      "name": "Rafael Leão",
+      "team": "portugal",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "87'"
+      ]
+    },
+    {
+      "name": "Rafik Belghali",
+      "team": "algeria",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "45'"
+      ]
+    },
+    {
+      "name": "Romano Schmid",
+      "team": "austria",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'"
+      ]
+    },
+    {
+      "name": "Sasa Kalajdzic",
+      "team": "austria",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+6'"
+      ]
+    },
+    {
+      "name": "Sebastian Berhalter",
+      "team": "usa",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "49'"
+      ]
+    },
+    {
+      "name": "Soufiane Rahimi",
+      "team": "morocco",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "78'"
+      ]
+    },
+    {
+      "name": "Stephen Eustáquio",
+      "team": "canada",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+2'"
+      ]
+    },
+    {
+      "name": "Teboho Mokoena",
+      "team": "south-africa",
+      "goals": 1,
+      "pens": 1,
+      "og": 0,
+      "minutes": [
+        "83'"
+      ]
+    },
+    {
+      "name": "Thapelo Maseko",
+      "team": "south-africa",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "63'"
+      ]
+    },
+    {
+      "name": "Thelo Aasgaard",
+      "team": "norway",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "21'"
+      ]
+    },
+    {
+      "name": "Trézéguet",
+      "team": "egypt",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "82'"
+      ]
+    },
+    {
+      "name": "Viktor Gyökeres",
+      "team": "sweden",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "59'"
+      ]
+    },
+    {
+      "name": "Virgil van Dijk",
+      "team": "netherlands",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "51'"
+      ]
+    },
+    {
+      "name": "Wilson Isidor",
+      "team": "haiti",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "43'"
+      ]
+    },
+    {
+      "name": "Álex Baena",
+      "team": "spain",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "42'"
+      ]
+    },
+    {
+      "name": "Álvaro Fidalgo",
+      "team": "mexico",
+      "goals": 1,
+      "pens": 0,
+      "og": 0,
+      "minutes": [
+        "90'+4'"
+      ]
+    },
+    {
+      "name": "Abduvohid Nematov",
+      "team": "uzbekistan",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "60'"
+      ]
+    },
+    {
+      "name": "Cameron Burgess",
+      "team": "australia",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "11'"
+      ]
+    },
+    {
+      "name": "Damián Bobadilla",
+      "team": "paraguay",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "7'"
+      ]
+    },
+    {
+      "name": "Ellyes Skhiri",
+      "team": "tunisia",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "3'"
+      ]
+    },
+    {
+      "name": "Hassan Al-Tambakti",
+      "team": "saudi-arabia",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "49'"
+      ]
+    },
+    {
+      "name": "Mahmoud Abunada",
+      "team": "qatar",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "34'"
+      ]
+    },
+    {
+      "name": "Miro Muheim",
+      "team": "switzerland",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "90'+4'"
+      ]
+    },
+    {
+      "name": "Mohamed Hany",
+      "team": "egypt",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "66'"
+      ]
+    },
+    {
+      "name": "Mohamed Manai",
+      "team": "qatar",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "75'"
+      ]
+    },
+    {
+      "name": "Yassine Bounou",
+      "team": "morocco",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "10'"
+      ]
+    },
+    {
+      "name": "Yazan Al-Arab",
+      "team": "jordan",
+      "goals": 0,
+      "pens": 0,
+      "og": 1,
+      "minutes": [
+        "76'"
+      ]
+    }
+  ]
 }

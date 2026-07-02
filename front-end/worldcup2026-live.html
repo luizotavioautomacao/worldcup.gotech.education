@@ -34,6 +34,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tab{padding:10px 20px;font-size:0.82rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.2s}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--green-l);border-color:var(--green-l)}
+.tab-label-full{display:inline}
+.tab-label-mobile{display:none}
+@media(max-width:600px){.tab-label-full{display:none}.tab-label-mobile{display:inline}.tab{padding:9px 11px;font-size:0.78rem}}
 .tab-content{display:none}
 .tab-content.active{display:block}
 
@@ -172,6 +175,7 @@ tr:hover td{background:var(--surface2)}
 .brk-team.win .bn{color:var(--green-l);font-weight:600}
 .brk-date{font-size:.6rem;color:var(--dim);text-align:center;margin-top:2px;letter-spacing:0;font-style:normal}
 .brk-live-dot{color:var(--red);font-size:.55rem;font-weight:700;animation:pulse 1s infinite;margin-left:4px}
+.brk-pen-score{font-size:.65rem;color:var(--muted);margin-left:2px;font-weight:400}
 .bracket-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0 .8rem;min-width:160px}
 .bracket-trophy{font-size:4.5rem;line-height:1;filter:drop-shadow(0 0 24px rgba(240,180,41,.45));animation:trophy-glow 3s ease-in-out infinite}
 @keyframes trophy-glow{0%,100%{filter:drop-shadow(0 0 16px rgba(240,180,41,.35))}50%{filter:drop-shadow(0 0 32px rgba(240,180,41,.65))}}
@@ -200,7 +204,7 @@ tr:hover td{background:var(--surface2)}
 
 <div class="hdr">
   <div class="hdr-left">
-    <img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="96" height="96">
+    <a href="https://worldcup.gotech.education"><img class="hdr-logo" src="gte-brazil.png" alt="GoTech Education" width="96" height="96"></a>
     <div>
       <h1>Copa do Mundo 2026</h1>
       <div class="hdr-sub">EUA · México · Canadá · 11 Jun – 19 Jul 2026</div>
@@ -215,9 +219,11 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('resultados')">Resultados</div>
-  <div class="tab" onclick="showTab('partidas')">Todas as Partidas</div>
-  <div class="tab" onclick="showTab('grupos')">Grupos / Classificação</div>
+  <div class="tab active" onclick="showTab('resultados')"><span class="tab-label-full">Mata-Mata</span><span class="tab-label-mobile">Chaves</span></div>
+  <div class="tab" onclick="showTab('fase-grupos')"><span class="tab-label-full">Fase de Grupos</span><span class="tab-label-mobile">Grupos</span></div>
+  <div class="tab" onclick="showTab('partidas')"><span class="tab-label-full">Todas as Partidas</span><span class="tab-label-mobile">Partidas</span></div>
+  <div class="tab" onclick="showTab('grupos')"><span class="tab-label-full">Grupos / Classificação</span><span class="tab-label-mobile">Classificação</span></div>
+  <div class="tab" onclick="showTab('artilharia')">Artilharia</div>
 </div>
 
 <!-- KPI -->
@@ -235,10 +241,16 @@ tr:hover td{background:var(--surface2)}
   <div class="section">
     <div class="section-hdr" id="live-hdr" style="display:none">🔴 Ao vivo agora</div>
     <div class="match-grid" id="live-cards"></div>
-    <div class="section-hdr" style="margin-top:1.2rem">📋 Fase de grupos — todas as partidas</div>
-    <div class="groups-results-grid" id="groups-results"></div>
     <div class="section-hdr" style="margin-top:1.6rem">🏆 Chave do mata-mata</div>
     <div class="bracket-arena" id="bracket-arena"></div>
+  </div>
+</div>
+
+<!-- TAB: FASE DE GRUPOS -->
+<div class="tab-content" id="tab-fase-grupos">
+  <div class="section">
+    <div class="section-hdr">📋 Fase de grupos — todas as partidas</div>
+    <div class="groups-results-grid" id="groups-results"></div>
   </div>
 </div>
 
@@ -310,6 +322,25 @@ tr:hover td{background:var(--surface2)}
           <th>Grp</th><th>Pts</th><th>J</th><th>GP</th><th>GC</th><th>SG</th>
         </tr></thead>
         <tbody id="best-thirds-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: ARTILHARIA -->
+<div class="tab-content" id="tab-artilharia">
+  <div class="section">
+    <div class="section-hdr">⚽ Artilharia — Copa do Mundo 2026</div>
+    <div style="overflow-x:auto">
+      <table class="group-table" id="scorers-table" style="max-width:680px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <thead><tr>
+          <th style="text-align:center;padding:6px 10px;width:36px">#</th>
+          <th style="text-align:left;padding:6px 10px">Jogador</th>
+          <th style="text-align:left;padding:6px 10px">Seleção</th>
+          <th style="text-align:center;padding:6px 10px" title="Gols">⚽</th>
+          <th style="text-align:left;padding:6px 10px;color:var(--muted);font-size:.75rem">Minutos</th>
+        </tr></thead>
+        <tbody id="scorers-body"></tbody>
       </table>
     </div>
   </div>
@@ -477,9 +508,8 @@ function renderLiveSection() {
   const venues = DATA.venues || {};
   const live = matches.filter(m => m.status === 'live' && isLikelyInPlay(m.kickoff_utc));
 
-  const groupLive = live.filter(m => m.stage === 'group');
-  renderCards(groupLive, 'live-cards', teams, venues, 'live');
-  hdr.style.display = groupLive.length > 0 ? 'flex' : 'none';
+  renderCards(live, 'live-cards', teams, venues, 'live');
+  hdr.style.display = live.length > 0 ? 'flex' : 'none';
 }
 
 function cloneData(data) {
@@ -718,10 +748,18 @@ function enrichWithESPN(base, espn){
     const match = findEspnMatch(base.matches, homeName, awayName);
     if(match){
       const status = evt.status?.type?.name;
-      if(status === 'STATUS_FINAL' || status === 'STATUS_FULL_TIME') match.status = 'finished';
-      else if(['STATUS_IN_PROGRESS','STATUS_FIRST_HALF','STATUS_SECOND_HALF','STATUS_HALFTIME','STATUS_END_PERIOD'].includes(status)) match.status = 'live';
+      const FINISHED = ['STATUS_FINAL','STATUS_FULL_TIME','STATUS_FINAL_PEN','STATUS_FINAL_AET'];
+      const LIVE = ['STATUS_IN_PROGRESS','STATUS_FIRST_HALF','STATUS_SECOND_HALF',
+                    'STATUS_HALFTIME','STATUS_END_PERIOD','STATUS_OVERTIME',
+                    'STATUS_EXTRA_TIME','STATUS_SHOOTOUT','STATUS_PENALTY'];
+      if(FINISHED.includes(status)) match.status = 'finished';
+      else if(LIVE.includes(status)) match.status = 'live';
       const hs = parseInt(home.score), as_ = parseInt(away.score);
-      if(!isNaN(hs) && !isNaN(as_) && match.status !== 'scheduled') match.score = {ft:[hs,as_],ht:[null,null],et:null,pens:null};
+      if(!isNaN(hs) && !isNaN(as_) && match.status !== 'scheduled'){
+        const hp = parseInt(home.shootoutScore), ap = parseInt(away.shootoutScore);
+        const pens = (!isNaN(hp) && !isNaN(ap)) ? [hp, ap] : (match.score?.pens ?? null);
+        match.score = {ft:[hs,as_],ht:[null,null],et:null,pens};
+      }
       match._espn_enriched = true;
     }
   });
@@ -760,6 +798,7 @@ function renderAll(){
   renderTable();
   renderStandings(matches, teams);
   renderBestThirds(matches, teams);
+  renderScorers(DATA.scorers || [], DATA.teams || {});
 }
 
 function teamInfo(id, teams){
@@ -802,6 +841,12 @@ function winnerSide(m){
   if(!sc || m.status !== 'finished') return null;
   if(sc[0] > sc[1]) return 1;
   if(sc[1] > sc[0]) return 2;
+  // Draw — check penalties
+  const pens = m.score?.pens;
+  if(pens && pens[0] != null && pens[1] != null){
+    if(pens[0] > pens[1]) return 1;
+    if(pens[1] > pens[0]) return 2;
+  }
   return 0;
 }
 
@@ -910,7 +955,7 @@ function resolveSlot(slotId, groupStandings, thirdAssignments) {
   return null;
 }
 
-function renderBracketTeam(teamId, teams, side, isWinner, provisional, slotLabel){
+function renderBracketTeam(teamId, teams, side, penSide, isWinner, provisional, slotLabel){
   const t = teamInfo(teamId, teams);
   const ph = !teams[teamId];
   const icon = ph
@@ -918,10 +963,11 @@ function renderBracketTeam(teamId, teams, side, isWinner, provisional, slotLabel
     : `<span class="bk-flag">${t.flag}</span>`;
   const provBadge = provisional && !ph ? '<span class="prov-badge">prov</span>' : '';
   const titleAttr = provisional && slotLabel ? ` title="${placeholderLabel(slotLabel)} (provisório)"` : '';
+  const penBadge = penSide != null ? `<span class="brk-pen-score">(${penSide})</span>` : '';
   return `<div class="brk-team${isWinner?' win':''}${ph?' placeholder':''}${provisional&&!ph?' provisional':''}"${titleAttr}>
     ${icon}
     <span class="bn">${t.name}${provBadge}</span>
-    <span class="bs">${side ?? ''}</span>
+    <span class="bs">${side ?? ''}${penBadge}</span>
   </div>`;
 }
 
@@ -933,9 +979,13 @@ function renderBracketMatch(m, teams){
   const hScore = pending ? scoreSkeleton('brk') : sc != null ? sc[0] : (m.status==='scheduled' ? '' : '–');
   const aScore = pending ? scoreSkeleton('brk') : sc != null ? sc[1] : (m.status==='scheduled' ? '' : '–');
   const liveTag = m.status==='live' ? '<span class="brk-live-dot">● AO VIVO</span>' : '';
+  const pens = m.score?.pens;
+  const hasPens = m.status==='finished' && pens && pens[0]!=null && pens[1]!=null;
+  const hPen = hasPens ? pens[0] : null;
+  const aPen = hasPens ? pens[1] : null;
   return `<div class="brk-match ${m.status}${pending ? ' score-pending' : ''}">
-    ${renderBracketTeam(m.team1, teams, hScore, w===1, m._prov1, m._slot1)}
-    ${renderBracketTeam(m.team2, teams, aScore, w===2, m._prov2, m._slot2)}
+    ${renderBracketTeam(m.team1, teams, hScore, hPen, w===1, m._prov1, m._slot1)}
+    ${renderBracketTeam(m.team2, teams, aScore, aPen, w===2, m._prov2, m._slot2)}
     <div class="brk-date">${formatDateShort(m.kickoff_utc)} · ${stageLabel(m.stage)}${liveTag}</div>
   </div>`;
 }
@@ -1076,18 +1126,32 @@ function renderCards(matches, containerId, teams, venues, type){
 
 // ── TABLE ──────────────────────────────────────────────────────────────────
 function populateFilters(matches, teams){
-  const groups = [...new Set(matches.map(m=>m.group).filter(Boolean))].sort();
+  // Save current values so a data refresh doesn't wipe the user's filter selection
   const gSel = document.getElementById('f-group');
+  const tSel = document.getElementById('f-team');
+  const savedGroup = gSel.value;
+  const savedTeam  = tSel.value;
+
+  const groups = [...new Set(matches.map(m=>m.group).filter(Boolean))].sort();
   gSel.innerHTML = '<option value="">📌 Todos os grupos</option>';
   groups.forEach(g=>{const o=document.createElement('option');o.value=g;o.textContent='Grupo '+g;gSel.appendChild(o)});
 
-  const tSel = document.getElementById('f-team');
+  // Only real teams (those present in the teams dictionary)
+  const tids = [...new Set([...matches.map(m=>m.team1),...matches.map(m=>m.team2)])]
+    .filter(id => teams[id])
+    .sort((a,b) => (teams[a].name||a).localeCompare(teams[b].name||b));
   tSel.innerHTML = '<option value="">🌍 Todas as seleções</option>';
-  const tids=[...new Set([...matches.map(m=>m.team1),...matches.map(m=>m.team2)])].sort();
   tids.forEach(id=>{
-    const t=DATA.teams[id]||{name:id};
-    const o=document.createElement('option');o.value=id;o.textContent=t.flag+' '+t.name;tSel.appendChild(o);
+    const t = teams[id];
+    const o = document.createElement('option');
+    o.value = id;
+    o.textContent = (t.flag||'') + (t.flag?' ':'') + (t.name||id);
+    tSel.appendChild(o);
   });
+
+  // Restore saved selections
+  gSel.value = savedGroup;
+  tSel.value = savedTeam;
 }
 
 function sortTable(col){
@@ -1164,6 +1228,35 @@ function clearFilters(){
   ['f-stage','f-group','f-status','f-team'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-search').value='';
   renderTable();
+}
+
+// ── SCORERS ────────────────────────────────────────────────────────────────
+function renderScorers(scorers, teams){
+  const tbody = document.getElementById('scorers-body');
+  if(!tbody) return;
+  // Exclude entries with 0 goals (own-goal-only players)
+  const list = (scorers || []).filter(s => s.goals > 0);
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--dim);padding:1rem">Sem dados de artilharia ainda.</td></tr>';
+    return;
+  }
+  // Dense ranking: each distinct goal count gets the next sequential number
+  let currentRank = 0, lastGoals = -1;
+  tbody.innerHTML = list.map((s, i) => {
+    if(s.goals !== lastGoals){ currentRank++; lastGoals = s.goals; }
+    const t = teams[s.team] || {};
+    const flag = t.flag || '🏳️';
+    const teamName = t.name || s.team;
+    const mins = s.minutes.slice(0, 6).join(', ');
+    const moreMin = s.minutes.length > 6 ? ` +${s.minutes.length - 6}` : '';
+    return `<tr>
+      <td style="text-align:center;color:var(--gold);font-weight:700;padding:5px 8px">${currentRank}</td>
+      <td style="padding:5px 10px;font-weight:500">${s.name}</td>
+      <td style="padding:5px 10px">${flag} ${teamName}</td>
+      <td style="text-align:center;font-weight:700;font-size:1rem;color:#fff;padding:5px 8px">${s.goals}</td>
+      <td style="color:var(--dim);font-size:.72rem;padding:5px 8px">${mins}${moreMin}</td>
+    </tr>`;
+  }).join('');
 }
 
 // ── STANDINGS ──────────────────────────────────────────────────────────────
@@ -1268,7 +1361,7 @@ function renderBestThirds(matches, teams) {
 // ── TABS ───────────────────────────────────────────────────────────────────
 function showTab(id){
   document.querySelectorAll('.tab').forEach((t,i)=>{
-    const ids=['resultados','partidas','grupos'];
+    const ids=['resultados','fase-grupos','partidas','grupos','artilharia'];
     t.classList.toggle('active',ids[i]===id);
   });
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));

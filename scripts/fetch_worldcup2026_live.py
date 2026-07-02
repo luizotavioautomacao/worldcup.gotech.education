@@ -29,13 +29,22 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 WORLDCUP_ROOT = SCRIPT_DIR.parent
 DEFAULT_OUTPUT = WORLDCUP_ROOT / "output" / "worldcup2026-snapshot.json"
 
-ESPN_FINISHED = {"STATUS_FINAL", "STATUS_FULL_TIME"}
+ESPN_FINISHED = {
+    "STATUS_FINAL",
+    "STATUS_FULL_TIME",
+    "STATUS_FINAL_PEN",   # penalty shootout
+    "STATUS_FINAL_AET",   # after extra time
+}
 ESPN_LIVE = {
     "STATUS_IN_PROGRESS",
     "STATUS_FIRST_HALF",
     "STATUS_SECOND_HALF",
     "STATUS_HALFTIME",
     "STATUS_END_PERIOD",
+    "STATUS_EXTRA_TIME",
+    "STATUS_OVERTIME",      # extra time (alternate ESPN name)
+    "STATUS_SHOOTOUT",
+    "STATUS_PENALTY",       # penalty shootout in progress
 }
 
 
@@ -118,6 +127,41 @@ def parse_score(value) -> int | None:
         return None
 
 
+_PLACEHOLDER_RE = re.compile(r"^[12][A-L]$|^3[A-L]|^[WL]\d+$")
+
+
+def find_match_by_time(matches: list[dict], espn_date_str: str) -> dict | None:
+    """Fallback: find kickoff26 match by kickoff time within ±90 min of ESPN event start.
+
+    Only matches against records whose team slots are already resolved (no placeholders like
+    '1A', '3B/C/D', 'W74') — prevents time-based matching from consuming unresolved slots
+    before the greedy third-place assignment runs.
+    """
+    if not espn_date_str:
+        return None
+    try:
+        espn_dt = datetime.fromisoformat(espn_date_str.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    window = timedelta(minutes=90)
+    for m in matches:
+        if m.get("_espn_enriched"):
+            continue
+        # Skip matches with unresolved slot placeholders
+        if _PLACEHOLDER_RE.match(m.get("team1", "")) or _PLACEHOLDER_RE.match(m.get("team2", "")):
+            continue
+        ko = m.get("kickoff_utc")
+        if not ko:
+            continue
+        try:
+            ko_dt = datetime.fromisoformat(ko.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if abs(ko_dt - espn_dt) <= window:
+            return m
+    return None
+
+
 def enrich_with_espn(matches: list[dict], events: list[dict]) -> int:
     """Overlay ESPN scores onto kickoff26 matches. Returns count enriched."""
     enriched = 0
@@ -134,6 +178,16 @@ def enrich_with_espn(matches: list[dict], events: list[dict]) -> int:
         away_name = away_team.get("displayName") or away_team.get("shortDisplayName") or ""
 
         match = find_match(matches, home_name, away_name)
+
+        # Fallback para jogos do mata-mata: casar pelo horário do kickoff
+        if not match:
+            espn_date = (evt.get("competitions") or [{}])[0].get("startDate") or evt.get("date") or ""
+            match = find_match_by_time(matches, espn_date)
+            if match:
+                # Atualizar os times com os nomes reais do ESPN
+                match["team1"] = normalize_team_key(home_name) or match["team1"]
+                match["team2"] = normalize_team_key(away_name) or match["team2"]
+
         if not match:
             continue
 
@@ -145,11 +199,14 @@ def enrich_with_espn(matches: list[dict], events: list[dict]) -> int:
         home_score = parse_score(home.get("score"))
         away_score = parse_score(away.get("score"))
         if home_score is not None and away_score is not None and mapped in ("finished", "live"):
+            home_pens = parse_score(home.get("shootoutScore"))
+            away_pens = parse_score(away.get("shootoutScore"))
+            pens = [home_pens, away_pens] if home_pens is not None and away_pens is not None else None
             match["score"] = {
                 "ft": [home_score, away_score],
                 "ht": [None, None],
                 "et": None,
-                "pens": None,
+                "pens": pens,
             }
 
         match["_espn_enriched"] = True
@@ -260,6 +317,26 @@ def resolve_knockout_slots(matches: list[dict], slot_map: dict[str, str],
                 m[key] = third_assignments.get(val, val)
 
 
+def _match_winner_loser(src: dict) -> tuple[str | None, str | None]:
+    """Return (winner_team_id, loser_team_id) for a finished match, including penalty tiebreakers."""
+    score = src.get("score") or {}
+    ft = score.get("ft") or [None, None]
+    if ft[0] is None or ft[1] is None:
+        return None, None
+    if ft[0] > ft[1]:
+        return src["team1"], src["team2"]
+    if ft[1] > ft[0]:
+        return src["team2"], src["team1"]
+    # Draw — check penalty shootout
+    pens = score.get("pens") or [None, None]
+    if pens[0] is not None and pens[1] is not None:
+        if pens[0] > pens[1]:
+            return src["team1"], src["team2"]
+        if pens[1] > pens[0]:
+            return src["team2"], src["team1"]
+    return None, None
+
+
 def propagate_winners(matches: list[dict]) -> None:
     """Resolve W<id>/L<id> slots in R16+ matches using finished R32+ results."""
     by_id = {m["id"]: m for m in matches}
@@ -275,11 +352,7 @@ def propagate_winners(matches: list[dict]) -> None:
                 src = by_id.get(int(wm.group(2)))
                 if not src or src.get("status") != "finished":
                     continue
-                sc = (src.get("score") or {}).get("ft") or [None, None]
-                if sc[0] is None or sc[1] is None:
-                    continue
-                winner = src["team1"] if sc[0] > sc[1] else src["team2"] if sc[1] > sc[0] else None
-                loser = src["team2"] if sc[0] > sc[1] else src["team1"] if sc[1] > sc[0] else None
+                winner, loser = _match_winner_loser(src)
                 if wm.group(1) == "W" and winner:
                     m[key] = winner
                 elif wm.group(1) == "L" and loser:
@@ -299,6 +372,49 @@ def reconcile_stale_live(matches: list[dict]) -> None:
         kickoff = datetime.fromisoformat(kickoff_str.replace("Z", "+00:00"))
         if now > kickoff + max_duration:
             match["status"] = "finished"
+
+
+def extract_scorers(events: list[dict]) -> list[dict]:
+    """Build sorted scorer list from ESPN event details (excludes shootout goals)."""
+    scorers: dict[str, dict] = {}
+    for evt in events:
+        comp = (evt.get("competitions") or [{}])[0]
+        competitors = comp.get("competitors") or []
+        team_map: dict[str, str] = {}
+        for c in competitors:
+            t = c.get("team") or {}
+            tid = t.get("id")
+            tname = t.get("displayName") or t.get("shortDisplayName") or ""
+            if tid:
+                team_map[tid] = normalize_team_key(tname)
+        for d in (comp.get("details") or []):
+            if not d.get("scoringPlay") or d.get("shootout"):
+                continue
+            athletes = d.get("athletesInvolved") or []
+            if not athletes:
+                continue
+            athlete = athletes[0]
+            player = athlete.get("displayName") or athlete.get("fullName") or "?"
+            team_id = (athlete.get("team") or {}).get("id") or (d.get("team") or {}).get("id", "")
+            team_key = team_map.get(str(team_id), "")
+            is_og = bool(d.get("ownGoal"))
+            is_pen = bool(d.get("penaltyKick"))
+            minute = (d.get("clock") or {}).get("displayValue", "")
+            key = f"{player}|{team_key}"
+            if key not in scorers:
+                scorers[key] = {"name": player, "team": team_key, "goals": 0, "pens": 0, "og": 0, "minutes": []}
+            entry = scorers[key]
+            if is_og:
+                entry["og"] += 1
+            else:
+                entry["goals"] += 1
+                if is_pen:
+                    entry["pens"] += 1
+            if minute:
+                entry["minutes"].append(minute)
+    result = list(scorers.values())
+    result.sort(key=lambda x: (-x["goals"], x["name"]))
+    return result
 
 
 def compute_stats(matches: list[dict]) -> dict[str, int]:
@@ -344,6 +460,7 @@ def build_snapshot(end_date: date | None = None) -> dict:
     reconcile_stale_live(matches)
 
     stats = compute_stats(matches)
+    scorers = extract_scorers(events)
     snapshot = {
         "updated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace(
             "+00:00", "Z"
@@ -353,6 +470,7 @@ def build_snapshot(end_date: date | None = None) -> dict:
         "matches": matches,
         "teams": teams,
         "venues": venues,
+        "scorers": scorers,
     }
     print(
         f"done: {enriched} enriched, "
