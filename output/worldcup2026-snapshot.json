@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-07-05T15:14:48Z",
+  "updated_at": "2026-07-05T17:14:35Z",
   "source": "kickoff26+espn",
   "stats": {
-    "finished": 68,
+    "finished": 72,
     "live": 0,
-    "scheduled": 36
+    "scheduled": 32
   },
   "matches": [
     {
@@ -354,8 +354,8 @@
       "team2": "morocco",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          1
         ],
         "ht": [
           null,
@@ -364,7 +364,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 16,
@@ -377,8 +378,8 @@
       "team2": "haiti",
       "score": {
         "ft": [
-          null,
-          null
+          3,
+          0
         ],
         "ht": [
           null,
@@ -387,7 +388,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 17,
@@ -496,8 +498,8 @@
       "team2": "australia",
       "score": {
         "ft": [
-          null,
-          null
+          2,
+          0
         ],
         "ht": [
           null,
@@ -506,7 +508,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 22,
@@ -519,8 +522,8 @@
       "team2": "paraguay",
       "score": {
         "ft": [
-          null,
-          null
+          0,
+          1
         ],
         "ht": [
           null,
@@ -529,7 +532,8 @@
         "et": null,
         "pens": null
       },
-      "status": "scheduled"
+      "status": "finished",
+      "_espn_enriched": true
     },
     {
       "id": 23,
